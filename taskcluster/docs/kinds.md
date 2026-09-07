@@ -114,6 +114,11 @@ endpoint for notarizing apps.
 Downstream tasks switch to build-mac-signing in non-shippable builds or level 1
 environments.
 
+## source-artifact
+
+Fetches ``install-firefox.sh`` from GitHub into artifacts so it can be signed and
+published to ``linux.firefox.com``.
+
 ## source-test
 
 Source-tests are tasks that run directly from the Gecko source. This can include linting,
