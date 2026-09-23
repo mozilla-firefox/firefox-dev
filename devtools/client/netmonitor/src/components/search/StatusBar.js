@@ -17,10 +17,7 @@ const {
   getSearchResultCount,
   getSearchResourceCount,
 } = require("resource://devtools/client/netmonitor/src/selectors/index.js");
-const { PluralForm } = require("resource://devtools/shared/plural-form.js");
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
 const { div, span } = dom;
 const {
   SEARCH_STATUS,
@@ -33,40 +30,37 @@ class StatusBar extends Component {
   static get propTypes() {
     return {
       status: PropTypes.string,
-      resultsCount: PropTypes.string,
-      resourceCount: PropTypes.string,
+      resultsCount: PropTypes.number,
+      resourceCount: PropTypes.number,
+      getString: PropTypes.func.isRequired,
     };
   }
 
   getSearchStatusDoneLabel(lines, files) {
-    const matchingLines = PluralForm.get(
-      lines,
-      L10N.getStr("netmonitor.search.status.labels.matchingLines")
-    ).replace("#1", lines);
-    const matchingFiles = PluralForm.get(
-      files,
-      L10N.getStr("netmonitor.search.status.labels.fileCount")
-    ).replace("#1", files);
-
-    return L10N.getFormatStr(
-      "netmonitor.search.status.labels.done",
-      matchingLines,
-      matchingFiles
-    );
+    const { getString } = this.props;
+    return getString("netmonitor-search-status-labels-done", {
+      matchingLines: getString(
+        "netmonitor-search-status-labels-matching-lines",
+        { lines }
+      ),
+      matchingFiles: getString("netmonitor-search-status-labels-file-count", {
+        files,
+      }),
+    });
   }
 
   renderStatus() {
-    const { status, resultsCount, resourceCount } = this.props;
+    const { getString, status, resultsCount, resourceCount } = this.props;
 
     switch (status) {
       case SEARCH_STATUS.FETCHING:
-        return L10N.getStr("netmonitor.search.status.labels.fetching");
+        return getString("netmonitor-search-status-labels-fetching");
       case SEARCH_STATUS.DONE:
         return this.getSearchStatusDoneLabel(resultsCount, resourceCount);
       case SEARCH_STATUS.ERROR:
-        return L10N.getStr("netmonitor.search.status.labels.error");
+        return getString("netmonitor-search-status-labels-error");
       case SEARCH_STATUS.CANCELED:
-        return L10N.getStr("netmonitor.search.status.labels.canceled");
+        return getString("netmonitor-search-status-labels-canceled");
       default:
         return "";
     }
@@ -90,8 +84,10 @@ class StatusBar extends Component {
   }
 }
 
-module.exports = connect(state => ({
-  status: getSearchStatus(state),
-  resultsCount: getSearchResultCount(state),
-  resourceCount: getSearchResourceCount(state),
-}))(StatusBar);
+module.exports = FluentReact.withLocalization(
+  connect(state => ({
+    status: getSearchStatus(state),
+    resultsCount: getSearchResultCount(state),
+    resourceCount: getSearchResourceCount(state),
+  }))(StatusBar)
+);

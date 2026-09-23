@@ -17,9 +17,8 @@ const {
 const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-types.mjs");
 const Actions = require("resource://devtools/client/netmonitor/src/actions/index.js");
 const dom = require("resource://devtools/client/shared/vendor/react-dom-factories.js");
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+const Localized = createFactory(FluentReact.Localized);
 const { button, span, div } = dom;
 
 // Components
@@ -45,6 +44,7 @@ class Toolbar extends Component {
       toggleCaseSensitiveSearch: PropTypes.func.isRequired,
       connector: PropTypes.object.isRequired,
       query: PropTypes.string,
+      getString: PropTypes.func.isRequired,
     };
   }
 
@@ -87,14 +87,19 @@ class Toolbar extends Component {
    * Render a clear button to clear search results.
    */
   renderClearButton() {
-    return button({
-      className:
-        "devtools-button devtools-clear-icon ws-frames-list-clear-button",
-      title: L10N.getStr("netmonitor.search.toolbar.clear"),
-      onClick: () => {
-        this.props.clearSearchResults();
+    return Localized(
+      {
+        id: "netmonitor-search-toolbar-clear",
+        attrs: { title: true },
       },
-    });
+      button({
+        className:
+          "devtools-button devtools-clear-icon ws-frames-list-clear-button",
+        onClick: () => {
+          this.props.clearSearchResults();
+        },
+      })
+    );
   }
 
   /**
@@ -104,23 +109,33 @@ class Toolbar extends Component {
     const { caseSensitive, toggleCaseSensitiveSearch } = this.props;
     const active = caseSensitive ? "checked" : "";
 
-    return button({
-      id: "devtools-network-search-caseSensitive",
-      className: `devtools-button ${active}`,
-      title: L10N.getStr("netmonitor.search.toolbar.caseSensitive"),
-      onClick: toggleCaseSensitiveSearch,
-    });
+    return Localized(
+      {
+        id: "netmonitor-search-toolbar-case-sensitive",
+        attrs: { title: true },
+      },
+      button({
+        id: "devtools-network-search-caseSensitive",
+        className: `devtools-button ${active}`,
+        onClick: toggleCaseSensitiveSearch,
+      })
+    );
   }
 
   /**
    * Render Search box.
    */
   renderFilterBox() {
-    const { addSearchQuery, clearSearchResultAndCancel, connector, query } =
-      this.props;
+    const {
+      addSearchQuery,
+      clearSearchResultAndCancel,
+      connector,
+      getString,
+      query,
+    } = this.props;
     return SearchBox({
       keyShortcut: "CmdOrCtrl+Shift+F",
-      placeholder: L10N.getStr("netmonitor.search.toolbar.inputPlaceholder"),
+      placeholder: getString("netmonitor-search-toolbar-input-placeholder"),
       type: "search",
       delay: FILTER_SEARCH_DELAY,
       ref: this.props.searchboxRef,
@@ -143,19 +158,21 @@ class Toolbar extends Component {
   }
 }
 
-module.exports = connect(
-  state => ({
-    caseSensitive: state.search.caseSensitive,
-    query: state.search.query,
-  }),
-  dispatch => ({
-    closeSearch: () => dispatch(Actions.closeSearch()),
-    openSearch: () => dispatch(Actions.openSearch()),
-    clearSearchResultAndCancel: () =>
-      dispatch(Actions.clearSearchResultAndCancel()),
-    toggleCaseSensitiveSearch: () =>
-      dispatch(Actions.toggleCaseSensitiveSearch()),
-    search: (connector, query) => dispatch(Actions.search(connector, query)),
-    addSearchQuery: query => dispatch(Actions.addSearchQuery(query)),
-  })
-)(Toolbar);
+module.exports = FluentReact.withLocalization(
+  connect(
+    state => ({
+      caseSensitive: state.search.caseSensitive,
+      query: state.search.query,
+    }),
+    dispatch => ({
+      closeSearch: () => dispatch(Actions.closeSearch()),
+      openSearch: () => dispatch(Actions.openSearch()),
+      clearSearchResultAndCancel: () =>
+        dispatch(Actions.clearSearchResultAndCancel()),
+      toggleCaseSensitiveSearch: () =>
+        dispatch(Actions.toggleCaseSensitiveSearch()),
+      search: (connector, query) => dispatch(Actions.search(connector, query)),
+      addSearchQuery: query => dispatch(Actions.addSearchQuery(query)),
+    })
+  )(Toolbar)
+);

@@ -8,7 +8,7 @@
  * Search panel is visible and clicking matches shows them in the request details.
  */
 
-const { PluralForm } = require("resource://devtools/shared/plural-form.js");
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
 
 add_task(async function () {
   const { tab, monitor } = await initNetMonitor(HTTPS_CUSTOM_GET_URL, {
@@ -337,21 +337,20 @@ add_task(async function searchWithRequestOnUnload() {
   // Wait until there are two resources rendered in the results
   await waitForDOM(document, ".search-panel .status-bar-label");
   const statusBar = document.querySelector(".search-panel .status-bar-label");
-  const matchingLines = PluralForm.get(
-    1,
-    L10N.getStr("netmonitor.search.status.labels.matchingLines")
-  ).replace("#1", 1);
-  const matchingFiles = PluralForm.get(
-    1,
-    L10N.getStr("netmonitor.search.status.labels.fileCount")
-  ).replace("#1", 1);
+  const matchingLines = l10n.formatValueSync(
+    "netmonitor-search-status-labels-matching-lines",
+    { lines: 1 }
+  );
+  const matchingFiles = l10n.formatValueSync(
+    "netmonitor-search-status-labels-file-count",
+    { files: 1 }
+  );
   is(
     statusBar.textContent,
-    L10N.getFormatStr(
-      "netmonitor.search.status.labels.done",
+    l10n.formatValueSync("netmonitor-search-status-labels-done", {
       matchingLines,
-      matchingFiles
-    ),
+      matchingFiles,
+    }),
     "Search completed"
   );
 

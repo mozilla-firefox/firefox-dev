@@ -14,15 +14,13 @@ function getSearchStatus(state) {
 
 function getSearchResultCount(state) {
   const { results } = state.search;
-  return (
-    (results.length !== 0
-      ? results.reduce((total, current) => total + current.results.length, 0)
-      : 0) + ""
-  );
+  return results.length !== 0
+    ? results.reduce((total, current) => total + current.results.length, 0)
+    : 0;
 }
 
 function getSearchResourceCount(state) {
-  return state.search.results.length + "";
+  return state.search.results.length;
 }
 
 module.exports = {
