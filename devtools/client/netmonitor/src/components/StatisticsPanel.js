@@ -15,12 +15,7 @@ const {
   connect,
 } = require("resource://devtools/client/shared/vendor/react-redux.js");
 const { Chart } = require("resource://devtools/client/shared/widgets/Chart.js");
-const { PluralForm } = require("resource://devtools/shared/plural-form.js");
 const Actions = require("resource://devtools/client/netmonitor/src/actions/index.js");
-const {
-  getSizeWithDecimals,
-  getTimeWithDecimals,
-} = require("resource://devtools/client/netmonitor/src/utils/format-utils.js");
 const {
   L10N,
 } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
@@ -33,6 +28,7 @@ const {
 const {
   getStatisticsData,
 } = require("resource://devtools/client/netmonitor/src/selectors/index.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
 
 // Components
 const MDNLink = createFactory(
@@ -44,9 +40,6 @@ const MediaQueryList = window.matchMedia("(min-width: 700px)");
 
 const NETWORK_ANALYSIS_PIE_CHART_DIAMETER = 200;
 const BACK_BUTTON = L10N.getStr("netmonitor.backButton");
-const CHARTS_CACHE_ENABLED = L10N.getStr("charts.cacheEnabled");
-const CHARTS_CACHE_DISABLED = L10N.getStr("charts.cacheDisabled");
-const CHARTS_LEARN_MORE = L10N.getStr("charts.learnMore");
 
 /*
  * Statistics panel component
@@ -62,6 +55,7 @@ class StatisticsPanel extends Component {
       hasLoad: PropTypes.bool,
       requests: PropTypes.array,
       statisticsData: PropTypes.object,
+      getString: PropTypes.func.isRequired,
     };
   }
 
@@ -107,7 +101,7 @@ class StatisticsPanel extends Component {
   componentDidUpdate() {
     MediaQueryList.addListener(this.onLayoutChange);
 
-    const { hasLoad, requests, statisticsData } = this.props;
+    const { hasLoad, requests, statisticsData, getString } = this.props;
 
     // Display statistics about all requests for which we received enough data,
     // as soon as the page is considered to be loaded
@@ -115,13 +109,13 @@ class StatisticsPanel extends Component {
 
     this.createChart({
       id: "primedCacheChart",
-      title: CHARTS_CACHE_ENABLED,
+      title: getString("charts-cache-enabled"),
       data: ready ? statisticsData.primedCacheData : null,
     });
 
     this.createChart({
       id: "emptyCacheChart",
-      title: CHARTS_CACHE_DISABLED,
+      title: getString("charts-cache-disabled"),
       data: ready ? statisticsData.emptyCacheData : null,
     });
 
@@ -149,7 +143,7 @@ class StatisticsPanel extends Component {
     ReactDOM.render(
       MDNLink({
         url,
-        title: CHARTS_LEARN_MORE,
+        title: this.props.getString("charts-learn-more"),
       }),
       containerNode
     );
@@ -163,64 +157,44 @@ class StatisticsPanel extends Component {
   }
 
   createChart({ id, title, data }) {
+    const { getString } = this.props;
+
     // Create a new chart.
     const chart = Chart.PieTable(document, {
       diameter: NETWORK_ANALYSIS_PIE_CHART_DIAMETER,
       title,
       header: {
-        count: L10N.getStr("charts.requestsNumber"),
-        label: L10N.getStr("charts.type"),
-        size: L10N.getStr("charts.size"),
-        transferredSize: L10N.getStr("charts.transferred"),
-        time: L10N.getStr("charts.time"),
-        nonBlockingTime: L10N.getStr("charts.nonBlockingTime"),
+        count: getString("charts-requests-number"),
+        label: getString("charts-type"),
+        size: getString("charts-size"),
+        transferredSize: getString("charts-transferred"),
+        time: getString("charts-time"),
+        nonBlockingTime: getString("charts-non-blocking-time"),
       },
       data,
       strings: {
-        size: value =>
-          L10N.getFormatStr(
-            "charts.size.kB",
-            getSizeWithDecimals(value / 1000)
-          ),
+        size: value => getString("charts-size-kb", { size: value / 1000 }),
         transferredSize: value =>
-          L10N.getFormatStr(
-            "charts.transferredSize.kB",
-            getSizeWithDecimals(value / 1000)
-          ),
-        time: value =>
-          L10N.getFormatStr("charts.totalS", getTimeWithDecimals(value / 1000)),
+          getString("charts-transferred-size-kb", { size: value / 1000 }),
+        time: value => getString("charts-total-s", { time: value / 1000 }),
         nonBlockingTime: value =>
-          L10N.getFormatStr("charts.totalS", getTimeWithDecimals(value / 1000)),
+          getString("charts-total-s", { time: value / 1000 }),
       },
       totals: {
-        cached: total => L10N.getFormatStr("charts.totalCached", total),
-        count: total => L10N.getFormatStr("charts.totalCount", total),
+        cached: total => getString("charts-total-cached", { count: total }),
+        count: total => getString("charts-total-count", { count: total }),
         size: total =>
-          L10N.getFormatStr(
-            "charts.totalSize.kB",
-            getSizeWithDecimals(total / 1000)
-          ),
+          getString("charts-total-size-kb", { size: total / 1000 }),
         transferredSize: total =>
-          L10N.getFormatStr(
-            "charts.totalTransferredSize.kB",
-            getSizeWithDecimals(total / 1000)
-          ),
-        time: total => {
-          const seconds = total / 1000;
-          const string = getTimeWithDecimals(seconds);
-          return PluralForm.get(
-            seconds,
-            L10N.getStr("charts.totalSeconds")
-          ).replace("#1", string);
-        },
-        nonBlockingTime: total => {
-          const seconds = total / 1000;
-          const string = getTimeWithDecimals(seconds);
-          return PluralForm.get(
-            seconds,
-            L10N.getStr("charts.totalSecondsNonBlocking")
-          ).replace("#1", string);
-        },
+          getString("charts-total-transferred-size-kb", {
+            size: total / 1000,
+          }),
+        time: total =>
+          getString("charts-total-seconds", { time: total / 1000 }),
+        nonBlockingTime: total =>
+          getString("charts-total-seconds-non-blocking", {
+            time: total / 1000,
+          }),
       },
       sorted: true,
     });
@@ -274,18 +248,20 @@ class StatisticsPanel extends Component {
   }
 }
 
-module.exports = connect(
-  state => ({
-    // `firstDocumentLoadTimestamp` is set on timing markers when we receive
-    // DOCUMENT_EVENT's dom-complete, which is equivalent to page `load` event.
-    hasLoad: state.timingMarkers.firstDocumentLoadTimestamp != -1,
-    requests: [...state.requests.requests],
-    statisticsData: getStatisticsData(state),
-  }),
-  (dispatch, props) => ({
-    closeStatistics: () =>
-      dispatch(Actions.openStatistics(props.connector, false)),
-    enableRequestFilterTypeOnly: label =>
-      dispatch(Actions.enableRequestFilterTypeOnly(label)),
-  })
-)(StatisticsPanel);
+module.exports = FluentReact.withLocalization(
+  connect(
+    state => ({
+      // `firstDocumentLoadTimestamp` is set on timing markers when we receive
+      // DOCUMENT_EVENT's dom-complete, which is equivalent to page `load` event.
+      hasLoad: state.timingMarkers.firstDocumentLoadTimestamp != -1,
+      requests: [...state.requests.requests],
+      statisticsData: getStatisticsData(state),
+    }),
+    (dispatch, props) => ({
+      closeStatistics: () =>
+        dispatch(Actions.openStatistics(props.connector, false)),
+      enableRequestFilterTypeOnly: label =>
+        dispatch(Actions.enableRequestFilterTypeOnly(label)),
+    })
+  )(StatisticsPanel)
+);

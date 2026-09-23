@@ -7,11 +7,9 @@
  * Makes sure Pie Charts correctly handle empty source data.
  */
 
-add_task(async function () {
-  const {
-    L10N,
-  } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
 
+add_task(async function () {
   const { monitor } = await initNetMonitor(HTTPS_SIMPLE_URL, {
     requestCount: 1,
   });
@@ -51,7 +49,7 @@ add_task(async function () {
   );
   is(
     slices[0].getAttribute("data-statistic-name"),
-    L10N.getStr("pieChart.unavailable"),
+    l10n.formatValueSync("pie-chart-unavailable"),
     "The slice's name is correct."
   );
 

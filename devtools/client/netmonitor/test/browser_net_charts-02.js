@@ -8,11 +8,9 @@
  * initialized with empty data.
  */
 
-add_task(async function () {
-  const {
-    L10N,
-  } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
 
+add_task(async function () {
   const { monitor } = await initNetMonitor(HTTPS_SIMPLE_URL, {
     requestCount: 1,
   });
@@ -61,12 +59,16 @@ add_task(async function () {
   );
   is(
     slices[0].getAttribute("data-statistic-name"),
-    L10N.getStr("pieChart.loading"),
+    l10n.formatValueSync("pie-chart-loading"),
     "The first slice's name is correct."
   );
 
   is(labels.length, 1, "There should be 1 pie chart label created.");
-  is(labels[0].textContent, "Loading", "The first label's text is correct.");
+  is(
+    labels[0].textContent,
+    l10n.formatValueSync("pie-chart-loading"),
+    "The first label's text is correct."
+  );
 
   await teardown(monitor);
 });

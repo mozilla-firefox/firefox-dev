@@ -7,6 +7,8 @@
  * Makes sure Pie Charts have the right internal structure.
  */
 
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+
 add_task(async function () {
   const { monitor } = await initNetMonitor(HTTPS_SIMPLE_URL, {
     requestCount: 1,
@@ -52,7 +54,7 @@ add_task(async function () {
   );
   is(
     node.getAttribute("aria-label"),
-    "Pie chart representing the size of each type of request in proportion to each other",
+    l10n.formatValueSync("pie-chart-aria-label"),
     "pie chart container has expected aria-label"
   );
 
@@ -90,17 +92,26 @@ add_task(async function () {
 
   is(
     slicesContainer[0].getAttribute("aria-label"),
-    "baz: 50%",
+    l10n.formatValueSync("pie-chart-slice-aria-label", {
+      label: "baz",
+      percentage: "50%",
+    }),
     "First slice container has expected aria-label"
   );
   is(
     slicesContainer[1].getAttribute("aria-label"),
-    "bar: 33.33%",
+    l10n.formatValueSync("pie-chart-slice-aria-label", {
+      label: "bar",
+      percentage: "33.33%",
+    }),
     "Second slice container has expected aria-label"
   );
   is(
     slicesContainer[2].getAttribute("aria-label"),
-    "foo: 16.67%",
+    l10n.formatValueSync("pie-chart-slice-aria-label", {
+      label: "foo",
+      percentage: "16.67%",
+    }),
     "Third slice container has expected aria-label"
   );
 

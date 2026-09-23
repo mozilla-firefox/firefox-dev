@@ -10,11 +10,14 @@ const {
   Filters,
 } = require("resource://devtools/client/netmonitor/src/utils/filter-predicates.js");
 const {
-  getSizeWithDecimals,
-} = require("resource://devtools/client/netmonitor/src/utils/format-utils.js");
-const {
   responseIsFresh,
 } = require("resource://devtools/client/netmonitor/src/utils/request-utils.js");
+
+// the chart labels interpolate their values, so they carry Fluent's bidi
+// isolation marks and have to be built from the same bundle rather than
+// hardcoded
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+
 /**
  * Tests that the content rendered in the Statistics Panel is displayed correctly.
  */
@@ -127,9 +130,11 @@ function generateExpectedData(requests, isForEmptyCache) {
       pieSize: "",
       pieName: type,
       count: String(requestsForType.length),
-      size: `${getSizeWithDecimals(size / 1000)} kB`,
+      size: l10n.formatValueSync("charts-size-kb", { size: size / 1000 }),
       type,
-      transferred: `${getSizeWithDecimals(transferred / 1000)} kB`,
+      transferred: l10n.formatValueSync("charts-transferred-size-kb", {
+        size: transferred / 1000,
+      }),
       // temp size data which would be used to calculate the pieSize
       // Should be deleted after.
       _size: size,
@@ -150,8 +155,8 @@ function generateExpectedData(requests, isForEmptyCache) {
   expectedData.totals = {
     cachedResponses: isForEmptyCache ? 0 : totalRequestsFromCache,
     requests: totalRequests,
-    size: `${getSizeWithDecimals(totalSize / 1000)} kB`,
-    transferred: `${getSizeWithDecimals(totalTransferredSize / 1000)} kB`,
+    size: totalSize / 1000,
+    transferred: totalTransferredSize / 1000,
   };
 
   // Calculate the expected % size of the pies in the chart for each type
@@ -229,22 +234,30 @@ async function assertChartContent(
   );
   is(
     totalsRootEl.querySelector("span[name='cached']").innerText,
-    `Cached responses: ${expectedChartData.totals.cachedResponses}`,
+    l10n.formatValueSync("charts-total-cached", {
+      count: expectedChartData.totals.cachedResponses,
+    }),
     `The total no of cached responses is correct`
   );
   is(
     totalsRootEl.querySelector("span[name='count']").innerText,
-    `Total requests: ${expectedChartData.totals.requests}`,
+    l10n.formatValueSync("charts-total-count", {
+      count: expectedChartData.totals.requests,
+    }),
     `The total no of requests is correct`
   );
   is(
     totalsRootEl.querySelector("span[name='size']").innerText,
-    `Size: ${expectedChartData.totals.size}`,
+    l10n.formatValueSync("charts-total-size-kb", {
+      size: expectedChartData.totals.size,
+    }),
     `The total size of requests is correct`
   );
   is(
     totalsRootEl.querySelector("span[name='transferredSize']").innerText,
-    `Transferred Size: ${expectedChartData.totals.transferred}`,
+    l10n.formatValueSync("charts-total-transferred-size-kb", {
+      size: expectedChartData.totals.transferred,
+    }),
     `The total transferred size is correct`
   );
 }

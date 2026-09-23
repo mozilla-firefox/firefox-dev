@@ -35,6 +35,22 @@ class CUSTOM_PLURALS(PLURALS):
         return pattern
 
 
+def NUMBER_REFERENCE(name, maximum_fraction_digits):
+    """Build a NUMBER() call capping how many fraction digits are shown."""
+    return FTL.FunctionReference(
+        id=FTL.Identifier("NUMBER"),
+        arguments=FTL.CallArguments(
+            positional=[VARIABLE_REFERENCE(name)],
+            named=[
+                FTL.NamedArgument(
+                    FTL.Identifier("maximumFractionDigits"),
+                    FTL.NumberLiteral(str(maximum_fraction_digits)),
+                )
+            ],
+        ),
+    )
+
+
 def migrate(ctx):
     """Bug 1733873 - Migrate netmonitor.properties to Fluent, part {index}."""
 
@@ -669,21 +685,83 @@ netmonitor-custom-remove-item =
     # every one of these takes a single size, time or count as its only
     # placeholder
     single_placeholder_messages = {
-        "charts-size-kb": ("charts.size.kB", "size"),
-        "charts-transferred-size-kb": ("charts.transferredSize.kB", "size"),
-        "charts-total-s": ("charts.totalS", "time"),
+        "charts-size-kb": ("charts.size.kB", NUMBER_REFERENCE("size", 2)),
+        "charts-transferred-size-kb": (
+            "charts.transferredSize.kB",
+            NUMBER_REFERENCE("size", 2),
+        ),
+        "charts-total-s": ("charts.totalS", NUMBER_REFERENCE("time", 2)),
         "charts-total-transferred-size-kb": (
             "charts.totalTransferredSize.kB",
-            "size",
+            NUMBER_REFERENCE("size", 2),
         ),
-        "charts-total-size-kb": ("charts.totalSize.kB", "size"),
-        "charts-total-cached": ("charts.totalCached", "count"),
-        "charts-total-count": ("charts.totalCount", "count"),
+        "charts-total-size-kb": (
+            "charts.totalSize.kB",
+            NUMBER_REFERENCE("size", 2),
+        ),
+        "charts-total-cached": ("charts.totalCached", VARIABLE_REFERENCE("count")),
+        "charts-total-count": ("charts.totalCount", VARIABLE_REFERENCE("count")),
     }
 
-    # the plural form is picked from a separate numeric variable, because the
-    # displayed time is a preformatted string
     seconds_messages = {
         "charts-total-seconds": "charts.totalSeconds",
         "charts-total-seconds-non-blocking": "charts.totalSecondsNonBlocking",
     }
+
+    ctx.add_transforms(
+        target,
+        target,
+        transforms_from(
+            """
+pie-chart-loading = { COPY(from_path, "pieChart.loading") }
+pie-chart-unavailable = { COPY(from_path, "pieChart.unavailable") }
+pie-chart-aria-label = { COPY(from_path, "pieChart.ariaLabel") }
+table-chart-loading = { COPY(from_path, "tableChart.loading") }
+table-chart-unavailable = { COPY(from_path, "tableChart.unavailable") }
+charts-cache-enabled = { COPY(from_path, "charts.cacheEnabled") }
+charts-cache-disabled = { COPY(from_path, "charts.cacheDisabled") }
+charts-learn-more = { COPY(from_path, "charts.learnMore") }
+charts-requests-number = { COPY(from_path, "charts.requestsNumber") }
+charts-size = { COPY(from_path, "charts.size") }
+charts-type = { COPY(from_path, "charts.type") }
+charts-transferred = { COPY(from_path, "charts.transferred") }
+charts-time = { COPY(from_path, "charts.time") }
+charts-non-blocking-time = { COPY(from_path, "charts.nonBlockingTime") }
+""",
+            from_path=source,
+        )
+        + [
+            FTL.Message(
+                id=FTL.Identifier("pie-chart-slice-aria-label"),
+                value=REPLACE(
+                    source,
+                    "pieChart.sliceAriaLabel",
+                    {
+                        "%1$S": VARIABLE_REFERENCE("label"),
+                        "%2$S": VARIABLE_REFERENCE("percentage"),
+                    },
+                ),
+            ),
+        ]
+        + [
+            FTL.Message(
+                id=FTL.Identifier(ftl_id),
+                value=REPLACE(source, key, {"%1$S": expression}),
+            )
+            for ftl_id, (key, expression) in single_placeholder_messages.items()
+        ]
+        + [
+            FTL.Message(
+                id=FTL.Identifier(ftl_id),
+                value=PLURALS(
+                    source,
+                    key,
+                    VARIABLE_REFERENCE("time"),
+                    lambda text: REPLACE_IN_TEXT(
+                        text, {"#1": NUMBER_REFERENCE("time", 2)}
+                    ),
+                ),
+            )
+            for ftl_id, key in seconds_messages.items()
+        ],
+    )

@@ -10,6 +10,7 @@ const {
 } = require("resource://devtools/client/shared/vendor/react.mjs");
 const dom = require("resource://devtools/client/shared/vendor/react-dom-factories.js");
 const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-types.mjs");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
 const {
   connect,
 } = require("resource://devtools/client/shared/vendor/react-redux.js");
@@ -38,7 +39,6 @@ const RELOAD_NOTICE_BT = L10N.getStr("netmonitor.emptyBrowserToolbox");
 const PERFORMANCE_NOTICE_1 = L10N.getStr("netmonitor.perfNotice1");
 const PERFORMANCE_NOTICE_2 = L10N.getStr("netmonitor.perfNotice2");
 const PERFORMANCE_NOTICE_3 = L10N.getStr("netmonitor.perfNotice3");
-const PERFORMANCE_LEARN_MORE = L10N.getStr("charts.learnMore");
 
 /**
  * UI displayed when the request list is empty. Contains instructions on reloading
@@ -48,13 +48,14 @@ class RequestListEmptyNotice extends Component {
   static get propTypes() {
     return {
       connector: PropTypes.object.isRequired,
+      getString: PropTypes.func.isRequired,
       onReloadClick: PropTypes.func.isRequired,
       onPerfClick: PropTypes.func.isRequired,
     };
   }
 
   render() {
-    const { connector } = this.props;
+    const { connector, getString } = this.props;
     const toolbox = connector.getToolbox();
 
     return div(
@@ -94,7 +95,7 @@ class RequestListEmptyNotice extends Component {
             span(null, PERFORMANCE_NOTICE_2),
             MDNLink({
               url: getPerformanceAnalysisURL(),
-              title: PERFORMANCE_LEARN_MORE,
+              title: getString("charts-learn-more"),
             })
           )
         : null
@@ -102,8 +103,10 @@ class RequestListEmptyNotice extends Component {
   }
 }
 
-module.exports = connect(undefined, (dispatch, props) => ({
-  onPerfClick: () => dispatch(Actions.openStatistics(props.connector, true)),
-  onReloadClick: () =>
-    props.connector.triggerActivity(ACTIVITY_TYPE.RELOAD.WITH_CACHE_DEFAULT),
-}))(RequestListEmptyNotice);
+module.exports = FluentReact.withLocalization(
+  connect(undefined, (dispatch, props) => ({
+    onPerfClick: () => dispatch(Actions.openStatistics(props.connector, true)),
+    onReloadClick: () =>
+      props.connector.triggerActivity(ACTIVITY_TYPE.RELOAD.WITH_CACHE_DEFAULT),
+  }))(RequestListEmptyNotice)
+);

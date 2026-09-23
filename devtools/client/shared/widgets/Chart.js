@@ -3,7 +3,6 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 "use strict";
 
-const NET_STRINGS_URI = "devtools/client/locales/netmonitor.properties";
 const SVG_NS = "http://www.w3.org/2000/svg";
 const PI = Math.PI;
 const TAU = PI * 2;
@@ -13,8 +12,12 @@ const NAMED_SLICE_TEXT_DISTANCE_RATIO = 1.9;
 const HOVERED_SLICE_TRANSLATE_DISTANCE_RATIO = 20;
 
 const EventEmitter = require("resource://devtools/shared/event-emitter.js");
-const { LocalizationHelper } = require("resource://devtools/shared/l10n.js");
-const L10N = new LocalizationHelper(NET_STRINGS_URI);
+
+loader.lazyGetter(
+  this,
+  "l10n",
+  () => new Localization(["devtools/client/netmonitor.ftl"], true)
+);
 
 /**
  * A factory for creating charts.
@@ -231,7 +234,10 @@ function createPieChart(
   container.setAttribute("slices", data.length);
   container.setAttribute("placeholder", isPlaceholder);
   container.setAttribute("role", "group");
-  container.setAttribute("aria-label", L10N.getStr("pieChart.ariaLabel"));
+  container.setAttribute(
+    "aria-label",
+    l10n.formatValueSync("pie-chart-aria-label")
+  );
 
   const slicesGroup = document.createElementNS(SVG_NS, "g");
   slicesGroup.setAttribute("role", "list");
@@ -272,15 +278,14 @@ function createPieChart(
     if (!isPlaceholder) {
       interactiveNode.setAttribute(
         "aria-label",
-        L10N.getFormatStr(
-          "pieChart.sliceAriaLabel",
-          sliceInfo.label,
-          new Intl.NumberFormat(undefined, {
+        l10n.formatValueSync("pie-chart-slice-aria-label", {
+          label: sliceInfo.label,
+          percentage: new Intl.NumberFormat(undefined, {
             style: "unit",
             unit: "percent",
             maximumFractionDigits: 2,
-          }).format((sliceInfo.size / total) * 100)
-        )
+          }).format((sliceInfo.size / total) * 100),
+        })
       );
     }
 
@@ -394,19 +399,19 @@ function createPieChart(
  *                     their cell values should be stringified and localized
  *                     based on a predicate function;
  *                     e.g: {
- *                       label1: value => l10n.getFormatStr("...", value)
+ *                       label1: value => l10n.formatValueSync("...", { value })
  *                     }
  *          - totals: an object specifying for which rows in the `data` array
  *                    the sum of their cells is to be displayed in the chart;
  *                    e.g: {
- *                      label1: total => l10n.getFormatStr("...", total),  // 5
- *                      label2: total => l10n.getFormatStr("...", total),  // 9
+ *                      label1: total => l10n.formatValueSync("...", { total }),  // 5
+ *                      label2: total => l10n.formatValueSync("...", { total }),  // 9
  *                    }
  *          - header: an object specifying strings to use for table column
  *                    headers
  *                    e.g. {
- *                      label1: l10n.getStr(...),
- *                      label2: l10n.getStr(...),
+ *                      label1: l10n.formatValueSync(...),
+ *                      label2: l10n.formatValueSync(...),
  *                    }
  * @return TableChart
  *         A table chart proxy instance, which emits the following events:
@@ -511,19 +516,19 @@ function createTableChart(document, { title, data, strings, totals, header }) {
 }
 
 function loadingPieChartData() {
-  return [{ size: 1, label: L10N.getStr("pieChart.loading") }];
+  return [{ size: 1, label: l10n.formatValueSync("pie-chart-loading") }];
 }
 
 function emptyPieChartData() {
-  return [{ size: 1, label: L10N.getStr("pieChart.unavailable") }];
+  return [{ size: 1, label: l10n.formatValueSync("pie-chart-unavailable") }];
 }
 
 function loadingTableChartData() {
-  return [{ size: "", label: L10N.getStr("tableChart.loading") }];
+  return [{ size: "", label: l10n.formatValueSync("table-chart-loading") }];
 }
 
 function emptyTableChartData() {
-  return [{ size: "", label: L10N.getStr("tableChart.unavailable") }];
+  return [{ size: "", label: l10n.formatValueSync("table-chart-unavailable") }];
 }
 
 /**

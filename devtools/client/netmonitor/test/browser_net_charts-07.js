@@ -7,6 +7,8 @@
  * Makes sure Table Charts correctly handle empty source data.
  */
 
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+
 add_task(async function () {
   const {
     L10N,
@@ -61,7 +63,7 @@ add_task(async function () {
   );
   is(
     rows[1].querySelectorAll(".table-chart-row-label")[1].textContent,
-    L10N.getStr("tableChart.unavailable"),
+    l10n.formatValueSync("table-chart-unavailable"),
     "The second column of the first row displays the correct text."
   );
 

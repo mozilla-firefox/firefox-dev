@@ -8,6 +8,8 @@
  * initialized with empty data.
  */
 
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+
 add_task(async function () {
   const {
     L10N,
@@ -81,7 +83,7 @@ add_task(async function () {
   );
   is(
     rows[1].querySelectorAll(".table-chart-row-label")[1].textContent,
-    L10N.getStr("tableChart.loading"),
+    l10n.formatValueSync("table-chart-loading"),
     "The second column of the first row displays the correct text."
   );
 

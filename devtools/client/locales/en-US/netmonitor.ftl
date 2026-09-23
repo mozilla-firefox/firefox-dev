@@ -839,3 +839,87 @@ netmonitor-custom-clear = Clear
 netmonitor-custom-remove-item =
     .title = Remove item
     .aria-label = Remove item
+
+## Strings used in the pie and table charts of the DevTools Network Panel
+## performance analysis view
+
+# The label displayed for pie charts when there is no data available yet.
+pie-chart-loading = Loading
+# The label displayed for pie charts when there is no data available, even
+# after loading it.
+pie-chart-unavailable = Empty
+# The text used for the aria-label attribute of SVG pie charts.
+pie-chart-aria-label = Pie chart representing the size of each type of request in proportion to each other
+# The text used for the aria-label attribute of SVG pie chart slices.
+# Variables:
+#   $label (String): the slice label (e.g. "html").
+#   $percentage (String): the percentage (e.g. "33.23%").
+pie-chart-slice-aria-label = { $label }: { $percentage }
+# The label displayed for table charts when there is no data available yet.
+table-chart-loading = Please wait…
+# The label displayed for table charts when there is no data available, even
+# after loading it.
+table-chart-unavailable = No data available
+# The size of a request, in kilobytes.
+# Variables:
+#   $size (Number): the size, in kilobytes.
+charts-size-kb = { NUMBER($size, maximumFractionDigits: 2) } kB
+# The size of a transferred request, in kilobytes.
+# Variables:
+#   $size (Number): the size, in kilobytes.
+charts-transferred-size-kb = { NUMBER($size, maximumFractionDigits: 2) } kB
+# The time for a request to finish, in seconds.
+# Variables:
+#   $time (Number): the time, in seconds.
+charts-total-s = { NUMBER($time, maximumFractionDigits: 2) } s
+# The total transferred size, in kilobytes.
+# Variables:
+#   $size (Number): the size, in kilobytes.
+charts-total-transferred-size-kb = Transferred Size: { NUMBER($size, maximumFractionDigits: 2) } kB
+# The label of the "cache enabled" chart.
+charts-cache-enabled = Primed cache
+# The label of the "cache disabled" chart.
+charts-cache-disabled = Empty cache
+# A link to external documentation for performance analysis.
+charts-learn-more = Learn more about performance analysis
+# The total requests size, in kilobytes.
+# Variables:
+#   $size (Number): the size, in kilobytes.
+charts-total-size-kb = Size: { NUMBER($size, maximumFractionDigits: 2) } kB
+# The total requests time, in seconds.
+# Variables:
+#   $time (Number): the time, in seconds.
+charts-total-seconds =
+    { $time ->
+        [one] Time: { NUMBER($time, maximumFractionDigits: 2) } second
+       *[other] Time: { NUMBER($time, maximumFractionDigits: 2) } seconds
+    }
+# The total requests time excluding blocked time, in seconds.
+# Variables:
+#   $time (Number): the time, in seconds.
+charts-total-seconds-non-blocking =
+    { $time ->
+        [one] Non blocking time: { NUMBER($time, maximumFractionDigits: 2) } second
+       *[other] Non blocking time: { NUMBER($time, maximumFractionDigits: 2) } seconds
+    }
+# The total number of cached responses.
+# Variables:
+#   $count (Number): the number of cached responses.
+charts-total-cached = Cached responses: { $count }
+# The total number of requests.
+# Variables:
+#   $count (Number): the number of requests.
+charts-total-count = Total requests: { $count }
+# The header column for the number of requests. The label is not visible on
+# screen, but is set in the DOM for accessibility sake.
+charts-requests-number = Number of requests
+# The header column for the size of the request.
+charts-size = Size
+# The header column for the type of request.
+charts-type = Type
+# The header column for the transferred size of the request.
+charts-transferred = Transferred
+# The header column for the time of the request.
+charts-time = Time
+# The header column for the non blocking time of the request.
+charts-non-blocking-time = Non blocking time
