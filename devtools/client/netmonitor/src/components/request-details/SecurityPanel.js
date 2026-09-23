@@ -11,12 +11,15 @@ const {
 const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-types.mjs");
 const dom = require("resource://devtools/client/shared/vendor/react-dom-factories.js");
 const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
-const {
   fetchNetworkUpdatePacket,
   getUrlHost,
 } = require("resource://devtools/client/netmonitor/src/utils/request-utils.js");
+
+loader.lazyGetter(
+  this,
+  "l10n",
+  () => new Localization(["devtools/client/netmonitor.ftl"], true)
+);
 
 // Components
 const TreeViewClass = ChromeUtils.importESModule(
@@ -38,68 +41,77 @@ loader.lazyGetter(this, "MODE", function () {
 });
 
 const { div, span } = dom;
-const NOT_AVAILABLE = L10N.getStr("netmonitor.security.notAvailable");
-const ERROR_LABEL = L10N.getStr("netmonitor.security.error");
-const CIPHER_SUITE_LABEL = L10N.getStr("netmonitor.security.cipherSuite");
-const WARNING_CIPHER_LABEL = L10N.getStr("netmonitor.security.warning.cipher");
-const ENABLED_LABEL = L10N.getStr("netmonitor.security.enabled");
-const DISABLED_LABEL = L10N.getStr("netmonitor.security.disabled");
-const CONNECTION_LABEL = L10N.getStr("netmonitor.security.connection");
-const PROTOCOL_VERSION_LABEL = L10N.getStr(
-  "netmonitor.security.protocolVersion"
-);
-const KEA_GROUP_LABEL = L10N.getStr("netmonitor.security.keaGroup");
-const KEA_GROUP_NONE = L10N.getStr("netmonitor.security.keaGroup.none");
-const KEA_GROUP_CUSTOM = L10N.getStr("netmonitor.security.keaGroup.custom");
-const KEA_GROUP_UNKNOWN = L10N.getStr("netmonitor.security.keaGroup.unknown");
-const SIGNATURE_SCHEME_LABEL = L10N.getStr(
-  "netmonitor.security.signatureScheme"
-);
-const SIGNATURE_SCHEME_NONE = L10N.getStr(
-  "netmonitor.security.signatureScheme.none"
-);
-const SIGNATURE_SCHEME_UNKNOWN = L10N.getStr(
-  "netmonitor.security.signatureScheme.unknown"
-);
-const HSTS_LABEL = L10N.getStr("netmonitor.security.hsts");
-const HPKP_LABEL = L10N.getStr("netmonitor.security.hpkp");
-const CERTIFICATE_LABEL = L10N.getStr("netmonitor.security.certificate");
-const CERTIFICATE_TRANSPARENCY_LABEL = L10N.getStr(
-  "certmgr.certificateTransparency.label"
-);
-const CERTIFICATE_TRANSPARENCY_POLICY_COMPLIANT = L10N.getStr(
-  "certmgr.certificateTransparency.status.ok"
-);
-const CERTIFICATE_TRANSPARENCY_POLICY_NOT_ENOUGH_SCTS = L10N.getStr(
-  "certmgr.certificateTransparency.status.notEnoughSCTS"
-);
-const CERTIFICATE_TRANSPARENCY_POLICY_NOT_DIVERSE_SCTS = L10N.getStr(
-  "certmgr.certificateTransparency.status.notDiverseSCTS"
-);
-const SUBJECT_INFO_LABEL = L10N.getStr("certmgr.subjectinfo.label");
-const CERT_DETAIL_COMMON_NAME_LABEL = L10N.getStr("certmgr.certdetail.cn");
-const CERT_DETAIL_ORG_LABEL = L10N.getStr("certmgr.certdetail.o");
-const CERT_DETAIL_ORG_UNIT_LABEL = L10N.getStr("certmgr.certdetail.ou");
-const ISSUER_INFO_LABEL = L10N.getStr("certmgr.issuerinfo.label");
-const PERIOD_OF_VALIDITY_LABEL = L10N.getStr("certmgr.periodofvalidity.label");
-const BEGINS_LABEL = L10N.getStr("certmgr.begins");
-const EXPIRES_LABEL = L10N.getStr("certmgr.expires");
-const FINGERPRINTS_LABEL = L10N.getStr("certmgr.fingerprints.label");
-const SHA256_FINGERPRINT_LABEL = L10N.getStr(
-  "certmgr.certdetail.sha256fingerprint"
-);
-const SHA1_FINGERPRINT_LABEL = L10N.getStr(
-  "certmgr.certdetail.sha1fingerprint"
-);
-
-const USED_ECH_LABEL = L10N.getStr("netmonitor.security.usedEch");
-const USED_DELEGATED_CREDENTIALS_LABEL = L10N.getStr(
-  "netmonitor.security.usedDelegatedCredentials"
-);
-const USED_OCSP_LABEL = L10N.getStr("netmonitor.security.usedOcsp");
-const USED_PRIVATE_DNS_LABEL = L10N.getStr(
-  "netmonitor.security.usedPrivateDns"
-);
+// the panel is rendered as a property tree, so most of these strings end up as
+// object keys and are compared by identity in renderValue
+loader.lazyGetter(this, "LABELS", () => ({
+  notAvailable: l10n.formatValueSync("netmonitor-security-not-available"),
+  error: l10n.formatValueSync("netmonitor-security-error"),
+  cipherSuite: l10n.formatValueSync("netmonitor-security-cipher-suite"),
+  warningCipher: l10n.formatValueSync("netmonitor-security-warning-cipher"),
+  enabled: l10n.formatValueSync("netmonitor-security-enabled"),
+  disabled: l10n.formatValueSync("netmonitor-security-disabled"),
+  connection: l10n.formatValueSync("netmonitor-security-connection"),
+  protocolVersion: l10n.formatValueSync("netmonitor-security-protocol-version"),
+  keaGroup: l10n.formatValueSync("netmonitor-security-kea-group"),
+  keaGroupNone: l10n.formatValueSync("netmonitor-security-kea-group-none"),
+  keaGroupCustom: l10n.formatValueSync("netmonitor-security-kea-group-custom"),
+  keaGroupUnknown: l10n.formatValueSync(
+    "netmonitor-security-kea-group-unknown"
+  ),
+  signatureScheme: l10n.formatValueSync("netmonitor-security-signature-scheme"),
+  signatureSchemeNone: l10n.formatValueSync(
+    "netmonitor-security-signature-scheme-none"
+  ),
+  signatureSchemeUnknown: l10n.formatValueSync(
+    "netmonitor-security-signature-scheme-unknown"
+  ),
+  usedEch: l10n.formatValueSync("netmonitor-security-used-ech"),
+  usedDelegatedCredentials: l10n.formatValueSync(
+    "netmonitor-security-used-delegated-credentials"
+  ),
+  usedOcsp: l10n.formatValueSync("netmonitor-security-used-ocsp"),
+  usedPrivateDns: l10n.formatValueSync("netmonitor-security-used-private-dns"),
+  hsts: l10n.formatValueSync("netmonitor-security-hsts"),
+  hpkp: l10n.formatValueSync("netmonitor-security-hpkp"),
+  certificate: l10n.formatValueSync("netmonitor-security-certificate"),
+  certSubjectInfo: l10n.formatValueSync(
+    "netmonitor-security-cert-subject-info"
+  ),
+  certIssuerInfo: l10n.formatValueSync("netmonitor-security-cert-issuer-info"),
+  certCommonName: l10n.formatValueSync("netmonitor-security-cert-common-name"),
+  certOrganization: l10n.formatValueSync(
+    "netmonitor-security-cert-organization"
+  ),
+  certOrganizationalUnit: l10n.formatValueSync(
+    "netmonitor-security-cert-organizational-unit"
+  ),
+  certPeriodOfValidity: l10n.formatValueSync(
+    "netmonitor-security-cert-period-of-validity"
+  ),
+  certBegins: l10n.formatValueSync("netmonitor-security-cert-begins"),
+  certExpires: l10n.formatValueSync("netmonitor-security-cert-expires"),
+  certFingerprints: l10n.formatValueSync(
+    "netmonitor-security-cert-fingerprints"
+  ),
+  certSha256Fingerprint: l10n.formatValueSync(
+    "netmonitor-security-cert-sha256-fingerprint"
+  ),
+  certSha1Fingerprint: l10n.formatValueSync(
+    "netmonitor-security-cert-sha1-fingerprint"
+  ),
+  certTransparency: l10n.formatValueSync(
+    "netmonitor-security-cert-transparency"
+  ),
+  certTransparencyOk: l10n.formatValueSync(
+    "netmonitor-security-cert-transparency-status-ok"
+  ),
+  certTransparencyNotEnoughScts: l10n.formatValueSync(
+    "netmonitor-security-cert-transparency-status-not-enough-scts"
+  ),
+  certTransparencyNotDiverseScts: l10n.formatValueSync(
+    "netmonitor-security-cert-transparency-status-not-diverse-scts"
+  ),
+}));
 
 /*
  * Localize special values for key exchange group name,
@@ -112,34 +124,34 @@ const formatSecurityInfo = securityInfo => {
   const formatters = {
     keaGroupName: value => {
       if (value === "none") {
-        return KEA_GROUP_NONE;
+        return LABELS.keaGroupNone;
       }
       if (value === "custom") {
-        return KEA_GROUP_CUSTOM;
+        return LABELS.keaGroupCustom;
       }
       if (value === "unknown group") {
-        return KEA_GROUP_UNKNOWN;
+        return LABELS.keaGroupUnknown;
       }
       return value;
     },
     signatureSchemeName: value => {
       if (value === "none") {
-        return SIGNATURE_SCHEME_NONE;
+        return LABELS.signatureSchemeNone;
       }
       if (value === "unknown signature") {
-        return SIGNATURE_SCHEME_UNKNOWN;
+        return LABELS.signatureSchemeUnknown;
       }
       return value;
     },
     certificateTransparency: value => {
       if (value === 5) {
-        return CERTIFICATE_TRANSPARENCY_POLICY_COMPLIANT;
+        return LABELS.certTransparencyOk;
       }
       if (value === 6) {
-        return CERTIFICATE_TRANSPARENCY_POLICY_NOT_ENOUGH_SCTS;
+        return LABELS.certTransparencyNotEnoughScts;
       }
       if (value === 7) {
-        return CERTIFICATE_TRANSPARENCY_POLICY_NOT_DIVERSE_SCTS;
+        return LABELS.certTransparencyNotDiverseScts;
       }
       return value;
     },
@@ -153,45 +165,49 @@ const formatSecurityInfo = securityInfo => {
 };
 
 const getConnectionLabel = securityInfo => ({
-  [PROTOCOL_VERSION_LABEL]: securityInfo.protocolVersion || NOT_AVAILABLE,
-  [CIPHER_SUITE_LABEL]: securityInfo.cipherSuite || NOT_AVAILABLE,
-  [KEA_GROUP_LABEL]: securityInfo.keaGroupName || NOT_AVAILABLE,
-  [SIGNATURE_SCHEME_LABEL]: securityInfo.signatureSchemeName || NOT_AVAILABLE,
-  [USED_ECH_LABEL]: securityInfo.usedEch,
-  [USED_DELEGATED_CREDENTIALS_LABEL]: securityInfo.usedDelegatedCredentials,
-  [USED_OCSP_LABEL]: securityInfo.usedOcsp,
-  [USED_PRIVATE_DNS_LABEL]: securityInfo.usedPrivateDns,
+  [LABELS.protocolVersion]: securityInfo.protocolVersion || LABELS.notAvailable,
+  [LABELS.cipherSuite]: securityInfo.cipherSuite || LABELS.notAvailable,
+  [LABELS.keaGroup]: securityInfo.keaGroupName || LABELS.notAvailable,
+  [LABELS.signatureScheme]:
+    securityInfo.signatureSchemeName || LABELS.notAvailable,
+  [LABELS.usedEch]: securityInfo.usedEch,
+  [LABELS.usedDelegatedCredentials]: securityInfo.usedDelegatedCredentials,
+  [LABELS.usedOcsp]: securityInfo.usedOcsp,
+  [LABELS.usedPrivateDns]: securityInfo.usedPrivateDns,
 });
 
 const getHostHeaderLabel = securityInfo => ({
-  [HSTS_LABEL]: securityInfo.hsts ? ENABLED_LABEL : DISABLED_LABEL,
-  [HPKP_LABEL]: securityInfo.hpkp ? ENABLED_LABEL : DISABLED_LABEL,
+  [LABELS.hsts]: securityInfo.hsts ? LABELS.enabled : LABELS.disabled,
+  [LABELS.hpkp]: securityInfo.hpkp ? LABELS.enabled : LABELS.disabled,
 });
 
 const getCertificateLabel = securityInfo => {
   const { fingerprint, issuer, subject, validity } = securityInfo.cert;
 
   return {
-    [SUBJECT_INFO_LABEL]: {
-      [CERT_DETAIL_COMMON_NAME_LABEL]: subject?.commonName || NOT_AVAILABLE,
-      [CERT_DETAIL_ORG_LABEL]: subject?.organization || NOT_AVAILABLE,
-      [CERT_DETAIL_ORG_UNIT_LABEL]: subject?.organizationUnit || NOT_AVAILABLE,
+    [LABELS.certSubjectInfo]: {
+      [LABELS.certCommonName]: subject?.commonName || LABELS.notAvailable,
+      [LABELS.certOrganization]: subject?.organization || LABELS.notAvailable,
+      [LABELS.certOrganizationalUnit]:
+        subject?.organizationUnit || LABELS.notAvailable,
     },
-    [ISSUER_INFO_LABEL]: {
-      [CERT_DETAIL_COMMON_NAME_LABEL]: issuer?.commonName || NOT_AVAILABLE,
-      [CERT_DETAIL_ORG_LABEL]: issuer?.organization || NOT_AVAILABLE,
-      [CERT_DETAIL_ORG_UNIT_LABEL]: issuer?.organizationUnit || NOT_AVAILABLE,
+    [LABELS.certIssuerInfo]: {
+      [LABELS.certCommonName]: issuer?.commonName || LABELS.notAvailable,
+      [LABELS.certOrganization]: issuer?.organization || LABELS.notAvailable,
+      [LABELS.certOrganizationalUnit]:
+        issuer?.organizationUnit || LABELS.notAvailable,
     },
-    [PERIOD_OF_VALIDITY_LABEL]: {
-      [BEGINS_LABEL]: validity?.start || NOT_AVAILABLE,
-      [EXPIRES_LABEL]: validity?.end || NOT_AVAILABLE,
+    [LABELS.certPeriodOfValidity]: {
+      [LABELS.certBegins]: validity?.start || LABELS.notAvailable,
+      [LABELS.certExpires]: validity?.end || LABELS.notAvailable,
     },
-    [FINGERPRINTS_LABEL]: {
-      [SHA256_FINGERPRINT_LABEL]: fingerprint?.sha256 || NOT_AVAILABLE,
-      [SHA1_FINGERPRINT_LABEL]: fingerprint?.sha1 || NOT_AVAILABLE,
+    [LABELS.certFingerprints]: {
+      [LABELS.certSha256Fingerprint]:
+        fingerprint?.sha256 || LABELS.notAvailable,
+      [LABELS.certSha1Fingerprint]: fingerprint?.sha1 || LABELS.notAvailable,
     },
-    [CERTIFICATE_TRANSPARENCY_LABEL]:
-      securityInfo.certificateTransparency || NOT_AVAILABLE,
+    [LABELS.certTransparency]:
+      securityInfo.certificateTransparency || LABELS.notAvailable,
   };
 };
 
@@ -201,20 +217,20 @@ const getObject = ({ securityInfo, url }) => {
     securityInfo.state !== "weak"
   ) {
     return {
-      [ERROR_LABEL]: securityInfo.errorMessage || NOT_AVAILABLE,
+      [LABELS.error]: securityInfo.errorMessage || LABELS.notAvailable,
     };
   }
 
-  const HOST_HEADER_LABEL = L10N.getFormatStr(
-    "netmonitor.security.hostHeader",
-    getUrlHost(url)
+  const hostHeaderLabel = l10n.formatValueSync(
+    "netmonitor-security-host-header",
+    { host: getUrlHost(url) }
   );
   const formattedSecurityInfo = formatSecurityInfo(securityInfo);
 
   return {
-    [CONNECTION_LABEL]: getConnectionLabel(formattedSecurityInfo),
-    [HOST_HEADER_LABEL]: getHostHeaderLabel(formattedSecurityInfo),
-    [CERTIFICATE_LABEL]: getCertificateLabel(formattedSecurityInfo),
+    [LABELS.connection]: getConnectionLabel(formattedSecurityInfo),
+    [hostHeaderLabel]: getHostHeaderLabel(formattedSecurityInfo),
+    [LABELS.certificate]: getCertificateLabel(formattedSecurityInfo),
   };
 };
 
@@ -254,7 +270,7 @@ class SecurityPanel extends Component {
 
     return span(
       { className: "security-info-value" },
-      member.name === ERROR_LABEL
+      member.name === LABELS.error
         ? // Display multiline text for security error for a label using a rep.
           value
         : Rep(
@@ -267,12 +283,12 @@ class SecurityPanel extends Component {
               noGrip: true,
             })
           ),
-      weaknessReasons.includes("cipher") && member.name === CIPHER_SUITE_LABEL
+      weaknessReasons.includes("cipher") && member.name === LABELS.cipherSuite
         ? // Display an extra warning icon after the cipher suite
           div({
             id: "security-warning-cipher",
             className: "security-warning-icon",
-            title: WARNING_CIPHER_LABEL,
+            title: LABELS.warningCipher,
           })
         : null
     );

@@ -25,7 +25,7 @@ add_task(async function () {
 
   function testL10N() {
     is(
-      typeof L10N.getStr("netmonitor.security.enabled"),
+      typeof L10N.getStr("collapseDetailsPane"),
       "string",
       "The getStr() method didn't return a valid string."
     );

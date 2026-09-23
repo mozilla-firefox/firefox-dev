@@ -489,3 +489,128 @@ network-menu-ws-summary-tooltip-messages-total-size =
 network-menu-ws-summary-messages-transferred-size = { $formattedTotalSize } total, { $formattedSentSize } sent, { $formattedReceivedSize } received
 network-menu-ws-summary-tooltip-messages-total-time =
     .title = Total elapsed time between the first and last displayed messages
+
+## Strings used as tooltips for the security state icon of a request in the
+## DevTools Network Panel request list
+
+# Used for requests that were performed over a secure channel with a
+# third-party root (i.e. the connection was encrypted, but with a certificate
+# issued by a root not in Mozilla's Root CA Program).
+netmonitor-security-state-secure-custom-root =
+    .title = The connection used to fetch this resource was verified by a certificate issuer that is not recognized by Mozilla.
+# Used for requests that were performed over a secure channel (i.e. the
+# connection was encrypted).
+netmonitor-security-state-secure =
+    .title = The connection used to fetch this resource was secure.
+# Used for requests that were performed over an insecure channel (i.e. the
+# connection was not https).
+netmonitor-security-state-insecure =
+    .title = The connection used to fetch this resource was not secure.
+# Used for requests that failed due to security issues.
+netmonitor-security-state-broken =
+    .title = A security error prevented the resource from being loaded.
+# Used for requests that had minor security issues.
+netmonitor-security-state-weak =
+    .title = This resource was transferred over a connection that used weak encryption.
+
+## Strings used in the security panel of the DevTools Network Panel
+
+# Indicates that a specific security feature is used by a connection.
+# For example: "HTTP Strict Transport Security: Enabled"
+netmonitor-security-enabled = Enabled
+# Indicates that a specific security feature is not used by a connection.
+# For example: "HTTP Strict Transport Security: Disabled"
+netmonitor-security-disabled = Disabled
+# Header for the section containing security information related to the remote
+# host. For example: "Host example.com:"
+# Variables:
+#   $host (String): the domain name of the remote host.
+netmonitor-security-host-header = Host { $host }:
+# Indicates that a certain piece of information is not available to be
+# displayed. For example a certificate that has no organization defined:
+#   Organization: <Not Available>
+netmonitor-security-not-available = <Not Available>
+# A tooltip for the warning icon that indicates a connection uses an insecure
+# cipher suite.
+netmonitor-security-warning-cipher = The cipher used for encryption is deprecated and insecure.
+# The label displayed if a security error prevented the connection.
+netmonitor-security-error = An error occurred:
+# The label of the section containing information related to the secure
+# connection.
+netmonitor-security-connection = Connection:
+# The label describing the TLS/SSL protocol version.
+netmonitor-security-protocol-version = Protocol version:
+# The label describing the cipher suite used to secure this connection.
+netmonitor-security-cipher-suite = Cipher suite:
+# The label describing the key exchange group suite used to secure this
+# connection.
+netmonitor-security-kea-group = Key Exchange Group:
+# The value describing the case when no group was used.
+netmonitor-security-kea-group-none = none
+# The value describing the case when a custom group was used.
+netmonitor-security-kea-group-custom = custom
+# The value describing an unknown group.
+netmonitor-security-kea-group-unknown = unknown group
+# The label describing the signature scheme used for the server certificate in
+# this connection.
+netmonitor-security-signature-scheme = Signature Scheme:
+# The value describing the case when no signature was used.
+netmonitor-security-signature-scheme-none = none
+# The value describing an unknown signature scheme.
+netmonitor-security-signature-scheme-unknown = unknown signature scheme
+# The label specifying whether the connection used ECH (Encrypted Client
+# Hello).
+netmonitor-security-used-ech = Used Encrypted Client Hello (ECH):
+# The label specifying whether the connection used Delegated Credentials.
+netmonitor-security-used-delegated-credentials = Used Delegated Credentials:
+# The label specifying whether the connection made an OCSP (Online Certificate
+# Status Protocol) request.
+netmonitor-security-used-ocsp = Used Online Certificate Status Protocol (OCSP):
+# The label specifying whether the connection made a private DNS lookup, such
+# as with DoH (DNS over HTTPS).
+netmonitor-security-used-private-dns = Used Private DNS:
+# The label describing the usage of HTTP Strict Transport Security.
+netmonitor-security-hsts = HTTP Strict Transport Security:
+# The label describing the usage of Public Key Pinning.
+netmonitor-security-hpkp = Public Key Pinning:
+# The label of the server certificate section.
+netmonitor-security-certificate = Certificate:
+
+## Strings used for the certificate details in the security panel of the
+## DevTools Network Panel
+
+# A label for a certificate section. This section displays the name and
+# organization the fingerprints have been assigned to.
+netmonitor-security-cert-subject-info = Issued To
+# A label for a certificate section. This section displays the name and
+# organization that issued the fingerprints.
+netmonitor-security-cert-issuer-info = Issued By
+# A label used for the Issued To and Issued By sub-sections.
+netmonitor-security-cert-common-name = Common Name (CN):
+# A label used for the Issued To and Issued By sub-sections.
+netmonitor-security-cert-organization = Organization (O):
+# A label used for the Issued To and Issued By sub-sections.
+netmonitor-security-cert-organizational-unit = Organizational Unit (OU):
+# A label for a certificate section. This section displays the valid period of
+# the certificate.
+netmonitor-security-cert-period-of-validity = Period of Validity
+# A label used for the Period of Validity sub-section.
+netmonitor-security-cert-begins = Begins On:
+# A label used for the Period of Validity sub-section.
+netmonitor-security-cert-expires = Expires On:
+# A label for a certificate section listing the certificate's fingerprints.
+netmonitor-security-cert-fingerprints = Fingerprints
+# A label used for the Fingerprints sub-section.
+netmonitor-security-cert-sha256-fingerprint = SHA-256 Fingerprint:
+# A label used for the Fingerprints sub-section.
+netmonitor-security-cert-sha1-fingerprint = SHA1 Fingerprint:
+netmonitor-security-cert-transparency = Transparency:
+# Indicates that there are valid signed certificate timestamps. This is a
+# property for the "Transparency" field.
+netmonitor-security-cert-transparency-status-ok = Valid SCT records
+# Indicates that there are not enough valid signed certificate timestamps. This
+# is a property for the "Transparency" field.
+netmonitor-security-cert-transparency-status-not-enough-scts = Not enough SCTs
+# Indicates that there are not enough diverse signed certificate timestamps.
+# This is a property for the "Transparency" field.
+netmonitor-security-cert-transparency-status-not-diverse-scts = Not diverse SCTs

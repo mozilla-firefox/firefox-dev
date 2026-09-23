@@ -7,6 +7,13 @@
  * Test that Security details tab contains the expected data.
  */
 
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+// the formatted host carries Fluent's bidi isolation marks, so it has to be
+// built from the same bundle rather than hardcoded
+const HOST_LABEL = l10n.formatValueSync("netmonitor-security-host-header", {
+  host: "example.com",
+});
+
 add_task(async function () {
   await pushPref("security.pki.certificate_transparency.mode", 1);
 
@@ -49,7 +56,7 @@ add_task(async function () {
     .filter(el => {
       const ignoreList = [
         "Connection:",
-        "Host example.com:",
+        HOST_LABEL,
         "Certificate:",
         "Issued To",
         "Issued By",
@@ -144,7 +151,7 @@ add_task(async function () {
   // Check the host is correctly displayed
   is(
     tabpanel.querySelectorAll(".treeLabel.objectLabel")[1].textContent,
-    "Host example.com:",
+    HOST_LABEL,
     "The 'Host' label has the expected value."
   );
 

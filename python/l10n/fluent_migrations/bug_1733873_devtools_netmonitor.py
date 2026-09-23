@@ -449,3 +449,70 @@ network-menu-ws-summary-tooltip-messages-total-time =
             ),
         ],
     )
+
+    ctx.add_transforms(
+        target,
+        target,
+        transforms_from(
+            """
+netmonitor-security-state-secure-custom-root =
+    .title = { COPY(from_path, "netmonitor.security.state.secure-custom-root") }
+netmonitor-security-state-secure =
+    .title = { COPY(from_path, "netmonitor.security.state.secure") }
+netmonitor-security-state-insecure =
+    .title = { COPY(from_path, "netmonitor.security.state.insecure") }
+netmonitor-security-state-broken =
+    .title = { COPY(from_path, "netmonitor.security.state.broken") }
+netmonitor-security-state-weak =
+    .title = { COPY(from_path, "netmonitor.security.state.weak") }
+netmonitor-security-enabled = { COPY(from_path, "netmonitor.security.enabled") }
+netmonitor-security-disabled = { COPY(from_path, "netmonitor.security.disabled") }
+netmonitor-security-not-available = { COPY(from_path, "netmonitor.security.notAvailable") }
+netmonitor-security-warning-cipher = { COPY(from_path, "netmonitor.security.warning.cipher") }
+netmonitor-security-error = { COPY(from_path, "netmonitor.security.error") }
+netmonitor-security-connection = { COPY(from_path, "netmonitor.security.connection") }
+netmonitor-security-protocol-version = { COPY(from_path, "netmonitor.security.protocolVersion") }
+netmonitor-security-cipher-suite = { COPY(from_path, "netmonitor.security.cipherSuite") }
+netmonitor-security-kea-group = { COPY(from_path, "netmonitor.security.keaGroup") }
+netmonitor-security-kea-group-none = { COPY(from_path, "netmonitor.security.keaGroup.none") }
+netmonitor-security-kea-group-custom = { COPY(from_path, "netmonitor.security.keaGroup.custom") }
+netmonitor-security-kea-group-unknown = { COPY(from_path, "netmonitor.security.keaGroup.unknown") }
+netmonitor-security-signature-scheme = { COPY(from_path, "netmonitor.security.signatureScheme") }
+netmonitor-security-signature-scheme-none = { COPY(from_path, "netmonitor.security.signatureScheme.none") }
+netmonitor-security-signature-scheme-unknown = { COPY(from_path, "netmonitor.security.signatureScheme.unknown") }
+netmonitor-security-used-ech = { COPY(from_path, "netmonitor.security.usedEch") }
+netmonitor-security-used-delegated-credentials = { COPY(from_path, "netmonitor.security.usedDelegatedCredentials") }
+netmonitor-security-used-ocsp = { COPY(from_path, "netmonitor.security.usedOcsp") }
+netmonitor-security-used-private-dns = { COPY(from_path, "netmonitor.security.usedPrivateDns") }
+netmonitor-security-hsts = { COPY(from_path, "netmonitor.security.hsts") }
+netmonitor-security-hpkp = { COPY(from_path, "netmonitor.security.hpkp") }
+netmonitor-security-certificate = { COPY(from_path, "netmonitor.security.certificate") }
+netmonitor-security-cert-subject-info = { COPY(from_path, "certmgr.subjectinfo.label") }
+netmonitor-security-cert-issuer-info = { COPY(from_path, "certmgr.issuerinfo.label") }
+netmonitor-security-cert-common-name = { COPY(from_path, "certmgr.certdetail.cn") }
+netmonitor-security-cert-organization = { COPY(from_path, "certmgr.certdetail.o") }
+netmonitor-security-cert-organizational-unit = { COPY(from_path, "certmgr.certdetail.ou") }
+netmonitor-security-cert-period-of-validity = { COPY(from_path, "certmgr.periodofvalidity.label") }
+netmonitor-security-cert-begins = { COPY(from_path, "certmgr.begins") }
+netmonitor-security-cert-expires = { COPY(from_path, "certmgr.expires") }
+netmonitor-security-cert-fingerprints = { COPY(from_path, "certmgr.fingerprints.label") }
+netmonitor-security-cert-sha256-fingerprint = { COPY(from_path, "certmgr.certdetail.sha256fingerprint") }
+netmonitor-security-cert-sha1-fingerprint = { COPY(from_path, "certmgr.certdetail.sha1fingerprint") }
+netmonitor-security-cert-transparency = { COPY(from_path, "certmgr.certificateTransparency.label") }
+netmonitor-security-cert-transparency-status-ok = { COPY(from_path, "certmgr.certificateTransparency.status.ok") }
+netmonitor-security-cert-transparency-status-not-enough-scts = { COPY(from_path, "certmgr.certificateTransparency.status.notEnoughSCTS") }
+netmonitor-security-cert-transparency-status-not-diverse-scts = { COPY(from_path, "certmgr.certificateTransparency.status.notDiverseSCTS") }
+""",
+            from_path=source,
+        )
+        + [
+            FTL.Message(
+                id=FTL.Identifier("netmonitor-security-host-header"),
+                value=REPLACE(
+                    source,
+                    "netmonitor.security.hostHeader",
+                    {"%1$S": VARIABLE_REFERENCE("host")},
+                ),
+            ),
+        ],
+    )

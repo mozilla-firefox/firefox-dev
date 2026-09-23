@@ -6,6 +6,7 @@
 
 const {
   Component,
+  createFactory,
 } = require("resource://devtools/client/shared/vendor/react.mjs");
 const {
   div,
@@ -17,8 +18,18 @@ const {
 const {
   propertiesEqual,
 } = require("resource://devtools/client/netmonitor/src/utils/request-utils.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+const Localized = createFactory(FluentReact.Localized);
 
 const UPDATED_DOMAIN_PROPS = ["remoteAddress", "securityState", "urlDetails"];
+
+const SECURITY_STATE_L10N_IDS = {
+  "secure-custom-root": "netmonitor-security-state-secure-custom-root",
+  secure: "netmonitor-security-state-secure",
+  insecure: "netmonitor-security-state-insecure",
+  broken: "netmonitor-security-state-broken",
+  weak: "netmonitor-security-state-weak",
+};
 
 class SecurityState extends Component {
   static get propTypes() {
@@ -45,7 +56,7 @@ class SecurityState extends Component {
     } = item;
     const iconClassList = ["requests-security-state-icon"];
 
-    let iconTitle;
+    let l10nId;
     let realSecurityState = securityState;
 
     // Locally delivered files such as http://localhost and file:// paths
@@ -56,16 +67,17 @@ class SecurityState extends Component {
 
     if (realSecurityState) {
       iconClassList.push(`security-state-${realSecurityState}`);
-      iconTitle = L10N.getStr(`netmonitor.security.state.${realSecurityState}`);
+      l10nId = SECURITY_STATE_L10N_IDS[realSecurityState];
     }
+
+    const icon = div({
+      className: iconClassList.join(" "),
+      onMouseDown: onSecurityIconMouseDown,
+    });
 
     return div(
       { className: "requests-security-icon-group" },
-      div({
-        className: iconClassList.join(" "),
-        onMouseDown: onSecurityIconMouseDown,
-        title: iconTitle,
-      }),
+      l10nId ? Localized({ id: l10nId, attrs: { title: true } }, icon) : icon,
       item.isThirdPartyTrackingResource &&
         div({
           className: "tracking-resource",
