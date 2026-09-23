@@ -6,6 +6,8 @@
 /**
  * Tests if the POST requests display the correct information in the UI.
  */
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+
 add_task(async function () {
   const {
     L10N,
@@ -51,7 +53,7 @@ add_task(async function () {
       statusText: "Och Aye",
       type: "plain",
       fullMimeType: "text/plain; charset=utf-8",
-      size: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 12),
+      size: l10n.formatValueSync("network-menu-size-b", { size: 12 }),
       time: true,
     }
   );
@@ -66,7 +68,7 @@ add_task(async function () {
       statusText: "Och Aye",
       type: "plain",
       fullMimeType: "text/plain; charset=utf-8",
-      size: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 12),
+      size: l10n.formatValueSync("network-menu-size-b", { size: 12 }),
       time: true,
     }
   );

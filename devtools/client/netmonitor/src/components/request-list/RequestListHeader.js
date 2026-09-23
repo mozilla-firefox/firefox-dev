@@ -34,9 +34,6 @@ const {
 const {
   getFormattedTime,
 } = require("resource://devtools/client/netmonitor/src/utils/format-utils.js");
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
 const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
 const Localized = createFactory(FluentReact.Localized);
 const RequestListHeaderContextMenu = require("resource://devtools/client/netmonitor/src/widgets/RequestListHeaderContextMenu.js");
@@ -636,8 +633,8 @@ class RequestListHeaderContent extends Component {
 
     if (active) {
       sorted = sort.ascending ? "ascending" : "descending";
-      sortedTitle = L10N.getStr(
-        sort.ascending ? "networkMenu.sortedAsc" : "networkMenu.sortedDesc"
+      sortedTitle = getString(
+        sort.ascending ? "network-menu-sorted-asc" : "network-menu-sorted-desc"
       );
     }
 

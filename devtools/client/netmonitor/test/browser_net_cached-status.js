@@ -7,6 +7,8 @@
  * Tests if cached requests have the correct status code
  */
 
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+
 add_task(async function () {
   // performing http to https redirects, hence we do not
   // want https-first to interfere with that test
@@ -47,7 +49,9 @@ add_task(async function () {
       details: {
         status: 301,
         statusText: "Moved Permanently",
-        type: "html (redirect)",
+        type: l10n.formatValueSync("network-menu-redirect", {
+          type: "html",
+        }),
         fullMimeType: "text/html; charset=utf-8",
       },
     },
@@ -79,7 +83,9 @@ add_task(async function () {
         status: 301,
         statusText: "Moved Permanently (cached)",
         displayedStatus: "cached",
-        type: "html (redirect)",
+        type: l10n.formatValueSync("network-menu-redirect", {
+          type: "html",
+        }),
         fullMimeType: "text/html; charset=utf-8",
       },
     },

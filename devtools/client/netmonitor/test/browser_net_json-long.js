@@ -7,6 +7,8 @@
  * Tests if very long JSON responses are handled correctly.
  */
 
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+
 add_task(async function () {
   const {
     L10N,
@@ -49,10 +51,9 @@ add_task(async function () {
       statusText: "OK",
       type: "json",
       fullMimeType: "text/json; charset=utf-8",
-      size: L10N.getFormatStr(
-        "networkMenu.size.kB",
-        L10N.numberWithDecimals(85975 / 1000, 2)
-      ),
+      size: l10n.formatValueSync("network-menu-size-kb", {
+        size: 85.98,
+      }),
       time: true,
     }
   );

@@ -8,6 +8,8 @@
  * redirected without hitting the network (HSTS is one of such cases)
  */
 
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+
 add_task(async function testStackTraceForRedirects() {
   // This test explicitly checks http->https redirects and should not force https.
   await pushPref("dom.security.https_first", false);
@@ -106,13 +108,13 @@ add_task(async function testResponseForRedirects() {
   const requests = document.querySelectorAll(".request-list-item");
   is(
     requests[0].querySelector(".requests-list-type").innerText,
-    L10N.getFormatStr("networkMenu.redirect", "plain"),
+    l10n.formatValueSync("network-menu-redirect", { type: "plain" }),
     "The type indicates that the request is a redirect"
   );
 
   is(
     requests[0].querySelector(".requests-list-size").innerText,
-    "0 B",
+    l10n.formatValueSync("network-menu-size-b", { size: 0 }),
     "The size in the column is 0 bytes"
   );
 

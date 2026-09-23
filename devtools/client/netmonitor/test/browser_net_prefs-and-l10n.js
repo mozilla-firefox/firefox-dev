@@ -30,7 +30,7 @@ add_task(async function () {
       "The getStr() method didn't return a valid string."
     );
     is(
-      typeof L10N.getFormatStr("networkMenu.totalMS2", "foo"),
+      typeof L10N.getFormatStr("netmonitor.override.enabled", "foo"),
       "string",
       "The getFormatStr() method didn't return a valid string."
     );

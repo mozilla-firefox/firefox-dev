@@ -923,3 +923,100 @@ charts-transferred = Transferred
 charts-time = Time
 # The header column for the non blocking time of the request.
 charts-non-blocking-time = Non blocking time
+
+## Strings used to format the sizes and times displayed in the DevTools
+## Network Panel
+
+# The size of a request, in bytes.
+# Variables:
+#   $size (Number): the size, in bytes.
+network-menu-size-b = { $size } B
+# The size of a request, in kilobytes. The caller rounds the size to the
+# precision it wants, so this only caps how much of it is shown.
+# Variables:
+#   $size (Number): the size, in kilobytes.
+network-menu-size-kb = { NUMBER($size, maximumFractionDigits: 3) } kB
+# The size of a request, in megabytes. The caller rounds the size to the
+# precision it wants, so this only caps how much of it is shown.
+# Variables:
+#   $size (Number): the size, in megabytes.
+network-menu-size-mb = { NUMBER($size, maximumFractionDigits: 3) } MB
+# The size of a request, in gigabytes. The caller rounds the size to the
+# precision it wants, so this only caps how much of it is shown.
+# Variables:
+#   $size (Number): the size, in gigabytes.
+network-menu-size-gb = { NUMBER($size, maximumFractionDigits: 3) } GB
+# A timing interval division, in milliseconds.
+# Variables:
+#   $time (Number): the time, in milliseconds.
+network-menu-millisecond = { $time } ms
+# A timing interval division, in seconds.
+# Variables:
+#   $time (Number): the time, in seconds.
+network-menu-second = { NUMBER($time, maximumFractionDigits: 2) } s
+# A timing interval division, in minutes.
+# Variables:
+#   $time (Number): the time, in minutes.
+network-menu-minute = { NUMBER($time, maximumFractionDigits: 2) } min
+# The time for a request to finish, in milliseconds.
+# Variables:
+#   $time (String): the time, in milliseconds.
+network-menu-total-ms = { $time } ms
+
+## Strings used in the request table of the DevTools Network Panel to describe
+## the type, transferred size and status of a request
+
+# The label displayed for a request that is a redirect.
+# Variables:
+#   $type (String): the request type.
+network-menu-redirect = { $type } (redirect)
+# The tooltip displayed for any column that is sorted ascending.
+network-menu-sorted-asc = Sorted ascending
+# The tooltip displayed for any column that is sorted descending.
+network-menu-sorted-desc = Sorted descending
+# The label displayed when the transferred size of a request is unavailable.
+network-menu-size-unavailable = —
+# The tooltip displayed when the transferred size of a request is unavailable.
+network-menu-size-unavailable-title = Transferred size is not available
+# The label displayed in the request table and the headers panel when the
+# transfer of a request is cached.
+network-menu-size-cached = cached
+# The label displayed in the request table and the headers panel when the
+# transfer of a request was computed by a service worker.
+network-menu-size-service-worker = service worker
+# A generic message for a URL that has been blocked for an unknown reason.
+network-menu-blocked = Blocked
+# A generic message for a URL that has been blocked by an extension.
+# Variables:
+#   $extension (String): the extension name.
+network-menu-blocked-by = Blocked By { $extension }
+# A generic message for a URL that has been blocked by the URL classifier
+# because it was loaded by an extension.
+# Variables:
+#   $extension (String): the extension name.
+network-menu-addon-blocked = Harmful Add-on Blocked ({ $extension })
+# The tooltip of the blocked icon in the request table.
+network-menu-blocked-tooltip = Blocked
+# The tooltip of the status code column, when the request is neither cached nor
+# from a service worker.
+# Variables:
+#   $status (String): the status code.
+#   $statusText (String): the status text.
+netmonitor-status-tooltip-simple = { $status } { $statusText }
+# The tooltip of the status code column, when the request is cached.
+# Variables:
+#   $status (String): the status code.
+#   $statusText (String): the status text.
+netmonitor-status-tooltip-cached = { $status } { $statusText } (cached)
+# The tooltip of the status code column, when the request is from a service
+# worker.
+# Variables:
+#   $status (String): the status code.
+#   $statusText (String): the status text.
+netmonitor-status-tooltip-worker = { $status } { $statusText } (service worker)
+# The tooltip of the status code column, when the request is cached and is from
+# a service worker.
+# Variables:
+#   $status (String): the status code.
+#   $statusText (String): the status text.
+netmonitor-status-tooltip-cached-worker = { $status } { $statusText } (cached, service worker)

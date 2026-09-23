@@ -43,6 +43,8 @@ function setupTestServer() {
   return { httpServer, completeResponse };
 }
 
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+
 add_task(async function () {
   const { httpServer, completeResponse } = setupTestServer();
   const port = httpServer.identity.primaryPort;
@@ -78,7 +80,7 @@ add_task(async function () {
   const chunkedRequest = document.querySelector(".request-list-item");
   is(
     chunkedRequest.querySelector(".requests-list-transferred").textContent,
-    "154 B",
+    l10n.formatValueSync("network-menu-size-b", { size: 154 }),
     "The transferred data should be correct"
   );
 
@@ -111,7 +113,7 @@ add_task(async function () {
   );
   is(
     chunkedRequest.querySelector(".requests-list-transferred").textContent,
-    "171 B",
+    l10n.formatValueSync("network-menu-size-b", { size: 171 }),
     "The transferred data is correct"
   );
 

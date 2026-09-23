@@ -10,11 +10,17 @@ const {
 const dom = require("resource://devtools/client/shared/vendor/react-dom-factories.js");
 const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-types.mjs");
 const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
-const {
   propertiesEqual,
 } = require("resource://devtools/client/netmonitor/src/utils/request-utils.js");
+
+// the status tooltip is built on mouseover rather than during render, so the
+// strings are read directly instead of subscribing every row to the
+// localization context
+loader.lazyGetter(
+  this,
+  "l10n",
+  () => new Localization(["devtools/client/netmonitor.ftl"], true)
+);
 
 const { div, span } = dom;
 
@@ -74,7 +80,7 @@ class StatusCode extends Component {
         {
           className:
             "requests-list-status-code status-code status-code-blocked",
-          title: L10N.getStr("networkMenu.blockedTooltip"),
+          title: l10n.formatValueSync("network-menu-blocked-tooltip"),
         },
         div({
           className: "status-code-blocked-icon",
@@ -128,33 +134,17 @@ class StatusCode extends Component {
 
 function getStatusTooltip(item) {
   const { fromCache, fromServiceWorker, status, statusText } = item;
-  let title;
+  let id;
   if (fromCache && fromServiceWorker) {
-    title = L10N.getFormatStr(
-      "netmonitor.status.tooltip.cachedworker",
-      status,
-      statusText
-    );
+    id = "netmonitor-status-tooltip-cached-worker";
   } else if (fromCache) {
-    title = L10N.getFormatStr(
-      "netmonitor.status.tooltip.cached",
-      status,
-      statusText
-    );
+    id = "netmonitor-status-tooltip-cached";
   } else if (fromServiceWorker) {
-    title = L10N.getFormatStr(
-      "netmonitor.status.tooltip.worker",
-      status,
-      statusText
-    );
+    id = "netmonitor-status-tooltip-worker";
   } else {
-    title = L10N.getFormatStr(
-      "netmonitor.status.tooltip.simple",
-      status,
-      statusText
-    );
+    id = "netmonitor-status-tooltip-simple";
   }
-  return title;
+  return l10n.formatValueSync(id, { status, statusText });
 }
 
 module.exports = StatusCode;

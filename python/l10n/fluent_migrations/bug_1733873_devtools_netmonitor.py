@@ -765,3 +765,97 @@ charts-non-blocking-time = { COPY(from_path, "charts.nonBlockingTime") }
             for ftl_id, key in seconds_messages.items()
         ],
     )
+
+    # every one of these takes a single size, time, type or extension name as
+    # its only placeholder
+    single_placeholder_messages = {
+        "network-menu-size-b": ("networkMenu.sizeB", VARIABLE_REFERENCE("size")),
+        "network-menu-size-kb": ("networkMenu.size.kB", NUMBER_REFERENCE("size", 3)),
+        "network-menu-size-mb": ("networkMenu.sizeMB", NUMBER_REFERENCE("size", 3)),
+        "network-menu-size-gb": ("networkMenu.sizeGB", NUMBER_REFERENCE("size", 3)),
+        "network-menu-millisecond": (
+            "networkMenu.millisecond",
+            VARIABLE_REFERENCE("time"),
+        ),
+        "network-menu-second": ("networkMenu.second", NUMBER_REFERENCE("time", 2)),
+        "network-menu-minute": ("networkMenu.minute", NUMBER_REFERENCE("time", 2)),
+        "network-menu-total-ms": ("networkMenu.totalMS2", VARIABLE_REFERENCE("time")),
+        "network-menu-redirect": ("networkMenu.redirect", VARIABLE_REFERENCE("type")),
+        "network-menu-blocked-by": (
+            "networkMenu.blockedby",
+            VARIABLE_REFERENCE("extension"),
+        ),
+        "network-menu-addon-blocked": (
+            "networkMenu.addonBlocked",
+            VARIABLE_REFERENCE("extension"),
+        ),
+    }
+
+    # every one of these takes a status code and a status text
+    status_messages = {
+        "netmonitor-status-tooltip-simple": "netmonitor.status.tooltip.simple",
+        "netmonitor-status-tooltip-cached": "netmonitor.status.tooltip.cached",
+        "netmonitor-status-tooltip-worker": "netmonitor.status.tooltip.worker",
+        "netmonitor-status-tooltip-cached-worker": (
+            "netmonitor.status.tooltip.cachedworker"
+        ),
+    }
+
+    ctx.add_transforms(
+        target,
+        target,
+        transforms_from(
+            """
+network-menu-sorted-asc = { COPY(from_path, "networkMenu.sortedAsc") }
+network-menu-sorted-desc = { COPY(from_path, "networkMenu.sortedDesc") }
+network-menu-size-unavailable = { COPY(from_path, "networkMenu.sizeUnavailable") }
+network-menu-size-unavailable-title = { COPY(from_path, "networkMenu.sizeUnavailable.title") }
+network-menu-size-cached = { COPY(from_path, "networkMenu.sizeCached") }
+network-menu-size-service-worker = { COPY(from_path, "networkMenu.sizeServiceWorker") }
+network-menu-blocked = { COPY(from_path, "networkMenu.blocked2") }
+network-menu-blocked-tooltip = { COPY(from_path, "networkMenu.blockedTooltip") }
+""",
+            from_path=source,
+        )
+        + [
+            FTL.Message(
+                id=FTL.Identifier(ftl_id),
+                value=REPLACE(source, key, {"%1$S": expression}),
+            )
+            for ftl_id, (key, expression) in single_placeholder_messages.items()
+        ]
+        + [
+            FTL.Message(
+                id=FTL.Identifier(ftl_id),
+                value=REPLACE(
+                    source,
+                    key,
+                    {
+                        "%1$S": VARIABLE_REFERENCE("status"),
+                        "%2$S": VARIABLE_REFERENCE("statusText"),
+                    },
+                ),
+            )
+            for ftl_id, key in status_messages.items()
+        ],
+    )
+
+    # every one of these takes a single path, name or URL as its only
+    # placeholder
+    single_placeholder_messages = {
+        "netmonitor-tab-response-overridden-tooltip": (
+            "netmonitor.tab.response-overridden.tooltip",
+            "path",
+        ),
+        "netmonitor-jsonp-scope-name": ("jsonpScopeName", "callback"),
+        "netmonitor-json-xssi-stripped": ("jsonXssiStripped", "strippedChars"),
+        "netmonitor-request-original-file-url-tooltip": (
+            "netRequest.originalFileURL.tooltip",
+            "url",
+        ),
+        "netmonitor-request-decoded-file-url-tooltip": (
+            "netRequest.decodedFileURL.tooltip",
+            "url",
+        ),
+        "netmonitor-override-enabled": ("netmonitor.override.enabled", "path"),
+    }

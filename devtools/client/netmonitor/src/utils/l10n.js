@@ -46,17 +46,15 @@ function getBlockedReasonString(blockedReason, extension) {
   }
 
   if (extension?.blocking) {
-    return exports.L10N.getFormatStr(
-      "networkMenu.blockedby",
-      extension.blocking
-    );
+    return l10n.formatValueSync("network-menu-blocked-by", {
+      extension: extension.blocking,
+    });
   }
 
   if (extension?.blocked) {
-    return exports.L10N.getFormatStr(
-      "networkMenu.addonBlocked",
-      extension.blocked
-    );
+    return l10n.formatValueSync("network-menu-addon-blocked", {
+      extension: extension.blocked,
+    });
   }
 
   // If we receive a platform error code, print it as-is
@@ -66,7 +64,7 @@ function getBlockedReasonString(blockedReason, extension) {
 
   return (
     BLOCKED_REASON_MESSAGES[blockedReason] ||
-    exports.L10N.getStr("networkMenu.blocked2")
+    l10n.formatValueSync("network-menu-blocked")
   );
 }
 

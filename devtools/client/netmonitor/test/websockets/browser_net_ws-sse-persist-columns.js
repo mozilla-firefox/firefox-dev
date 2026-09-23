@@ -46,6 +46,8 @@ function shallowEqual(obj1, obj2) {
   return shallowObjectEqual(obj1, obj2);
 }
 
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+
 add_task(async function () {
   const { tab, monitor } = await initNetMonitor(
     "http://mochi.test:8888/browser/devtools/client/netmonitor/test/websockets/html_ws-sse-test-page.html",
@@ -125,7 +127,7 @@ add_task(async function () {
   is(
     shallowEqual(columnValues, [
       "Payload 0",
-      "9 B",
+      l10n.formatValueSync("network-menu-size-b", { size: 9 }),
       "1",
       "true",
       "true",

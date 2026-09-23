@@ -11,9 +11,6 @@ const dom = require("resource://devtools/client/shared/vendor/react-dom-factorie
 const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-types.mjs");
 
 const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
-const {
   fetchNetworkUpdatePacket,
   propertiesEqual,
 } = require("resource://devtools/client/netmonitor/src/utils/request-utils.js");
@@ -171,7 +168,9 @@ module.exports = class RequestListColumnWaterfall extends Component {
         );
       }
 
-      const title = L10N.getFormatStr("networkMenu.totalMS2", totalTime);
+      const title = l10n.formatValueSync("network-menu-total-ms", {
+        time: totalTime,
+      });
       boxes.push(
         div(
           {

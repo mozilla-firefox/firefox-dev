@@ -6,16 +6,14 @@
 /**
  * Verifies that truncated response bodies still have the correct reported size.
  */
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+
 add_task(async function () {
   const limit = Services.prefs.getIntPref("devtools.netmonitor.bodyLimit");
   const URL = EXAMPLE_URL + "sjs_truncate-test-server.sjs?limit=" + limit;
   const { monitor } = await initNetMonitor(URL, { requestCount: 1 });
 
   info("Starting test... ");
-
-  const {
-    L10N,
-  } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
 
   const { document, store, windowRequire } = monitor.panelWin;
   const Actions = windowRequire("devtools/client/netmonitor/src/actions/index");
@@ -45,12 +43,12 @@ add_task(async function () {
   );
   is(
     transferred,
-    L10N.getFormatStrWithNumbers("networkMenu.sizeMB", 2.1),
+    l10n.formatValueSync("network-menu-size-mb", { size: 2.1 }),
     "Transferred size should be rendered correctly."
   );
   is(
     size,
-    L10N.getFormatStrWithNumbers("networkMenu.sizeMB", 2.1),
+    l10n.formatValueSync("network-menu-size-mb", { size: 2.1 }),
     "Size should be rendered correctly."
   );
 

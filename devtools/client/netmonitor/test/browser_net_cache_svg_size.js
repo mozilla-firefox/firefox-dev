@@ -69,7 +69,7 @@ add_task(async function () {
     ).textContent;
     is(
       contentLengthText,
-      svgImgSize + " B",
+      l10n.formatValueSync("network-menu-size-b", { size: svgImgSize }),
       "Size must match the original defined one"
     );
 

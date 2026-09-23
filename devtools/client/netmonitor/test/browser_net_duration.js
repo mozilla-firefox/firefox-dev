@@ -7,6 +7,8 @@
  * Test if pending requests are labeled as "" (empty string) in the Duration column.
  */
 
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+
 add_task(async function () {
   const { monitor } = await initNetMonitor(SLOW_REQUESTS_URL, {
     requestCount: 1,
@@ -52,7 +54,9 @@ add_task(async function () {
 
   is(
     resolvedArr[0],
-    `${getDisplayedRequests(store.getState())[0].totalTime} ms`,
+    l10n.formatValueSync("network-menu-millisecond", {
+      time: getDisplayedRequests(store.getState())[0].totalTime,
+    }),
     "Duration of resolved request should be displayed correctly."
   );
 

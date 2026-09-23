@@ -7,11 +7,9 @@
  * Test if sorting columns in the network table works correctly.
  */
 
-add_task(async function () {
-  const {
-    L10N,
-  } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
 
+add_task(async function () {
   const { monitor } = await initNetMonitor(SORTING_URL, { requestCount: 1 });
   info("Starting test... ");
 
@@ -131,10 +129,10 @@ add_task(async function () {
         ok(
           !header
             .getAttribute("title")
-            .includes(L10N.getStr("networkMenu.sortedAsc")) &&
+            .includes(l10n.formatValueSync("network-menu-sorted-asc")) &&
             !header
               .getAttribute("title")
-              .includes(L10N.getStr("networkMenu.sortedDesc")),
+              .includes(l10n.formatValueSync("network-menu-sorted-desc")),
           "The " +
             header.id +
             " header does not include any sorting in the 'title' attribute."
@@ -147,8 +145,8 @@ add_task(async function () {
         );
         const sorted =
           direction == "ascending"
-            ? L10N.getStr("networkMenu.sortedAsc")
-            : L10N.getStr("networkMenu.sortedDesc");
+            ? l10n.formatValueSync("network-menu-sorted-asc")
+            : l10n.formatValueSync("network-menu-sorted-desc");
         ok(
           header.getAttribute("title").includes(sorted),
           "The " +
@@ -213,8 +211,8 @@ add_task(async function () {
         statusText: "Meh",
         type: "1",
         fullMimeType: "text/1",
-        transferred: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 198),
-        size: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 0),
+        transferred: l10n.formatValueSync("network-menu-size-b", { size: 198 }),
+        size: l10n.formatValueSync("network-menu-size-b", { size: 0 }),
       }
     );
     await verifyRequestItemTarget(
@@ -229,8 +227,8 @@ add_task(async function () {
         statusText: "Meh",
         type: "2",
         fullMimeType: "text/2",
-        transferred: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 217),
-        size: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 19),
+        transferred: l10n.formatValueSync("network-menu-size-b", { size: 217 }),
+        size: l10n.formatValueSync("network-menu-size-b", { size: 19 }),
       }
     );
     await verifyRequestItemTarget(
@@ -245,8 +243,8 @@ add_task(async function () {
         statusText: "Meh",
         type: "3",
         fullMimeType: "text/3",
-        transferred: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 227),
-        size: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 29),
+        transferred: l10n.formatValueSync("network-menu-size-b", { size: 227 }),
+        size: l10n.formatValueSync("network-menu-size-b", { size: 29 }),
       }
     );
     await verifyRequestItemTarget(
@@ -261,8 +259,8 @@ add_task(async function () {
         statusText: "Meh",
         type: "4",
         fullMimeType: "text/4",
-        transferred: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 237),
-        size: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 39),
+        transferred: l10n.formatValueSync("network-menu-size-b", { size: 237 }),
+        size: l10n.formatValueSync("network-menu-size-b", { size: 39 }),
       }
     );
     await verifyRequestItemTarget(
@@ -277,8 +275,8 @@ add_task(async function () {
         statusText: "Meh",
         type: "5",
         fullMimeType: "text/5",
-        transferred: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 247),
-        size: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 49),
+        transferred: l10n.formatValueSync("network-menu-size-b", { size: 247 }),
+        size: l10n.formatValueSync("network-menu-size-b", { size: 49 }),
       }
     );
   }

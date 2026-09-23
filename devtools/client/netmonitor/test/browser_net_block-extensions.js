@@ -6,6 +6,8 @@
 /**
  * Test the requests that are blocked by extenstions show correctly.
  */
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+
 add_task(async function () {
   const extensionName = "Test Blocker";
   info(`Start loading the ${extensionName} extension...`);
@@ -87,7 +89,9 @@ add_task(async function () {
 
   is(
     request.querySelector(".requests-list-transferred").innerText,
-    `Blocked By ${extensionName}`,
+    l10n.formatValueSync("network-menu-blocked-by", {
+      extension: extensionName,
+    }),
     "The request shows the blocking extension name"
   );
 

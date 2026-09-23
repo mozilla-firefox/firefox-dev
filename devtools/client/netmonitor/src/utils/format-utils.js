@@ -4,9 +4,11 @@
 
 "use strict";
 
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+loader.lazyGetter(
+  this,
+  "l10n",
+  () => new Localization(["devtools/client/netmonitor.ftl"], true)
+);
 
 // Constants for formatting bytes.
 const BYTES_IN_KB = 1000;
@@ -27,16 +29,12 @@ const PRIORITY_HIGH = -10;
 const PRIORITY_NORMAL = 0;
 const PRIORITY_LOW = 10;
 
-function getSizeWithDecimals(size, decimals = REQUEST_DECIMALS) {
-  return L10N.numberWithDecimals(size, decimals);
-}
-
-function getTimeWithDecimals(time) {
-  return L10N.numberWithDecimals(time, REQUEST_DECIMALS);
-}
-
-function formatDecimals(size, decimals) {
-  return size % 1 > 0 ? decimals : 0;
+// the caller picks how precise a size should be, which a Fluent NUMBER()
+// option cannot express, so the rounding happens here and the message only
+// caps what it prints
+function roundToDecimals(value, decimals) {
+  const factor = 10 ** decimals;
+  return Math.round(value * factor) / factor;
 }
 
 /**
@@ -44,32 +42,27 @@ function formatDecimals(size, decimals) {
  * GB value.
  */
 function getFormattedSize(bytes, decimals = REQUEST_DECIMALS) {
+  // callers pass sizes that are not known yet, and Fluent throws on anything
+  // that is not a finite number
+  if (!Number.isFinite(bytes)) {
+    bytes = 0;
+  }
   if (bytes < MAX_BYTES_SIZE) {
-    return L10N.getFormatStr("networkMenu.sizeB", bytes);
+    return l10n.formatValueSync("network-menu-size-b", { size: bytes });
   }
   if (bytes < MAX_KB_SIZE) {
-    const kb = bytes / BYTES_IN_KB;
-    const formattedDecimals = formatDecimals(kb, decimals);
-
-    return L10N.getFormatStr(
-      "networkMenu.size.kB",
-      getSizeWithDecimals(kb, formattedDecimals)
-    );
+    return l10n.formatValueSync("network-menu-size-kb", {
+      size: roundToDecimals(bytes / BYTES_IN_KB, decimals),
+    });
   }
   if (bytes < MAX_MB_SIZE) {
-    const mb = bytes / BYTES_IN_MB;
-    const formattedDecimals = formatDecimals(mb, decimals);
-    return L10N.getFormatStr(
-      "networkMenu.sizeMB",
-      getSizeWithDecimals(mb, formattedDecimals)
-    );
+    return l10n.formatValueSync("network-menu-size-mb", {
+      size: roundToDecimals(bytes / BYTES_IN_MB, decimals),
+    });
   }
-  const gb = bytes / BYTES_IN_GB;
-  const formattedDecimals = formatDecimals(gb, decimals);
-  return L10N.getFormatStr(
-    "networkMenu.sizeGB",
-    getSizeWithDecimals(gb, formattedDecimals)
-  );
+  return l10n.formatValueSync("network-menu-size-gb", {
+    size: roundToDecimals(bytes / BYTES_IN_GB, decimals),
+  });
 }
 
 /**
@@ -77,15 +70,20 @@ function getFormattedSize(bytes, decimals = REQUEST_DECIMALS) {
  * value.
  */
 function getFormattedTime(ms) {
+  if (!Number.isFinite(ms)) {
+    ms = 0;
+  }
   if (ms < MAX_MILLISECOND) {
-    return L10N.getFormatStr("networkMenu.millisecond", ms | 0);
+    return l10n.formatValueSync("network-menu-millisecond", { time: ms | 0 });
   }
   if (ms < MAX_SECOND) {
-    const sec = ms / MAX_MILLISECOND;
-    return L10N.getFormatStr("networkMenu.second", getTimeWithDecimals(sec));
+    return l10n.formatValueSync("network-menu-second", {
+      time: ms / MAX_MILLISECOND,
+    });
   }
-  const min = ms / MAX_SECOND;
-  return L10N.getFormatStr("networkMenu.minute", getTimeWithDecimals(min));
+  return l10n.formatValueSync("network-menu-minute", {
+    time: ms / MAX_SECOND,
+  });
 }
 
 /**
@@ -157,8 +155,6 @@ module.exports = {
   getFormattedIPAndPort,
   getFormattedSize,
   getFormattedTime,
-  getSizeWithDecimals,
-  getTimeWithDecimals,
   getRequestPriorityAsText,
   getRequestPriorityAsNumber,
 };

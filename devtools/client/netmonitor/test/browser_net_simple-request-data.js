@@ -7,15 +7,13 @@
  * Tests if requests render correct information in the menu UI.
  */
 
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+
 function test() {
   // Disable tcp fast open, because it is setting a response header indicator
   // (bug 1352274). TCP Fast Open is not present on all platforms therefore the
   // number of response headers will vary depending on the platform.
   Services.prefs.setBoolPref("network.tcp.tcp_fastopen_enable", false);
-
-  const {
-    L10N,
-  } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
 
   initNetMonitor(SIMPLE_SJS, { requestCount: 1 }).then(async ({ monitor }) => {
     info("Starting test... ");
@@ -359,8 +357,10 @@ function test() {
         {
           type: "plain",
           fullMimeType: "text/plain; charset=utf-8",
-          transferred: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 347),
-          size: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 12),
+          transferred: l10n.formatValueSync("network-menu-size-b", {
+            size: 347,
+          }),
+          size: l10n.formatValueSync("network-menu-size-b", { size: 12 }),
         }
       );
     });

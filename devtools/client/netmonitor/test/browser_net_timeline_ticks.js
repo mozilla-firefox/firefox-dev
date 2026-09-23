@@ -7,11 +7,9 @@
  * Tests if timeline correctly displays interval divisions.
  */
 
-add_task(async function () {
-  const {
-    L10N,
-  } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
 
+add_task(async function () {
   const { monitor } = await initNetMonitor(HTTPS_SIMPLE_URL, {
     requestCount: 1,
   });
@@ -68,17 +66,17 @@ add_task(async function () {
   const timingDivisionEls = $all(".requests-list-timings-division");
   is(
     timingDivisionEls[0].textContent,
-    L10N.getFormatStr("networkMenu.millisecond", 0),
+    l10n.formatValueSync("network-menu-millisecond", { time: 0 }),
     "The first tick label has correct value"
   );
   is(
     timingDivisionEls[1].textContent,
-    L10N.getFormatStr("networkMenu.millisecond", 80),
+    l10n.formatValueSync("network-menu-millisecond", { time: 80 }),
     "The second tick label has correct value"
   );
   is(
     timingDivisionEls[2].textContent,
-    L10N.getFormatStr("networkMenu.millisecond", 160),
+    l10n.formatValueSync("network-menu-millisecond", { time: 160 }),
     "The third tick label has correct value"
   );
 

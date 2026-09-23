@@ -7,15 +7,19 @@
 const {
   Component,
 } = require("resource://devtools/client/shared/vendor/react.mjs");
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
-
 const dom = require("resource://devtools/client/shared/vendor/react-dom-factories.js");
 const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-types.mjs");
 const {
   getAbbreviatedMimeType,
 } = require("resource://devtools/client/netmonitor/src/utils/request-utils.js");
+
+// one instance of this column is rendered per request, so the string is read
+// directly instead of subscribing every row to the localization context
+loader.lazyGetter(
+  this,
+  "l10n",
+  () => new Localization(["devtools/client/netmonitor.ftl"], true)
+);
 
 class RequestListColumnType extends Component {
   static get propTypes() {
@@ -45,7 +49,11 @@ class RequestListColumnType extends Component {
         title: mimeType,
       },
       isRedirect
-        ? L10N.getFormatStr("networkMenu.redirect", abbrevType)
+        ? l10n.formatValueSync("network-menu-redirect", {
+            // a redirect often has no content type, and Fluent raises on a
+            // missing variable rather than interpolating nothing
+            type: abbrevType ?? "",
+          })
         : abbrevType
     );
   }

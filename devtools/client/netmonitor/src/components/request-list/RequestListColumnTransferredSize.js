@@ -13,17 +13,32 @@ const {
   getFormattedSize,
 } = require("resource://devtools/client/netmonitor/src/utils/format-utils.js");
 const {
-  L10N,
   getBlockedReasonString,
 } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
 const {
   propertiesEqual,
 } = require("resource://devtools/client/netmonitor/src/utils/request-utils.js");
 
-const SIZE_CACHED = L10N.getStr("networkMenu.sizeCached");
-const SIZE_SERVICE_WORKER = L10N.getStr("networkMenu.sizeServiceWorker");
-const SIZE_UNAVAILABLE = L10N.getStr("networkMenu.sizeUnavailable");
-const SIZE_UNAVAILABLE_TITLE = L10N.getStr("networkMenu.sizeUnavailable.title");
+// one instance of this column is rendered per request, so the strings are read
+// directly instead of subscribing every row to the localization context
+loader.lazyGetter(
+  this,
+  "l10n",
+  () => new Localization(["devtools/client/netmonitor.ftl"], true)
+);
+
+loader.lazyGetter(this, "SIZE_CACHED", () =>
+  l10n.formatValueSync("network-menu-size-cached")
+);
+loader.lazyGetter(this, "SIZE_SERVICE_WORKER", () =>
+  l10n.formatValueSync("network-menu-size-service-worker")
+);
+loader.lazyGetter(this, "SIZE_UNAVAILABLE", () =>
+  l10n.formatValueSync("network-menu-size-unavailable")
+);
+loader.lazyGetter(this, "SIZE_UNAVAILABLE_TITLE", () =>
+  l10n.formatValueSync("network-menu-size-unavailable-title")
+);
 const UPDATED_TRANSFERRED_PROPS = [
   "transferredSize",
   "fromCache",

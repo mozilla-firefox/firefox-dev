@@ -7,11 +7,9 @@
  * Tests if requests display the correct status code and text in the UI.
  */
 
-add_task(async function () {
-  const {
-    L10N,
-  } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
 
+add_task(async function () {
   const { tab, monitor } = await initNetMonitor(STATUS_CODES_URL, {
     requestCount: 1,
   });
@@ -39,7 +37,7 @@ add_task(async function () {
         statusText: "Switching Protocols",
         type: "plain",
         fullMimeType: "text/plain; charset=utf-8",
-        size: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 0),
+        size: l10n.formatValueSync("network-menu-size-b", { size: 0 }),
         time: true,
       },
     },
@@ -53,7 +51,7 @@ add_task(async function () {
         statusText: "Created",
         type: "plain",
         fullMimeType: "text/plain; charset=utf-8",
-        size: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 22),
+        size: l10n.formatValueSync("network-menu-size-b", { size: 22 }),
         time: true,
       },
     },
@@ -65,9 +63,11 @@ add_task(async function () {
       details: {
         status: 303,
         statusText: "See Other",
-        type: "plain (redirect)",
+        type: l10n.formatValueSync("network-menu-redirect", {
+          type: "plain",
+        }),
         fullMimeType: "text/plain; charset=utf-8",
-        size: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 0),
+        size: l10n.formatValueSync("network-menu-size-b", { size: 0 }),
         time: true,
       },
     },
@@ -81,7 +81,7 @@ add_task(async function () {
         statusText: "Not Found",
         type: "plain",
         fullMimeType: "text/plain; charset=utf-8",
-        size: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 22),
+        size: l10n.formatValueSync("network-menu-size-b", { size: 22 }),
         time: true,
       },
     },
@@ -95,7 +95,7 @@ add_task(async function () {
         statusText: "Not Implemented",
         type: "plain",
         fullMimeType: "text/plain; charset=utf-8",
-        size: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 22),
+        size: l10n.formatValueSync("network-menu-size-b", { size: 22 }),
         time: true,
       },
     },

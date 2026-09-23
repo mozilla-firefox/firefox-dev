@@ -7,6 +7,8 @@
  * Tests if different response content types are handled correctly.
  */
 
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+
 add_task(async function () {
   const { tab, monitor } = await initNetMonitor(
     CONTENT_TYPE_WITHOUT_CACHE_URL,
@@ -45,7 +47,7 @@ add_task(async function () {
       statusText: "OK",
       type: "xml",
       fullMimeType: "text/xml; charset=utf-8",
-      size: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 42),
+      size: l10n.formatValueSync("network-menu-size-b", { size: 42 }),
       time: true,
     }
   );
@@ -60,7 +62,7 @@ add_task(async function () {
       statusText: "OK",
       type: "css",
       fullMimeType: "text/css; charset=utf-8",
-      size: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 34),
+      size: l10n.formatValueSync("network-menu-size-b", { size: 34 }),
       time: true,
     }
   );
@@ -75,7 +77,7 @@ add_task(async function () {
       statusText: "OK",
       type: "js",
       fullMimeType: "application/javascript; charset=utf-8",
-      size: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 34),
+      size: l10n.formatValueSync("network-menu-size-b", { size: 34 }),
       time: true,
     }
   );
@@ -90,7 +92,7 @@ add_task(async function () {
       statusText: "OK",
       type: "json",
       fullMimeType: "application/json; charset=utf-8",
-      size: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 29),
+      size: l10n.formatValueSync("network-menu-size-b", { size: 29 }),
       time: true,
     }
   );
@@ -105,7 +107,7 @@ add_task(async function () {
       statusText: "Not Found",
       type: "html",
       fullMimeType: "text/html; charset=utf-8",
-      size: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 24),
+      size: l10n.formatValueSync("network-menu-size-b", { size: 24 }),
       time: true,
     }
   );
@@ -121,7 +123,7 @@ add_task(async function () {
       statusText: "OK",
       type: "png",
       fullMimeType: "image/png",
-      size: L10N.getFormatStrWithNumbers("networkMenu.sizeB", 580),
+      size: l10n.formatValueSync("network-menu-size-b", { size: 580 }),
       time: true,
     }
   );
@@ -136,11 +138,10 @@ add_task(async function () {
       statusText: "OK",
       type: "plain",
       fullMimeType: "text/plain",
-      transferred: L10N.getFormatStrWithNumbers(
-        "networkMenu.sizeB",
-        AppConstants.USE_LIBZ_RS ? 333 : 324
-      ),
-      size: L10N.getFormatStrWithNumbers("networkMenu.size.kB", 10.99),
+      transferred: l10n.formatValueSync("network-menu-size-b", {
+        size: AppConstants.USE_LIBZ_RS ? 333 : 324,
+      }),
+      size: l10n.formatValueSync("network-menu-size-kb", { size: 10.99 }),
       time: true,
     }
   );
