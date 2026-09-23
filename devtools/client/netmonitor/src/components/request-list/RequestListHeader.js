@@ -37,6 +37,8 @@ const {
 const {
   L10N,
 } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+const Localized = createFactory(FluentReact.Localized);
 const RequestListHeaderContextMenu = require("resource://devtools/client/netmonitor/src/widgets/RequestListHeaderContextMenu.js");
 const WaterfallBackground = require("resource://devtools/client/netmonitor/src/widgets/WaterfallBackground.js");
 const Draggable = createFactory(
@@ -64,6 +66,7 @@ class RequestListHeaderContent extends Component {
       waterfallWidth: PropTypes.number,
       columnsData: PropTypes.object.isRequired,
       setColumnsWidth: PropTypes.func.isRequired,
+      getString: PropTypes.func.isRequired,
     };
   }
 
@@ -620,14 +623,12 @@ class RequestListHeaderContent extends Component {
    * Render one column header from the table headers.
    */
   renderColumn(header) {
-    const { columnsData } = this.props;
+    const { columnsData, getString } = this.props;
     const visibleColumns = this.getVisibleColumns();
     const lastVisibleColumn = visibleColumns[visibleColumns.length - 1].name;
     const { name } = header;
     const boxName = header.boxName || name;
-    const label = header.noLocalization
-      ? name
-      : L10N.getStr(`netmonitor.toolbar.${header.label || name}`);
+    const label = header.l10nId ? getString(header.l10nId) : name;
 
     const { scale, sort, waterfallWidth } = this.props;
     let sorted, sortedTitle;
@@ -652,14 +653,19 @@ class RequestListHeaderContent extends Component {
     };
 
     // Support for columns resizing is currently hidden behind a pref.
-    const draggable = Draggable({
-      className: "column-resizer ",
-      title: L10N.getStr("netmonitor.toolbar.resizeColumnToFitContent.title"),
-      onStart: () => this.onStartMove(),
-      onStop: () => this.onStopMove(),
-      onMove: x => this.onMove(name, x),
-      onDoubleClick: () => this.resizeColumnToFitContent(name),
-    });
+    const draggable = Localized(
+      {
+        id: "netmonitor-toolbar-resize-column-to-fit-content-title",
+        attrs: { title: true },
+      },
+      Draggable({
+        className: "column-resizer ",
+        onStart: () => this.onStartMove(),
+        onStop: () => this.onStopMove(),
+        onMove: x => this.onMove(name, x),
+        onDoubleClick: () => this.resizeColumnToFitContent(name),
+      })
+    );
 
     return dom.th(
       {
@@ -724,25 +730,27 @@ class RequestListHeaderContent extends Component {
   }
 }
 
-const RequestListHeader = connect(
-  (state, props) => ({
-    columns: getColumns(state, props.hasOverride),
-    columnsData: state.ui.columnsData,
-    firstRequestStartedMs: state.requests.firstStartedMs,
-    scale: getWaterfallScale(state),
-    sort: state.sort,
-    timingMarkers: state.timingMarkers,
-    waterfallWidth: state.ui.waterfallWidth,
-  }),
-  dispatch => ({
-    resetColumns: () => dispatch(Actions.resetColumns()),
-    resetSorting: () => dispatch(Actions.sortBy(null)),
-    resizeWaterfall: width => dispatch(Actions.resizeWaterfall(width)),
-    sortBy: type => dispatch(Actions.sortBy(type)),
-    toggleColumn: column => dispatch(Actions.toggleColumn(column)),
-    setColumnsWidth: widths => dispatch(Actions.setColumnsWidth(widths)),
-  })
-)(RequestListHeaderContent);
+const RequestListHeader = FluentReact.withLocalization(
+  connect(
+    (state, props) => ({
+      columns: getColumns(state, props.hasOverride),
+      columnsData: state.ui.columnsData,
+      firstRequestStartedMs: state.requests.firstStartedMs,
+      scale: getWaterfallScale(state),
+      sort: state.sort,
+      timingMarkers: state.timingMarkers,
+      waterfallWidth: state.ui.waterfallWidth,
+    }),
+    dispatch => ({
+      resetColumns: () => dispatch(Actions.resetColumns()),
+      resetSorting: () => dispatch(Actions.sortBy(null)),
+      resizeWaterfall: width => dispatch(Actions.resizeWaterfall(width)),
+      sortBy: type => dispatch(Actions.sortBy(type)),
+      toggleColumn: column => dispatch(Actions.toggleColumn(column)),
+      setColumnsWidth: widths => dispatch(Actions.setColumnsWidth(widths)),
+    })
+  )(RequestListHeaderContent)
+);
 
 module.exports = connect(
   state => {

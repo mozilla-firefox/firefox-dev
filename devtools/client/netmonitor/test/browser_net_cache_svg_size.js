@@ -3,6 +3,8 @@
 
 "use strict";
 
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+
 /**
  * This test ensures that the size of an (SVG-)icon is displayed correctly, even when it comes from the cache.
  */
@@ -89,7 +91,8 @@ add_task(async function () {
       const label = container.querySelector(".tabpanel-summary-label ");
       return (
         label &&
-        label.textContent === L10N.getStr("netmonitor.toolbar.transferred")
+        label.textContent ===
+          l10n.formatValueSync("netmonitor-toolbar-transferred")
       );
     });
     const transferredSizeValueDiv =

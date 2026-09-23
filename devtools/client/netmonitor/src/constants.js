@@ -280,44 +280,53 @@ const RESPONSE_HEADERS = [
 const HEADERS = [
   {
     name: "override",
+    l10nId: "netmonitor-toolbar-override",
     canFilter: false,
   },
   {
     name: "status",
-    label: "status3",
+    l10nId: "netmonitor-toolbar-status",
     canFilter: true,
     filterKey: "status-code",
   },
   {
     name: "method",
+    l10nId: "netmonitor-toolbar-method",
     canFilter: true,
   },
   {
     name: "domain",
+    l10nId: "netmonitor-toolbar-domain",
     canFilter: true,
   },
   {
     name: "file",
+    l10nId: "netmonitor-toolbar-file",
     canFilter: false,
   },
   {
     name: "path",
+    l10nId: "netmonitor-toolbar-path",
     canFilter: false,
   },
   {
     name: "url",
+    l10nId: "netmonitor-toolbar-url",
     canFilter: true,
   },
   {
     name: "protocol",
+    l10nId: "netmonitor-toolbar-protocol",
     canFilter: true,
   },
   {
     name: "scheme",
+    l10nId: "netmonitor-toolbar-scheme",
     canFilter: true,
   },
   {
     name: "remoteip",
+    l10nId: "netmonitor-toolbar-remoteip",
     canFilter: true,
     filterKey: "remote-ip",
   },
@@ -327,61 +336,73 @@ const HEADERS = [
   },
   {
     name: "initiator",
+    l10nId: "netmonitor-toolbar-initiator",
     canFilter: true,
   },
   {
     name: "type",
+    l10nId: "netmonitor-toolbar-type",
     canFilter: false,
   },
   {
     name: "cookies",
+    l10nId: "netmonitor-toolbar-cookies",
     canFilter: false,
   },
   {
     name: "setCookies",
+    l10nId: "netmonitor-toolbar-set-cookies",
     boxName: "set-cookies",
     canFilter: false,
   },
   {
     name: "transferred",
+    l10nId: "netmonitor-toolbar-transferred",
     canFilter: true,
   },
   {
     name: "contentSize",
+    l10nId: "netmonitor-toolbar-content-size",
     boxName: "size",
     filterKey: "size",
     canFilter: true,
   },
   {
     name: "priority",
+    l10nId: "netmonitor-toolbar-priority",
     boxName: "priority",
     canFilter: true,
   },
   {
     name: "startTime",
+    l10nId: "netmonitor-toolbar-start-time",
     boxName: "start-time",
     canFilter: false,
     subMenu: "timings",
   },
   {
     name: "endTime",
+    l10nId: "netmonitor-toolbar-end-time",
     boxName: "end-time",
     canFilter: false,
     subMenu: "timings",
   },
   {
     name: "responseTime",
+    l10nId: "netmonitor-toolbar-response-time",
     boxName: "response-time",
     canFilter: false,
     subMenu: "timings",
   },
   {
     name: "duration",
+    l10nId: "netmonitor-toolbar-duration",
     canFilter: false,
     subMenu: "timings",
   },
   {
     name: "latency",
+    l10nId: "netmonitor-toolbar-latency",
     canFilter: false,
     subMenu: "timings",
   },
@@ -390,10 +411,10 @@ const HEADERS = [
     boxName: "response-header",
     canFilter: false,
     subMenu: "responseHeaders",
-    noLocalization: true,
   })),
   {
     name: "waterfall",
+    l10nId: "netmonitor-toolbar-waterfall",
     canFilter: false,
   },
 ];

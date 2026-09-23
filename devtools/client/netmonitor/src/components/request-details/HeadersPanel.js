@@ -40,6 +40,7 @@ const {
 const {
   FILTER_SEARCH_DELAY,
 } = require("resource://devtools/client/netmonitor/src/constants.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
 // Components
 const PropertiesView = createFactory(
   require("resource://devtools/client/netmonitor/src/components/request-details/PropertiesView.js")
@@ -114,7 +115,6 @@ const HEADERS_EARLYHINT_STATUS = L10N.getStr(
   "netmonitor.headers.earlyHintsStatus"
 );
 const HEADERS_VERSION = L10N.getStr("netmonitor.headers.version");
-const HEADERS_TRANSFERRED = L10N.getStr("netmonitor.toolbar.transferred");
 const SUMMARY_STATUS_LEARN_MORE = L10N.getStr("netmonitor.summary.learnMore");
 const SUMMARY_ETP_LEARN_MORE = L10N.getStr(
   "netmonitor.enhancedTrackingProtection.learnMore"
@@ -262,6 +262,7 @@ class HeadersPanel extends Component {
       sendCustomRequest: PropTypes.func,
       shouldExpandPreview: PropTypes.bool,
       setHeadersUrlPreviewExpanded: PropTypes.func,
+      getString: PropTypes.func.isRequired,
     };
   }
 
@@ -603,7 +604,10 @@ class HeadersPanel extends Component {
       getFormattedSize(contentSize)
     );
 
-    const summarySize = this.renderSummary(HEADERS_TRANSFERRED, sizeText);
+    const summarySize = this.renderSummary(
+      this.props.getString("netmonitor-toolbar-transferred"),
+      sizeText
+    );
 
     let summaryEarlyStatus;
     if (earlyHintsStatus) {
@@ -845,18 +849,20 @@ class HeadersPanel extends Component {
   }
 }
 
-module.exports = connect(
-  state => ({
-    shouldExpandPreview: state.ui.shouldExpandHeadersUrlPreview,
-  }),
-  dispatch => ({
-    setHeadersUrlPreviewExpanded: expanded =>
-      dispatch(Actions.setHeadersUrlPreviewExpanded(expanded)),
-    openRequestBlockingAndAddUrl: url =>
-      dispatch(Actions.openRequestBlockingAndAddUrl(url)),
-    openHTTPCustomRequestTab: () =>
-      dispatch(Actions.openHTTPCustomRequest(true)),
-    cloneRequest: id => dispatch(Actions.cloneRequest(id)),
-    sendCustomRequest: () => dispatch(Actions.sendCustomRequest()),
-  })
-)(HeadersPanel);
+module.exports = FluentReact.withLocalization(
+  connect(
+    state => ({
+      shouldExpandPreview: state.ui.shouldExpandHeadersUrlPreview,
+    }),
+    dispatch => ({
+      setHeadersUrlPreviewExpanded: expanded =>
+        dispatch(Actions.setHeadersUrlPreviewExpanded(expanded)),
+      openRequestBlockingAndAddUrl: url =>
+        dispatch(Actions.openRequestBlockingAndAddUrl(url)),
+      openHTTPCustomRequestTab: () =>
+        dispatch(Actions.openHTTPCustomRequest(true)),
+      cloneRequest: id => dispatch(Actions.cloneRequest(id)),
+      sendCustomRequest: () => dispatch(Actions.sendCustomRequest()),
+    })
+  )(HeadersPanel)
+);

@@ -16,7 +16,6 @@ const {
 const Actions = require("resource://devtools/client/netmonitor/src/actions/index.js");
 const {
   FILTER_SEARCH_DELAY,
-  FILTER_TAGS,
   PANELS,
 } = require("resource://devtools/client/netmonitor/src/constants.js");
 const {
@@ -34,6 +33,8 @@ const {
 const {
   fetchNetworkUpdatePacket,
 } = require("resource://devtools/client/netmonitor/src/utils/request-utils.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+const Localized = createFactory(FluentReact.Localized);
 
 loader.lazyRequireGetter(
   this,
@@ -57,44 +58,22 @@ const SearchBox = createFactory(
 
 const { button, div, input, label, span, hr } = dom;
 
-// Localization
-const FILTER_KEY_SHORTCUT = L10N.getStr(
-  "netmonitor.toolbar.filterFreetext.key"
-);
-const SEARCH_KEY_SHORTCUT = L10N.getStr("netmonitor.toolbar.search.key");
-const SEARCH_PLACE_HOLDER = L10N.getStr(
-  "netmonitor.toolbar.filterFreetext.label"
-);
-const COPY_KEY_SHORTCUT = L10N.getStr("netmonitor.toolbar.copy.key");
-const TOOLBAR_CLEAR = L10N.getStr("netmonitor.toolbar.clear");
-const TOOLBAR_TOGGLE_RECORDING = L10N.getStr(
-  "netmonitor.toolbar.toggleRecording"
-);
-const TOOLBAR_HTTP_CUSTOM_REQUEST = L10N.getStr(
-  "netmonitor.toolbar.HTTPCustomRequest"
-);
-const TOOLBAR_SEARCH = L10N.getStr("netmonitor.toolbar.search");
-const TOOLBAR_BLOCKING = L10N.getStr("netmonitor.toolbar.requestBlocking");
-const LEARN_MORE_TITLE = L10N.getStr(
-  "netmonitor.toolbar.filterFreetext.learnMore"
-);
+const TOOLBAR_FILTER_L10N_IDS = {
+  all: "netmonitor-toolbar-filter-all",
+  html: "netmonitor-toolbar-filter-html",
+  css: "netmonitor-toolbar-filter-css",
+  js: "netmonitor-toolbar-filter-js",
+  xhr: "netmonitor-toolbar-filter-xhr",
+  fonts: "netmonitor-toolbar-filter-fonts",
+  images: "netmonitor-toolbar-filter-images",
+  media: "netmonitor-toolbar-filter-media",
+  ws: "netmonitor-toolbar-filter-ws",
+  other: "netmonitor-toolbar-filter-other",
+};
 
 // Preferences
 const DEVTOOLS_DISABLE_CACHE_PREF = "devtools.cache.disabled";
 const DEVTOOLS_ENABLE_PERSISTENT_LOG_PREF = "devtools.netmonitor.persistlog";
-const TOOLBAR_FILTER_LABELS = FILTER_TAGS.concat("all").reduce(
-  (o, tag) =>
-    Object.assign(o, {
-      [tag]: L10N.getStr(`netmonitor.toolbar.filter.${tag}`),
-    }),
-  {}
-);
-const DISABLE_CACHE_TOOLTIP = L10N.getStr(
-  "netmonitor.toolbar.disableCache.tooltip"
-);
-const DISABLE_CACHE_LABEL = L10N.getStr(
-  "netmonitor.toolbar.disableCache.label"
-);
 
 const MenuButton = createFactory(
   require("resource://devtools/client/shared/components/menu/MenuButton.js")
@@ -174,6 +153,7 @@ class Toolbar extends Component {
       hasBlockedRequests: PropTypes.bool.isRequired,
       selectedRequest: PropTypes.object,
       toolboxDoc: PropTypes.object.isRequired,
+      getString: PropTypes.func.isRequired,
     };
   }
 
@@ -192,6 +172,8 @@ class Toolbar extends Component {
   }
 
   componentDidMount() {
+    const { getString } = this.props;
+
     Services.prefs.addObserver(
       DEVTOOLS_ENABLE_PERSISTENT_LOG_PREF,
       this.updatePersistentLogsEnabled
@@ -203,13 +185,13 @@ class Toolbar extends Component {
 
     this.shortcuts = new KeyShortcuts(window);
 
-    this.shortcuts.on(SEARCH_KEY_SHORTCUT, event => {
+    this.shortcuts.on(getString("netmonitor-toolbar-search-key"), event => {
       event.preventDefault();
       this.props.toggleSearchPanel();
     });
 
     // Keyboard shortcut to copy the selected request URL
-    this.shortcuts.on(COPY_KEY_SHORTCUT, e => {
+    this.shortcuts.on(getString("netmonitor-toolbar-copy-key"), e => {
       if (!this.props.selectedRequest?.url) {
         return;
       }
@@ -318,24 +300,34 @@ class Toolbar extends Component {
    * Render a clear button.
    */
   renderClearButton(clearRequests) {
-    return button({
-      className:
-        "devtools-button devtools-clear-icon requests-list-clear-button",
-      title: TOOLBAR_CLEAR,
-      onClick: clearRequests,
-    });
+    return Localized(
+      {
+        id: "netmonitor-toolbar-clear",
+        attrs: { title: true },
+      },
+      button({
+        className:
+          "devtools-button devtools-clear-icon requests-list-clear-button",
+        onClick: clearRequests,
+      })
+    );
   }
 
   /**
    * Render a ToggleRecording button.
    */
   renderToggleRecordingButton(recording, toggleRecording) {
-    return button({
-      className: "devtools-button requests-list-pause-button",
-      title: TOOLBAR_TOGGLE_RECORDING,
-      "aria-pressed": !recording,
-      onClick: toggleRecording,
-    });
+    return Localized(
+      {
+        id: "netmonitor-toolbar-toggle-recording",
+        attrs: { title: true },
+      },
+      button({
+        className: "devtools-button requests-list-pause-button",
+        "aria-pressed": !recording,
+        onClick: toggleRecording,
+      })
+    );
   }
 
   /**
@@ -363,14 +355,19 @@ class Toolbar extends Component {
       className.push("requests-list-blocking-button-enabled");
     }
 
-    return button({
-      className: className.join(" "),
-      title: TOOLBAR_BLOCKING,
-      "aria-pressed":
-        networkActionBarOpen &&
-        networkActionBarSelectedPanel === PANELS.BLOCKING,
-      onClick: toggleRequestBlockingPanel,
-    });
+    return Localized(
+      {
+        id: "netmonitor-toolbar-request-blocking",
+        attrs: { title: true },
+      },
+      button({
+        className: className.join(" "),
+        "aria-pressed":
+          networkActionBarOpen &&
+          networkActionBarSelectedPanel === PANELS.BLOCKING,
+        onClick: toggleRequestBlockingPanel,
+      })
+    );
   }
 
   /**
@@ -379,13 +376,19 @@ class Toolbar extends Component {
   renderSearchButton(toggleSearchPanel) {
     const { networkActionBarOpen, networkActionBarSelectedPanel } = this.props;
 
-    return button({
-      className: "devtools-button devtools-search-icon",
-      title: TOOLBAR_SEARCH,
-      "aria-pressed":
-        networkActionBarOpen && networkActionBarSelectedPanel === PANELS.SEARCH,
-      onClick: toggleSearchPanel,
-    });
+    return Localized(
+      {
+        id: "netmonitor-toolbar-search",
+        attrs: { title: true },
+      },
+      button({
+        className: "devtools-button devtools-search-icon",
+        "aria-pressed":
+          networkActionBarOpen &&
+          networkActionBarSelectedPanel === PANELS.SEARCH,
+        onClick: toggleSearchPanel,
+      })
+    );
   }
 
   /**
@@ -407,14 +410,19 @@ class Toolbar extends Component {
       return null;
     }
 
-    return button({
-      className: "devtools-button devtools-http-custom-request-icon",
-      title: TOOLBAR_HTTP_CUSTOM_REQUEST,
-      "aria-pressed":
-        networkActionBarOpen &&
-        networkActionBarSelectedPanel === PANELS.HTTP_CUSTOM_REQUEST,
-      onClick: toggleHTTPCustomRequestPanel,
-    });
+    return Localized(
+      {
+        id: "netmonitor-toolbar-http-custom-request",
+        attrs: { title: true },
+      },
+      button({
+        className: "devtools-button devtools-http-custom-request-icon",
+        "aria-pressed":
+          networkActionBarOpen &&
+          networkActionBarSelectedPanel === PANELS.HTTP_CUSTOM_REQUEST,
+        onClick: toggleHTTPCustomRequestPanel,
+      })
+    );
   }
 
   /**
@@ -423,16 +431,18 @@ class Toolbar extends Component {
   renderFilterButtons(requestFilterTypes) {
     // Render list of filter-buttons.
     const buttons = Object.entries(requestFilterTypes).map(([type, checked]) =>
-      button(
+      Localized(
         {
-          className: `devtools-togglebutton requests-list-filter-${type}-button`,
+          id: TOOLBAR_FILTER_L10N_IDS[type],
           key: type,
+        },
+        button({
+          className: `devtools-togglebutton requests-list-filter-${type}-button`,
           onClick: this.toggleRequestFilterType,
           onKeyDown: this.toggleRequestFilterType,
           "aria-pressed": checked,
           "data-key": type,
-        },
-        TOOLBAR_FILTER_LABELS[type]
+        })
       )
     );
     return div({ className: "requests-list-filter-buttons" }, buttons);
@@ -442,19 +452,24 @@ class Toolbar extends Component {
    * Render a Cache checkbox.
    */
   renderCacheCheckbox(browserCacheDisabled, toggleBrowserCache) {
-    return label(
+    return Localized(
       {
-        className: "devtools-checkbox-label devtools-cache-checkbox",
-        title: DISABLE_CACHE_TOOLTIP,
+        id: "netmonitor-toolbar-disable-cache-tooltip",
+        attrs: { title: true },
       },
-      input({
-        id: "devtools-cache-checkbox",
-        className: "devtools-checkbox",
-        type: "checkbox",
-        checked: browserCacheDisabled,
-        onChange: toggleBrowserCache,
-      }),
-      DISABLE_CACHE_LABEL
+      label(
+        {
+          className: "devtools-checkbox-label devtools-cache-checkbox",
+        },
+        input({
+          id: "devtools-cache-checkbox",
+          className: "devtools-checkbox",
+          type: "checkbox",
+          checked: browserCacheDisabled,
+          onChange: toggleBrowserCache,
+        }),
+        Localized({ id: "netmonitor-toolbar-disable-cache-label" }, span({}))
+      )
     );
   }
 
@@ -476,10 +491,12 @@ class Toolbar extends Component {
    * Render filter Searchbox.
    */
   renderFilterBox(setRequestFilterText) {
+    const { getString } = this.props;
+
     return SearchBox({
       delay: FILTER_SEARCH_DELAY,
-      keyShortcut: FILTER_KEY_SHORTCUT,
-      placeholder: SEARCH_PLACE_HOLDER,
+      keyShortcut: getString("netmonitor-toolbar-filter-freetext-key"),
+      placeholder: getString("netmonitor-toolbar-filter-freetext-label"),
       type: "filter",
       ref: "searchbox",
       initialValue: Services.prefs.getCharPref(
@@ -490,7 +507,9 @@ class Toolbar extends Component {
       onFocus: this.onSearchBoxFocus,
       autocompleteProvider: this.autocompleteProvider,
       learnMoreUrl: LEARN_MORE_URL,
-      learnMoreTitle: LEARN_MORE_TITLE,
+      learnMoreTitle: getString(
+        "netmonitor-toolbar-filter-freetext-learn-more"
+      ),
     });
   }
 
@@ -517,6 +536,7 @@ class Toolbar extends Component {
       openSplitConsole,
       persistentLogsEnabled,
       togglePersistentLogs,
+      getString,
     } = this.props;
 
     const menuItems = [
@@ -525,8 +545,8 @@ class Toolbar extends Component {
         className: "menu-item netmonitor-settings-persist-item",
         type: "checkbox",
         checked: persistentLogsEnabled,
-        label: L10N.getStr("netmonitor.toolbar.enablePersistentLogs.label"),
-        tooltip: L10N.getStr("netmonitor.toolbar.enablePersistentLogs.tooltip"),
+        l10nID: "netmonitor-toolbar-enable-persistent-logs-label",
+        tooltip: getString("netmonitor-toolbar-enable-persistent-logs-tooltip"),
         onClick: () => togglePersistentLogs(),
       }),
       hr({ key: "netmonitor-settings-har-divider" }),
@@ -626,41 +646,44 @@ class Toolbar extends Component {
   }
 }
 
-module.exports = connect(
-  state => ({
-    browserCacheDisabled: state.ui.browserCacheDisabled,
-    displayedRequests: getDisplayedRequests(state),
-    hasBlockedRequests:
-      state.requestBlocking.blockingEnabled &&
-      state.requestBlocking.blockedUrls.some(({ enabled }) => enabled),
-    filteredRequests: getTypeFilteredRequests(state),
-    persistentLogsEnabled: state.ui.persistentLogsEnabled,
-    recording: getRecordingState(state),
-    requestFilterTypes: state.filters.requestFilterTypes,
-    networkThrottling: state.networkThrottling,
-    networkActionBarOpen: state.ui.networkActionOpen,
-    networkActionBarSelectedPanel: state.ui.selectedActionBarTabId || "",
-    selectedRequest: getSelectedRequest(state),
-  }),
-  dispatch => ({
-    clearRequests: () =>
-      dispatch(Actions.clearRequests({ isExplicitClear: true })),
-    disableBrowserCache: disabled =>
-      dispatch(Actions.disableBrowserCache(disabled)),
-    enablePersistentLogs: (enabled, skipTelemetry) =>
-      dispatch(Actions.enablePersistentLogs(enabled, skipTelemetry)),
-    setRequestFilterText: text => dispatch(Actions.setRequestFilterText(text)),
-    toggleBrowserCache: () => dispatch(Actions.toggleBrowserCache()),
-    toggleRecording: () => dispatch(Actions.toggleRecording()),
-    togglePersistentLogs: () => dispatch(Actions.togglePersistentLogs()),
-    toggleRequestFilterType: type =>
-      dispatch(Actions.toggleRequestFilterType(type)),
-    onChangeNetworkThrottling: (enabled, profile) =>
-      dispatch(changeNetworkThrottling(enabled, profile)),
-    toggleHTTPCustomRequestPanel: () =>
-      dispatch(Actions.toggleHTTPCustomRequestPanel()),
-    toggleSearchPanel: () => dispatch(Actions.toggleSearchPanel()),
-    toggleRequestBlockingPanel: () =>
-      dispatch(Actions.toggleRequestBlockingPanel()),
-  })
-)(Toolbar);
+module.exports = FluentReact.withLocalization(
+  connect(
+    state => ({
+      browserCacheDisabled: state.ui.browserCacheDisabled,
+      displayedRequests: getDisplayedRequests(state),
+      hasBlockedRequests:
+        state.requestBlocking.blockingEnabled &&
+        state.requestBlocking.blockedUrls.some(({ enabled }) => enabled),
+      filteredRequests: getTypeFilteredRequests(state),
+      persistentLogsEnabled: state.ui.persistentLogsEnabled,
+      recording: getRecordingState(state),
+      requestFilterTypes: state.filters.requestFilterTypes,
+      networkThrottling: state.networkThrottling,
+      networkActionBarOpen: state.ui.networkActionOpen,
+      networkActionBarSelectedPanel: state.ui.selectedActionBarTabId || "",
+      selectedRequest: getSelectedRequest(state),
+    }),
+    dispatch => ({
+      clearRequests: () =>
+        dispatch(Actions.clearRequests({ isExplicitClear: true })),
+      disableBrowserCache: disabled =>
+        dispatch(Actions.disableBrowserCache(disabled)),
+      enablePersistentLogs: (enabled, skipTelemetry) =>
+        dispatch(Actions.enablePersistentLogs(enabled, skipTelemetry)),
+      setRequestFilterText: text =>
+        dispatch(Actions.setRequestFilterText(text)),
+      toggleBrowserCache: () => dispatch(Actions.toggleBrowserCache()),
+      toggleRecording: () => dispatch(Actions.toggleRecording()),
+      togglePersistentLogs: () => dispatch(Actions.togglePersistentLogs()),
+      toggleRequestFilterType: type =>
+        dispatch(Actions.toggleRequestFilterType(type)),
+      onChangeNetworkThrottling: (enabled, profile) =>
+        dispatch(changeNetworkThrottling(enabled, profile)),
+      toggleHTTPCustomRequestPanel: () =>
+        dispatch(Actions.toggleHTTPCustomRequestPanel()),
+      toggleSearchPanel: () => dispatch(Actions.toggleSearchPanel()),
+      toggleRequestBlockingPanel: () =>
+        dispatch(Actions.toggleRequestBlockingPanel()),
+    })
+  )(Toolbar)
+);

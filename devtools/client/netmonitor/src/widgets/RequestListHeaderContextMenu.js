@@ -11,15 +11,12 @@ const {
   HEADERS,
 } = require("resource://devtools/client/netmonitor/src/constants.js");
 const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
-const {
   getVisibleColumns,
 } = require("resource://devtools/client/netmonitor/src/selectors/index.js");
 
-const stringMap = HEADERS.filter(header =>
-  header.hasOwnProperty("label")
-).reduce((acc, { name, label }) => Object.assign(acc, { [name]: label }), {});
+const l10nIdMap = HEADERS.filter(header =>
+  header.hasOwnProperty("l10nId")
+).reduce((acc, { name, l10nId }) => Object.assign(acc, { [name]: l10nId }), {});
 
 const subMenuMap = HEADERS.filter(header =>
   header.hasOwnProperty("subMenu")
@@ -28,9 +25,11 @@ const subMenuMap = HEADERS.filter(header =>
   {}
 );
 
-const nonLocalizedHeaders = HEADERS.filter(header =>
-  header.hasOwnProperty("noLocalization")
-).map(header => header.name);
+loader.lazyGetter(
+  this,
+  "l10n",
+  () => new Localization(["devtools/client/netmonitor.ftl"], true)
+);
 
 class RequestListHeaderContextMenu {
   constructor(props) {
@@ -49,9 +48,9 @@ class RequestListHeaderContextMenu {
 
     for (const column in columns) {
       const shown = columns[column];
-      const label = nonLocalizedHeaders.includes(column)
-        ? stringMap[column] || column
-        : L10N.getStr(`netmonitor.toolbar.${stringMap[column] || column}`);
+      const label = l10nIdMap[column]
+        ? l10n.formatValueSync(l10nIdMap[column])
+        : column;
       const entry = {
         id: `request-list-header-${column}-toggle`,
         label,
@@ -69,24 +68,24 @@ class RequestListHeaderContextMenu {
 
     menu.push({ type: "separator" });
     menu.push({
-      label: L10N.getStr("netmonitor.toolbar.timings"),
+      label: l10n.formatValueSync("netmonitor-toolbar-timings"),
       submenu: subMenu.timings,
     });
     menu.push({
-      label: L10N.getStr("netmonitor.toolbar.responseHeaders"),
+      label: l10n.formatValueSync("netmonitor-toolbar-response-headers"),
       submenu: subMenu.responseHeaders,
     });
 
     menu.push({ type: "separator" });
     menu.push({
       id: "request-list-header-reset-columns",
-      label: L10N.getStr("netmonitor.toolbar.resetColumns"),
+      label: l10n.formatValueSync("netmonitor-toolbar-reset-columns"),
       click: () => this.props.resetColumns(),
     });
 
     menu.push({
       id: "request-list-header-reset-sorting",
-      label: L10N.getStr("netmonitor.toolbar.resetSorting"),
+      label: l10n.formatValueSync("netmonitor-toolbar-reset-sorting"),
       click: () => this.props.resetSorting(),
     });
 
@@ -94,7 +93,9 @@ class RequestListHeaderContextMenu {
 
     menu.push({
       id: "request-list-header-resize-column-to-fit-content",
-      label: L10N.getStr("netmonitor.toolbar.resizeColumnToFitContent"),
+      label: l10n.formatValueSync(
+        "netmonitor-toolbar-resize-column-to-fit-content"
+      ),
       click: () => this.props.resizeColumnToFitContent(columnName),
     });
 
