@@ -715,3 +715,83 @@ netmonitor-cache-last-fetched = Last Fetched
 netmonitor-cache-last-modified = Last Modified
 # The label text for the device a cached object was fetched from (e.g. "disk").
 netmonitor-cache-device = Device
+
+## Strings used in the tooltip of the waterfall column of the DevTools Network
+## Panel request table. Each one is one part of the tooltip, joined into a list.
+
+# Variables:
+#   $time (Number): the total time, in milliseconds.
+netmonitor-waterfall-tooltip-total = Total { $time } ms
+# Variables:
+#   $time (Number): the blocked time, in milliseconds.
+netmonitor-waterfall-tooltip-blocked = Blocked { $time } ms
+# Variables:
+#   $time (Number): the dns time, in milliseconds.
+netmonitor-waterfall-tooltip-dns = DNS { $time } ms
+# Variables:
+#   $time (Number): the tls setup time, in milliseconds.
+netmonitor-waterfall-tooltip-ssl = TLS { $time } ms
+# Variables:
+#   $time (Number): the connect time, in milliseconds.
+netmonitor-waterfall-tooltip-connect = Connect { $time } ms
+# Variables:
+#   $time (Number): the send time, in milliseconds.
+netmonitor-waterfall-tooltip-send = Send { $time } ms
+# Variables:
+#   $time (Number): the wait time, in milliseconds.
+netmonitor-waterfall-tooltip-wait = Wait { $time } ms
+# Variables:
+#   $time (Number): the receive time, in milliseconds.
+netmonitor-waterfall-tooltip-receive = Receive { $time } ms
+
+## Strings used in the timings panel of the DevTools Network Panel
+
+# The title of the section containing the request timings.
+netmonitor-timings-request-timing = Request Timing
+# The title of the section containing the server timings transferred from the
+# server through the "Server-Timing" header.
+netmonitor-timings-server-timing = Server Timing
+# The title of the section containing the service worker timings transferred
+# from the service worker.
+netmonitor-timings-service-worker-timing = Service Worker Timing
+# The queued time relative to the first request.
+# Variables:
+#   $time (String): time expressed in milliseconds or minutes.
+netmonitor-timings-queued-at = Queued: { $time }
+# When the request actually started, relative to the first request.
+# Variables:
+#   $time (String): time expressed in milliseconds or minutes.
+netmonitor-timings-started-at = Started: { $time }
+# When the request actually finished downloading, relative to the first
+# request.
+# Variables:
+#   $time (String): time expressed in milliseconds or minutes.
+netmonitor-timings-downloaded-at = Downloaded: { $time }
+# The message displayed when a request has been blocked.
+netmonitor-timings-no-timings = No timings for this request
+# The label identifying the amount of time spent in a "blocked" state.
+netmonitor-timings-blocked = Blocked:
+# The label identifying the amount of time spent in a "dns" state.
+netmonitor-timings-dns = DNS Resolution:
+# The label identifying the amount of time spent in a "tls" handshake state.
+netmonitor-timings-ssl = TLS Setup:
+# The label identifying the amount of time spent in a "connect" state.
+netmonitor-timings-connect = Connecting:
+# The label identifying the amount of time spent in a "send" state.
+netmonitor-timings-send = Sending:
+# The label identifying the amount of time spent in a "wait" state.
+netmonitor-timings-wait = Waiting:
+# The label identifying the amount of time spent in a "receive" state.
+netmonitor-timings-receive = Receiving:
+# The label identifying the amount of time spent during the launch of the
+# service worker.
+netmonitor-timings-launch-service-worker = Startup:
+# The label identifying the amount of time spent while a request is made to the
+# service worker.
+netmonitor-timings-request-to-service-worker = Dispatch fetch:
+# The label identifying the amount of time spent while a request is handled by
+# the service worker.
+netmonitor-timings-handled-by-service-worker = Handle fetch:
+# The tooltip of the link to external documentation for timings.
+netmonitor-timings-learn-more =
+    .title = Learn more about timings

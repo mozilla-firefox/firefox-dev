@@ -25,6 +25,25 @@ const {
 
 const { div } = dom;
 
+// the tooltip is built on mouseover rather than during render, so this column
+// reads the strings directly instead of subscribing every row to the
+// localization context
+loader.lazyGetter(
+  this,
+  "l10n",
+  () => new Localization(["devtools/client/netmonitor.ftl"], true)
+);
+
+const WATERFALL_TOOLTIP_L10N_IDS = {
+  blocked: "netmonitor-waterfall-tooltip-blocked",
+  dns: "netmonitor-waterfall-tooltip-dns",
+  connect: "netmonitor-waterfall-tooltip-connect",
+  ssl: "netmonitor-waterfall-tooltip-ssl",
+  send: "netmonitor-waterfall-tooltip-send",
+  wait: "netmonitor-waterfall-tooltip-wait",
+  receive: "netmonitor-waterfall-tooltip-receive",
+};
+
 const UPDATED_WATERFALL_ITEM_PROPS = ["eventTimings", "totalTime"];
 const UPDATED_WATERFALL_PROPS = [
   "item",
@@ -91,7 +110,9 @@ module.exports = class RequestListColumnWaterfall extends Component {
 
         if (width > 0) {
           tooltip.push(
-            L10N.getFormatStr("netmonitor.waterfall.tooltip." + key, width)
+            l10n.formatValueSync(WATERFALL_TOOLTIP_L10N_IDS[key], {
+              time: width,
+            })
           );
         }
       }
@@ -99,7 +120,9 @@ module.exports = class RequestListColumnWaterfall extends Component {
 
     if (typeof totalTime === "number") {
       tooltip.push(
-        L10N.getFormatStr("netmonitor.waterfall.tooltip.total", totalTime)
+        l10n.formatValueSync("netmonitor-waterfall-tooltip-total", {
+          time: totalTime,
+        })
       );
     }
 

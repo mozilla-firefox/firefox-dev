@@ -601,3 +601,36 @@ netmonitor-cache-device = { COPY(from_path, "netmonitor.cache.device") }
         "netmonitor-timings-started-at": "netmonitor.timings.startedAt",
         "netmonitor-timings-downloaded-at": "netmonitor.timings.downloadedAt",
     }
+
+    ctx.add_transforms(
+        target,
+        target,
+        transforms_from(
+            """
+netmonitor-timings-request-timing = { COPY(from_path, "netmonitor.timings.requestTiming") }
+netmonitor-timings-server-timing = { COPY(from_path, "netmonitor.timings.serverTiming") }
+netmonitor-timings-service-worker-timing = { COPY(from_path, "netmonitor.timings.serviceWorkerTiming") }
+netmonitor-timings-no-timings = { COPY(from_path, "netmonitor.timings.noTimings") }
+netmonitor-timings-blocked = { COPY(from_path, "netmonitor.timings.blocked") }
+netmonitor-timings-dns = { COPY(from_path, "netmonitor.timings.dns") }
+netmonitor-timings-ssl = { COPY(from_path, "netmonitor.timings.ssl") }
+netmonitor-timings-connect = { COPY(from_path, "netmonitor.timings.connect") }
+netmonitor-timings-send = { COPY(from_path, "netmonitor.timings.send") }
+netmonitor-timings-wait = { COPY(from_path, "netmonitor.timings.wait") }
+netmonitor-timings-receive = { COPY(from_path, "netmonitor.timings.receive") }
+netmonitor-timings-launch-service-worker = { COPY(from_path, "netmonitor.timings.launchServiceWorker") }
+netmonitor-timings-request-to-service-worker = { COPY(from_path, "netmonitor.timings.requestToServiceWorker") }
+netmonitor-timings-handled-by-service-worker = { COPY(from_path, "netmonitor.timings.handledByServiceWorker") }
+netmonitor-timings-learn-more =
+    .title = { COPY(from_path, "netmonitor.timings.learnMore") }
+""",
+            from_path=source,
+        )
+        + [
+            FTL.Message(
+                id=FTL.Identifier(ftl_id),
+                value=REPLACE(source, key, {"%1$S": VARIABLE_REFERENCE("time")}),
+            )
+            for ftl_id, key in time_messages.items()
+        ],
+    )

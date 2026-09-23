@@ -9,12 +9,10 @@ const {
 } = require("resource://devtools/client/shared/vendor/react-redux.js");
 const {
   Component,
+  createFactory,
 } = require("resource://devtools/client/shared/vendor/react.mjs");
 const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-types.mjs");
 const dom = require("resource://devtools/client/shared/vendor/react-dom-factories.js");
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
 const {
   getNetMonitorTimingsURL,
 } = require("resource://devtools/client/netmonitor/src/utils/doc-utils.js");
@@ -27,11 +25,26 @@ const {
 const {
   TIMING_KEYS,
 } = require("resource://devtools/client/netmonitor/src/constants.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+const Localized = createFactory(FluentReact.Localized);
 
 // Components
 const MDNLink = require("resource://devtools/client/shared/components/MdnLink.js");
 
 const { div, span } = dom;
+
+const TIMINGS_L10N_IDS = {
+  blocked: "netmonitor-timings-blocked",
+  dns: "netmonitor-timings-dns",
+  connect: "netmonitor-timings-connect",
+  ssl: "netmonitor-timings-ssl",
+  send: "netmonitor-timings-send",
+  wait: "netmonitor-timings-wait",
+  receive: "netmonitor-timings-receive",
+  launchServiceWorker: "netmonitor-timings-launch-service-worker",
+  requestToServiceWorker: "netmonitor-timings-request-to-service-worker",
+  handledByServiceWorker: "netmonitor-timings-handled-by-service-worker",
+};
 
 /**
  * Timings panel component
@@ -74,9 +87,9 @@ class TimingsPanel extends Component {
 
     return div(
       {},
-      div(
-        { className: "label-separator" },
-        L10N.getStr("netmonitor.timings.serviceWorkerTiming")
+      Localized(
+        { id: "netmonitor-timings-service-worker-timing" },
+        div({ className: "label-separator" })
       ),
       Object.entries(serviceWorkerTimings).map(([key, value]) => {
         if (preValue > 0) {
@@ -89,9 +102,9 @@ class TimingsPanel extends Component {
             className:
               "tabpanel-summary-container timings-container service-worker",
           },
-          span(
-            { className: "tabpanel-summary-label timings-label" },
-            L10N.getStr(`netmonitor.timings.${key}`)
+          Localized(
+            { id: TIMINGS_L10N_IDS[key] },
+            span({ className: "tabpanel-summary-label timings-label" })
           ),
           div(
             { className: "requests-list-timings-container" },
@@ -124,9 +137,9 @@ class TimingsPanel extends Component {
 
     return div(
       {},
-      div(
-        { className: "label-separator" },
-        L10N.getStr("netmonitor.timings.serverTiming")
+      Localized(
+        { id: "netmonitor-timings-server-timing" },
+        div({ className: "label-separator" })
       ),
       ...serverTimings.map(({ name, duration, description }, index) => {
         const color = name === "total" ? "total" : (index % 3) + 1;
@@ -164,12 +177,12 @@ class TimingsPanel extends Component {
     const { firstRequestStartedMs } = this.props;
 
     if (!eventTimings) {
-      return div(
-        {
+      return Localized(
+        { id: "netmonitor-timings-no-timings" },
+        div({
           className:
             "tabpanel-summary-container timings-container empty-notice",
-        },
-        L10N.getStr("netmonitor.timings.noTimings")
+        })
       );
     }
 
@@ -204,9 +217,9 @@ class TimingsPanel extends Component {
           id: `timings-summary-${type}`,
           className: "tabpanel-summary-container timings-container request",
         },
-        span(
-          { className: "tabpanel-summary-label timings-label" },
-          L10N.getStr(`netmonitor.timings.${type}`)
+        Localized(
+          { id: TIMINGS_L10N_IDS[type] },
+          span({ className: "tabpanel-summary-label timings-label" })
         ),
         div(
           { className: "requests-list-timings-container" },
@@ -230,39 +243,42 @@ class TimingsPanel extends Component {
       isFirstRequestStartedAvailable &&
         div(
           { className: "timings-overview" },
-          span(
-            { className: "timings-overview-item" },
-            L10N.getFormatStr(
-              "netmonitor.timings.queuedAt",
-              getFormattedTime(queuedAt)
-            )
+          Localized(
+            {
+              id: "netmonitor-timings-queued-at",
+              $time: getFormattedTime(queuedAt),
+            },
+            span({ className: "timings-overview-item" })
           ),
-          span(
-            { className: "timings-overview-item" },
-            L10N.getFormatStr(
-              "netmonitor.timings.startedAt",
-              getFormattedTime(startedAt)
-            )
+          Localized(
+            {
+              id: "netmonitor-timings-started-at",
+              $time: getFormattedTime(startedAt),
+            },
+            span({ className: "timings-overview-item" })
           ),
-          span(
-            { className: "timings-overview-item" },
-            L10N.getFormatStr(
-              "netmonitor.timings.downloadedAt",
-              getFormattedTime(downloadedAt)
-            )
+          Localized(
+            {
+              id: "netmonitor-timings-downloaded-at",
+              $time: getFormattedTime(downloadedAt),
+            },
+            span({ className: "timings-overview-item" })
           )
         ),
-      div(
-        { className: "label-separator" },
-        L10N.getStr("netmonitor.timings.requestTiming")
+      Localized(
+        { id: "netmonitor-timings-request-timing" },
+        div({ className: "label-separator" })
       ),
       timelines,
       this.renderServiceWorkerTimings(),
       this.renderServerTimings(),
-      MDNLink({
-        url: getNetMonitorTimingsURL(),
-        title: L10N.getStr("netmonitor.timings.learnMore"),
-      })
+      Localized(
+        {
+          id: "netmonitor-timings-learn-more",
+          attrs: { title: true },
+        },
+        MDNLink({ url: getNetMonitorTimingsURL() })
+      )
     );
   }
 }
