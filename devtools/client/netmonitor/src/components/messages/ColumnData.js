@@ -10,11 +10,14 @@ const {
 const dom = require("resource://devtools/client/shared/vendor/react-dom-factories.js");
 const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-types.mjs");
 const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
-const {
   limitTooltipLength,
 } = require("resource://devtools/client/netmonitor/src/utils/tooltips.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+
+const TYPE_L10N_IDS = {
+  sent: "netmonitor-ws-type-sent",
+  received: "netmonitor-ws-type-received",
+};
 
 /**
  * Renders the "Data" column of a message.
@@ -24,13 +27,14 @@ class ColumnData extends Component {
     return {
       item: PropTypes.object.isRequired,
       connector: PropTypes.object.isRequired,
+      getString: PropTypes.func.isRequired,
     };
   }
 
   render() {
     const { type, payload } = this.props.item;
     // type could be undefined for sse channel.
-    const typeLabel = type ? L10N.getStr(`netmonitor.ws.type.${type}`) : null;
+    const typeLabel = type ? this.props.getString(TYPE_L10N_IDS[type]) : null;
 
     // If payload is a LongStringActor object, we show the first 1000 characters
     const displayedPayload = payload.initial ? payload.initial : payload;
@@ -57,4 +61,4 @@ class ColumnData extends Component {
   }
 }
 
-module.exports = ColumnData;
+module.exports = FluentReact.withLocalization(ColumnData);

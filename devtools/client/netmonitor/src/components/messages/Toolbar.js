@@ -18,9 +18,8 @@ const {
   FILTER_SEARCH_DELAY,
 } = require("resource://devtools/client/netmonitor/src/constants.js");
 const dom = require("resource://devtools/client/shared/vendor/react-dom-factories.js");
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+const Localized = createFactory(FluentReact.Localized);
 const { button, span, div } = dom;
 
 // Components
@@ -29,15 +28,6 @@ const MessageFilterMenu = createFactory(
 );
 const SearchBox = createFactory(
   require("resource://devtools/client/shared/components/SearchBox.js")
-);
-
-// Localization
-const MSG_TOOLBAR_CLEAR = L10N.getStr("netmonitor.ws.toolbar.clear");
-const MSG_SEARCH_KEY_SHORTCUT = L10N.getStr(
-  "netmonitor.ws.toolbar.filterFreetext.key"
-);
-const MSG_SEARCH_PLACE_HOLDER = L10N.getStr(
-  "netmonitor.ws.toolbar.filterFreetext.label"
 );
 
 /**
@@ -57,6 +47,7 @@ class Toolbar extends Component {
       messageFilterType: PropTypes.string.isRequired,
       showControlFrames: PropTypes.bool.isRequired,
       channelType: PropTypes.string,
+      getString: PropTypes.func.isRequired,
     };
   }
 
@@ -76,14 +67,19 @@ class Toolbar extends Component {
    * Render a clear button.
    */
   renderClearButton(clearMessages) {
-    return button({
-      className:
-        "devtools-button devtools-clear-icon message-list-clear-button",
-      title: MSG_TOOLBAR_CLEAR,
-      onClick: () => {
-        clearMessages();
+    return Localized(
+      {
+        id: "netmonitor-ws-toolbar-clear",
+        attrs: { title: true },
       },
-    });
+      button({
+        className:
+          "devtools-button devtools-clear-icon message-list-clear-button",
+        onClick: () => {
+          clearMessages();
+        },
+      })
+    );
   }
 
   /**
@@ -109,10 +105,12 @@ class Toolbar extends Component {
    * Render filter Searchbox.
    */
   renderFilterBox(setMessageFilterText) {
+    const { getString } = this.props;
+
     return SearchBox({
       delay: FILTER_SEARCH_DELAY,
-      keyShortcut: MSG_SEARCH_KEY_SHORTCUT,
-      placeholder: MSG_SEARCH_PLACE_HOLDER,
+      keyShortcut: getString("netmonitor-ws-toolbar-filter-freetext-key"),
+      placeholder: getString("netmonitor-ws-toolbar-filter-freetext-label"),
       type: "filter",
       ref: this.props.searchboxRef,
       onChange: setMessageFilterText,
@@ -136,17 +134,20 @@ class Toolbar extends Component {
   }
 }
 
-module.exports = connect(
-  state => ({
-    messageFilterType: state.messages.messageFilterType,
-    showControlFrames: state.messages.showControlFrames,
-    channelType: state.messages.currentChannelType,
-  }),
-  dispatch => ({
-    clearMessages: () => dispatch(Actions.clearMessages()),
-    toggleMessageFilterType: filter =>
-      dispatch(Actions.toggleMessageFilterType(filter)),
-    toggleControlFrames: () => dispatch(Actions.toggleControlFrames()),
-    setMessageFilterText: text => dispatch(Actions.setMessageFilterText(text)),
-  })
-)(Toolbar);
+module.exports = FluentReact.withLocalization(
+  connect(
+    state => ({
+      messageFilterType: state.messages.messageFilterType,
+      showControlFrames: state.messages.showControlFrames,
+      channelType: state.messages.currentChannelType,
+    }),
+    dispatch => ({
+      clearMessages: () => dispatch(Actions.clearMessages()),
+      toggleMessageFilterType: filter =>
+        dispatch(Actions.toggleMessageFilterType(filter)),
+      toggleControlFrames: () => dispatch(Actions.toggleControlFrames()),
+      setMessageFilterText: text =>
+        dispatch(Actions.setMessageFilterText(text)),
+    })
+  )(Toolbar)
+);

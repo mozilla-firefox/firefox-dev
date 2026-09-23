@@ -451,38 +451,47 @@ const FILTER_TAGS = [
 const MESSAGE_HEADERS = [
   {
     name: "data",
+    l10nId: "netmonitor-ws-toolbar-data",
     width: "40%",
   },
   {
     name: "size",
+    l10nId: "netmonitor-ws-toolbar-size",
     width: "12%",
   },
   {
     name: "opCode",
+    l10nId: "netmonitor-ws-toolbar-op-code",
     width: "9%",
   },
   {
     name: "maskBit",
+    l10nId: "netmonitor-ws-toolbar-mask-bit",
     width: "9%",
   },
   {
     name: "finBit",
+    l10nId: "netmonitor-ws-toolbar-fin-bit",
     width: "9%",
   },
   {
     name: "time",
+    l10nId: "netmonitor-ws-toolbar-time",
     width: "20%",
   },
   {
     name: "eventName",
+    l10nId: "netmonitor-ws-toolbar-event-name",
     width: "9%",
   },
   {
     name: "lastEventId",
+    l10nId: "netmonitor-ws-toolbar-last-event-id",
     width: "9%",
   },
   {
     name: "retry",
+    l10nId: "netmonitor-ws-toolbar-retry",
     width: "9%",
   },
 ];

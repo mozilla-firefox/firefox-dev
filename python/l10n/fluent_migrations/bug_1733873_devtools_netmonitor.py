@@ -10,6 +10,31 @@ from fluent.migrate.helpers import (
 from fluent.migrate.transforms import COPY, PLURALS, REPLACE, REPLACE_IN_TEXT
 
 
+# based on bug 1953339, itself based on bug 1832141
+class CUSTOM_PLURALS(PLURALS):
+    def __call__(self, ctx):
+        pattern = super().__call__(ctx)
+        el = pattern.elements[0]
+        if isinstance(el, FTL.Placeable) and isinstance(
+            el.expression, FTL.SelectExpression
+        ):
+            pass
+        else:
+            selexp = FTL.SelectExpression(
+                VARIABLE_REFERENCE("messageCount"),
+                [FTL.Variant(FTL.Identifier("other"), pattern, default=True)],
+            )
+            pattern = FTL.Pattern([FTL.Placeable(selexp)])
+            el = pattern.elements[0]
+        el.expression.variants[0:0] = [
+            FTL.Variant(
+                FTL.NumberLiteral("0"),
+                COPY(self.path, "networkMenu.ws.summary.framesCountEmpty")(ctx),
+            )
+        ]
+        return pattern
+
+
 def migrate(ctx):
     """Bug 1733873 - Migrate netmonitor.properties to Fluent, part {index}."""
 
@@ -320,6 +345,107 @@ netmonitor-har-import-dialog-all-filter = { COPY(from_path, "netmonitor.har.impo
                         ),
                     ),
                 ],
+            ),
+        ],
+    )
+
+    ctx.add_transforms(
+        target,
+        target,
+        transforms_from(
+            """
+netmonitor-ws-toolbar-data = { COPY(from_path, "netmonitor.ws.toolbar.data") }
+netmonitor-ws-toolbar-size = { COPY(from_path, "netmonitor.ws.toolbar.size") }
+netmonitor-ws-toolbar-op-code = { COPY(from_path, "netmonitor.ws.toolbar.opCode") }
+netmonitor-ws-toolbar-mask-bit = { COPY(from_path, "netmonitor.ws.toolbar.maskBit") }
+netmonitor-ws-toolbar-fin-bit = { COPY(from_path, "netmonitor.ws.toolbar.finBit") }
+netmonitor-ws-toolbar-time = { COPY(from_path, "netmonitor.ws.toolbar.time") }
+netmonitor-ws-toolbar-event-name = { COPY(from_path, "netmonitor.ws.toolbar.eventName") }
+netmonitor-ws-toolbar-last-event-id = { COPY(from_path, "netmonitor.ws.toolbar.lastEventId") }
+netmonitor-ws-toolbar-retry = { COPY(from_path, "netmonitor.ws.toolbar.retry") }
+netmonitor-ws-toolbar-clear =
+    .title = { COPY(from_path, "netmonitor.ws.toolbar.clear") }
+netmonitor-ws-toolbar-filter-freetext-label = { COPY(from_path, "netmonitor.ws.toolbar.filterFreetext.label") }
+netmonitor-ws-toolbar-filter-freetext-key = { COPY(from_path, "netmonitor.ws.toolbar.filterFreetext.key") }
+netmonitor-ws-toolbar-reset-columns = { COPY(from_path, "netmonitor.ws.toolbar.resetColumns") }
+netmonitor-ws-connection-closed = { COPY(from_path, "netmonitor.ws.connection.closed") }
+netmonitor-ws-type-sent = { COPY(from_path, "netmonitor.ws.type.sent") }
+netmonitor-ws-type-received = { COPY(from_path, "netmonitor.ws.type.received") }
+netmonitor-ws-context-all =
+    .label = { COPY(from_path, "netmonitor.ws.context.all") }
+    .accesskey = { COPY(from_path, "netmonitor.ws.context.all.accesskey") }
+netmonitor-ws-context-sent =
+    .label = { COPY(from_path, "netmonitor.ws.context.sent") }
+    .accesskey = { COPY(from_path, "netmonitor.ws.context.sent.accesskey") }
+netmonitor-ws-context-received =
+    .label = { COPY(from_path, "netmonitor.ws.context.received") }
+    .accesskey = { COPY(from_path, "netmonitor.ws.context.received.accesskey") }
+netmonitor-ws-context-control-frames =
+    .label = { COPY(from_path, "netmonitor.ws.context.controlFrames") }
+    .accesskey = { COPY(from_path, "netmonitor.ws.context.controlFrames.accesskey") }
+netmonitor-ws-context-copy-frame =
+    .label = { COPY(from_path, "netmonitor.ws.context.copyFrame") }
+    .accesskey = { COPY(from_path, "netmonitor.ws.context.copyFrame.accesskey") }
+netmonitor-ws-context-copy-frame-as-base64 =
+    .label = { COPY(from_path, "netmonitor.ws.context.copyFrameAsBase64") }
+    .accesskey = { COPY(from_path, "netmonitor.ws.context.copyFrameAsBase64.accesskey") }
+netmonitor-ws-context-copy-frame-as-hex =
+    .label = { COPY(from_path, "netmonitor.ws.context.copyFrameAsHex") }
+    .accesskey = { COPY(from_path, "netmonitor.ws.context.copyFrameAsHex.accesskey") }
+netmonitor-ws-context-copy-frame-as-text =
+    .label = { COPY(from_path, "netmonitor.ws.context.copyFrameAsText") }
+    .accesskey = { COPY(from_path, "netmonitor.ws.context.copyFrameAsText.accesskey") }
+network-menu-ws-summary-tooltip-messages-count =
+    .title = { COPY(from_path, "networkMenu.ws.summary.tooltip.framesCount") }
+network-menu-ws-summary-tooltip-messages-total-size =
+    .title = { COPY(from_path, "networkMenu.ws.summary.tooltip.framesTotalSize") }
+network-menu-ws-summary-tooltip-messages-total-time =
+    .title = { COPY(from_path, "networkMenu.ws.summary.tooltip.framesTotalTime") }
+""",
+            from_path=source,
+        )
+        + [
+            FTL.Message(
+                id=FTL.Identifier("netmonitor-ws-raw-data-header"),
+                value=REPLACE(
+                    source,
+                    "netmonitor.ws.rawData.header",
+                    {"%1$S": VARIABLE_REFERENCE("formattedSize")},
+                ),
+            ),
+            FTL.Message(
+                id=FTL.Identifier("netmonitor-ws-truncated-messages-warning"),
+                value=PLURALS(
+                    source,
+                    "netmonitor.ws.truncated-messages.warning",
+                    VARIABLE_REFERENCE("messageCount"),
+                    lambda text: REPLACE_IN_TEXT(
+                        text, {"#1": VARIABLE_REFERENCE("messageCount")}
+                    ),
+                ),
+            ),
+            FTL.Message(
+                id=FTL.Identifier("network-menu-ws-summary-messages-count"),
+                value=CUSTOM_PLURALS(
+                    source,
+                    "networkMenu.ws.summary.framesCount2",
+                    VARIABLE_REFERENCE("messageCount"),
+                    lambda text: REPLACE_IN_TEXT(
+                        text, {"#1": VARIABLE_REFERENCE("messageCount")}
+                    ),
+                ),
+            ),
+            FTL.Message(
+                id=FTL.Identifier("network-menu-ws-summary-messages-transferred-size"),
+                value=REPLACE(
+                    source,
+                    "networkMenu.ws.summary.label.framesTranferredSize",
+                    {
+                        "%1$S": VARIABLE_REFERENCE("formattedTotalSize"),
+                        "%2$S": VARIABLE_REFERENCE("formattedSentSize"),
+                        "%3$S": VARIABLE_REFERENCE("formattedReceivedSize"),
+                    },
+                ),
             ),
         ],
     )

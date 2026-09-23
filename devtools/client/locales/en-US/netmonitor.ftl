@@ -372,3 +372,120 @@ netmonitor-har-import-har-dialog-title = Import HAR File
 netmonitor-har-import-dialog-har-filter = HAR Files
 # This is the label for the “all files” filter of the import file open dialog.
 netmonitor-har-import-dialog-all-filter = All Files
+
+## Labels for the columns of the DevTools Network Panel messages table, used
+## for WebSocket and server-sent event messages. Each is displayed in the table
+## header, and in the header context menu that toggles the column's visibility.
+
+netmonitor-ws-toolbar-data = Data
+netmonitor-ws-toolbar-size = Size
+netmonitor-ws-toolbar-op-code = OpCode
+netmonitor-ws-toolbar-mask-bit = MaskBit
+netmonitor-ws-toolbar-fin-bit = FinBit
+netmonitor-ws-toolbar-time = Time
+netmonitor-ws-toolbar-event-name = Event Name
+netmonitor-ws-toolbar-last-event-id = Last Event ID
+netmonitor-ws-toolbar-retry = Retry
+
+## Strings used in the messages panel of the DevTools Network Panel
+
+# This is the tooltip displayed in the messages panel toolbar for the “Clear”
+# button.
+netmonitor-ws-toolbar-clear =
+    .title = Clear
+# This is the label displayed in the messages panel toolbar for the message
+# filtering textbox.
+netmonitor-ws-toolbar-filter-freetext-label = Filter Messages
+# This is the shortcut key to focus on the messages panel message filtering
+# textbox.
+netmonitor-ws-toolbar-filter-freetext-key = CmdOrCtrl+E
+# This is the label displayed in the messages panel table header context menu.
+netmonitor-ws-toolbar-reset-columns = Reset Columns
+# This is the text displayed in the messages panel when the connection is
+# closed.
+netmonitor-ws-connection-closed = Connection Closed
+# This is the label used as accessible text for the “sent” type icon in the
+# messages table's data column.
+netmonitor-ws-type-sent = Sent
+# This is the label used as accessible text for the “received” type icon in the
+# messages table's data column.
+netmonitor-ws-type-received = Received
+# This is the label displayed in the messages panel identifying the raw data.
+# Variables:
+#   $formattedSize (String): the formatted size of the raw data.
+netmonitor-ws-raw-data-header = Raw Data ({ $formattedSize })
+# This is the text displayed in the messages panel when the number of messages
+# is over the truncation limit.
+# Variables:
+#   $messageCount (Number): the number of truncated messages.
+netmonitor-ws-truncated-messages-warning =
+    { $messageCount ->
+        [one] { $messageCount } message has been truncated to conserve memory
+       *[other] { $messageCount } messages have been truncated to conserve memory
+    }
+
+## Strings used in the message filter menu and the message context menu of the
+## DevTools Network Panel messages panel. The filter menu's labels are also
+## used as the caption of the button that opens it.
+
+# This is the label displayed on the menu that shows all messages.
+netmonitor-ws-context-all =
+    .label = All
+    .accesskey = A
+# This is the label displayed on the menu that shows sent messages.
+netmonitor-ws-context-sent =
+    .label = Sent
+    .accesskey = S
+# This is the label displayed on the menu that shows received messages.
+netmonitor-ws-context-received =
+    .label = Received
+    .accesskey = R
+# This is the label displayed on the menu that shows WebSocket control frames.
+netmonitor-ws-context-control-frames =
+    .label = Control
+    .accesskey = o
+# This is the label displayed on the context menu of a message that copies it.
+netmonitor-ws-context-copy-frame =
+    .label = Copy Message
+    .accesskey = C
+# This is the label displayed on the context menu of a binary message that
+# copies it as Base64.
+netmonitor-ws-context-copy-frame-as-base64 =
+    .label = Copy as Base64
+    .accesskey = B
+# This is the label displayed on the context menu of a binary message that
+# copies it as hexadecimal.
+netmonitor-ws-context-copy-frame-as-hex =
+    .label = Copy as Hex
+    .accesskey = H
+# This is the label displayed on the context menu of a binary message that
+# copies it as text.
+netmonitor-ws-context-copy-frame-as-text =
+    .label = Copy as Text
+    .accesskey = T
+
+## Strings used in the status bar of the DevTools Network Panel messages panel
+
+# This label is displayed in the messages table footer providing the number of
+# messages.
+# Variables:
+#   $messageCount (Number): the total number of messages.
+network-menu-ws-summary-messages-count =
+    { $messageCount ->
+        [0] No messages
+        [one] { $messageCount } message
+       *[other] { $messageCount } messages
+    }
+network-menu-ws-summary-tooltip-messages-count =
+    .title = Number of messages
+network-menu-ws-summary-tooltip-messages-total-size =
+    .title = Total size of displayed messages
+# This label shows the summary size information for the currently displayed
+# messages.
+# Variables:
+#   $formattedTotalSize (String): the formatted size of the transferred data.
+#   $formattedSentSize (String): the formatted size of the sent data.
+#   $formattedReceivedSize (String): the formatted size of the received data.
+network-menu-ws-summary-messages-transferred-size = { $formattedTotalSize } total, { $formattedSentSize } sent, { $formattedReceivedSize } received
+network-menu-ws-summary-tooltip-messages-total-time =
+    .title = Total elapsed time between the first and last displayed messages

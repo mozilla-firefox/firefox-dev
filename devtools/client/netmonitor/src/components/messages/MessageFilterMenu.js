@@ -10,8 +10,14 @@ const dom = require("resource://devtools/client/shared/vendor/react-dom-factorie
 const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-types.mjs");
 
 const {
-  L10N,
+  getMenuItemStrings,
 } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+
+const FILTER_TYPE_L10N_IDS = {
+  all: "netmonitor-ws-context-all",
+  sent: "netmonitor-ws-context-sent",
+  received: "netmonitor-ws-context-received",
+};
 
 // Menu
 loader.lazyRequireGetter(
@@ -50,8 +56,7 @@ class MessageFilterMenu extends PureComponent {
     const menuItems = [
       {
         id: "message-list-context-filter-all",
-        label: L10N.getStr("netmonitor.ws.context.all"),
-        accesskey: L10N.getStr("netmonitor.ws.context.all.accesskey"),
+        ...getMenuItemStrings("netmonitor-ws-context-all"),
         type: "checkbox",
         checked: messageFilterType === "all",
         click: () => {
@@ -60,8 +65,7 @@ class MessageFilterMenu extends PureComponent {
       },
       {
         id: "message-list-context-filter-sent",
-        label: L10N.getStr("netmonitor.ws.context.sent"),
-        accesskey: L10N.getStr("netmonitor.ws.context.sent.accesskey"),
+        ...getMenuItemStrings("netmonitor-ws-context-sent"),
         type: "checkbox",
         checked: messageFilterType === "sent",
         click: () => {
@@ -70,8 +74,7 @@ class MessageFilterMenu extends PureComponent {
       },
       {
         id: "message-list-context-filter-received",
-        label: L10N.getStr("netmonitor.ws.context.received"),
-        accesskey: L10N.getStr("netmonitor.ws.context.received.accesskey"),
+        ...getMenuItemStrings("netmonitor-ws-context-received"),
         type: "checkbox",
         checked: messageFilterType === "received",
         click: () => {
@@ -83,8 +86,7 @@ class MessageFilterMenu extends PureComponent {
       },
       {
         id: "message-list-context-filter-controlFrames",
-        label: L10N.getStr("netmonitor.ws.context.controlFrames"),
-        accesskey: L10N.getStr("netmonitor.ws.context.controlFrames.accesskey"),
+        ...getMenuItemStrings("netmonitor-ws-context-control-frames"),
         type: "checkbox",
         checked: showControlFrames,
         click: () => {
@@ -98,13 +100,15 @@ class MessageFilterMenu extends PureComponent {
 
   render() {
     const { messageFilterType, showControlFrames } = this.props;
-    const messageFilterTypeTitle = L10N.getStr(
-      `netmonitor.ws.context.${messageFilterType}`
-    );
+    const messageFilterTypeTitle = getMenuItemStrings(
+      FILTER_TYPE_L10N_IDS[messageFilterType]
+    ).label;
     const title =
       messageFilterTypeTitle +
       (showControlFrames
-        ? " (" + L10N.getStr(`netmonitor.ws.context.controlFrames`) + ")"
+        ? " (" +
+          getMenuItemStrings("netmonitor-ws-context-control-frames").label +
+          ")"
         : "");
 
     return dom.button(

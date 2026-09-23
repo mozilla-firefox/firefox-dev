@@ -12,7 +12,6 @@ const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-t
 const {
   connect,
 } = require("resource://devtools/client/shared/vendor/react-redux.js");
-const { PluralForm } = require("resource://devtools/shared/plural-form.js");
 const {
   getDisplayedMessages,
   isCurrentChannelClosed,
@@ -28,13 +27,13 @@ const TOGGLE_MESSAGES_TRUNCATION = L10N.getStr("toggleMessagesTruncation");
 const TOGGLE_MESSAGES_TRUNCATION_TITLE = L10N.getStr(
   "toggleMessagesTruncation.title"
 );
-const CONNECTION_CLOSED_TEXT = L10N.getStr("netmonitor.ws.connection.closed");
 const {
   CHANNEL_TYPE,
   WEB_SOCKET_OPCODE,
   MESSAGE_HEADERS,
 } = require("resource://devtools/client/netmonitor/src/constants.js");
 const Actions = require("resource://devtools/client/netmonitor/src/actions/index.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
 
 const {
   getSelectedMessage,
@@ -70,6 +69,7 @@ class MessageListContent extends Component {
       channelId: PropTypes.number,
       channelType: PropTypes.string,
       onSelectMessageDelta: PropTypes.func.isRequired,
+      getString: PropTypes.func.isRequired,
     };
   }
 
@@ -262,6 +262,7 @@ class MessageListContent extends Component {
       columns,
       isClosed,
       closedConnectionDetails,
+      getString,
     } = this.props;
 
     if (messages.length === 0) {
@@ -286,15 +287,15 @@ class MessageListContent extends Component {
         : messages.length - this.messagesLimit;
       displayedMessages = messages.slice(this.currentTruncatedNum);
 
-      MESSAGES_TRUNCATED = PluralForm.get(
-        this.currentTruncatedNum,
-        L10N.getStr("netmonitor.ws.truncated-messages.warning")
-      ).replace("#1", this.currentTruncatedNum);
+      MESSAGES_TRUNCATED = getString(
+        "netmonitor-ws-truncated-messages-warning",
+        { messageCount: this.currentTruncatedNum }
+      );
     } else {
       displayedMessages = messages;
     }
 
-    let connectionClosedMsg = CONNECTION_CLOSED_TEXT;
+    let connectionClosedMsg = getString("netmonitor-ws-connection-closed");
     if (
       closedConnectionDetails &&
       closedConnectionDetails.code !== undefined &&
@@ -388,17 +389,20 @@ class MessageListContent extends Component {
   }
 }
 
-module.exports = connect(
-  state => ({
-    selectedMessage: getSelectedMessage(state),
-    messages: getDisplayedMessages(state),
-    columns: state.messages.columns,
-    isClosed: isCurrentChannelClosed(state),
-    closedConnectionDetails: getClosedConnectionDetails(state),
-    channelType: state.messages.currentChannelType,
-  }),
-  dispatch => ({
-    selectMessage: item => dispatch(Actions.selectMessage(item)),
-    onSelectMessageDelta: delta => dispatch(Actions.selectMessageDelta(delta)),
-  })
-)(MessageListContent);
+module.exports = FluentReact.withLocalization(
+  connect(
+    state => ({
+      selectedMessage: getSelectedMessage(state),
+      messages: getDisplayedMessages(state),
+      columns: state.messages.columns,
+      isClosed: isCurrentChannelClosed(state),
+      closedConnectionDetails: getClosedConnectionDetails(state),
+      channelType: state.messages.currentChannelType,
+    }),
+    dispatch => ({
+      selectMessage: item => dispatch(Actions.selectMessage(item)),
+      onSelectMessageDelta: delta =>
+        dispatch(Actions.selectMessageDelta(delta)),
+    })
+  )(MessageListContent)
+);

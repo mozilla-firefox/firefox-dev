@@ -48,6 +48,7 @@ const {
 const {
   getRequestByChannelId,
 } = require("resource://devtools/client/netmonitor/src/selectors/index.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
 
 // Components
 const RawData = createFactory(
@@ -71,6 +72,7 @@ class MessagePayload extends Component {
       connector: PropTypes.object.isRequired,
       selectedMessage: PropTypes.object,
       request: PropTypes.object.isRequired,
+      getString: PropTypes.func.isRequired,
     };
   }
 
@@ -417,12 +419,11 @@ class MessagePayload extends Component {
     } else {
       component = RawData;
       componentProps = { payload };
-      dataLabel = L10N.getFormatStrWithNumbers(
-        "netmonitor.ws.rawData.header",
-        getFormattedSize(
+      dataLabel = this.props.getString("netmonitor-ws-raw-data-header", {
+        formattedSize: getFormattedSize(
           this.props.selectedMessage.payloadSize ?? this.state.payload.length
-        )
-      );
+        ),
+      });
     }
 
     return div(
@@ -447,6 +448,8 @@ class MessagePayload extends Component {
   }
 }
 
-module.exports = connect(state => ({
-  request: getRequestByChannelId(state, state.messages.currentChannelId),
-}))(MessagePayload);
+module.exports = FluentReact.withLocalization(
+  connect(state => ({
+    request: getRequestByChannelId(state, state.messages.currentChannelId),
+  }))(MessagePayload)
+);

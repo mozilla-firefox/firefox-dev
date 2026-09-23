@@ -11,14 +11,12 @@ const dom = require("resource://devtools/client/shared/vendor/react-dom-factorie
 const {
   MESSAGE_HEADERS,
 } = require("resource://devtools/client/netmonitor/src/constants.js");
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
 const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-types.mjs");
 const {
   connect,
 } = require("resource://devtools/client/shared/vendor/react-redux.js");
 const Actions = require("resource://devtools/client/netmonitor/src/actions/index.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
 
 // Components
 const MessageListHeaderContextMenu = require("resource://devtools/client/netmonitor/src/components/messages/MessageListHeaderContextMenu.js");
@@ -32,6 +30,7 @@ class MessageListHeader extends Component {
       columns: PropTypes.object.isRequired,
       toggleColumn: PropTypes.func.isRequired,
       resetColumns: PropTypes.func.isRequired,
+      getString: PropTypes.func.isRequired,
     };
   }
 
@@ -65,8 +64,8 @@ class MessageListHeader extends Component {
   /**
    * Render one column header from the table headers.
    */
-  renderColumn({ name, width = "10%" }) {
-    const label = L10N.getStr(`netmonitor.ws.toolbar.${name}`);
+  renderColumn({ name, l10nId, width = "10%" }) {
+    const label = this.props.getString(l10nId);
 
     return dom.th(
       {
@@ -110,12 +109,14 @@ class MessageListHeader extends Component {
   }
 }
 
-module.exports = connect(
-  state => ({
-    columns: state.messages.columns,
-  }),
-  dispatch => ({
-    toggleColumn: column => dispatch(Actions.toggleMessageColumn(column)),
-    resetColumns: () => dispatch(Actions.resetMessageColumns()),
-  })
-)(MessageListHeader);
+module.exports = FluentReact.withLocalization(
+  connect(
+    state => ({
+      columns: state.messages.columns,
+    }),
+    dispatch => ({
+      toggleColumn: column => dispatch(Actions.toggleMessageColumn(column)),
+      resetColumns: () => dispatch(Actions.resetMessageColumns()),
+    })
+  )(MessageListHeader)
+);

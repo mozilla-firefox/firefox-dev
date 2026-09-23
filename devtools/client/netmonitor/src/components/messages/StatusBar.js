@@ -6,13 +6,13 @@
 
 const {
   Component,
+  createFactory,
 } = require("resource://devtools/client/shared/vendor/react.mjs");
 const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-types.mjs");
 const dom = require("resource://devtools/client/shared/vendor/react-dom-factories.js");
 const {
   connect,
 } = require("resource://devtools/client/shared/vendor/react-redux.js");
-const { PluralForm } = require("resource://devtools/shared/plural-form.js");
 const {
   getDisplayedMessagesSummary,
 } = require("resource://devtools/client/netmonitor/src/selectors/index.js");
@@ -21,30 +21,16 @@ const {
   getFormattedTime,
 } = require("resource://devtools/client/netmonitor/src/utils/format-utils.js");
 const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
-const {
   propertiesEqual,
 } = require("resource://devtools/client/netmonitor/src/utils/request-utils.js");
 
 const {
   CHANNEL_TYPE,
 } = require("resource://devtools/client/netmonitor/src/constants.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+const Localized = createFactory(FluentReact.Localized);
 
 const { div, footer } = dom;
-
-const MESSAGE_COUNT_EMPTY = L10N.getStr(
-  "networkMenu.ws.summary.framesCountEmpty"
-);
-const TOOLTIP_MESSAGE_COUNT = L10N.getStr(
-  "networkMenu.ws.summary.tooltip.framesCount"
-);
-const TOOLTIP_MESSAGE_TOTAL_SIZE = L10N.getStr(
-  "networkMenu.ws.summary.tooltip.framesTotalSize"
-);
-const TOOLTIP_MESSAGE_TOTAL_TIME = L10N.getStr(
-  "networkMenu.ws.summary.tooltip.framesTotalTime"
-);
 
 const UPDATED_MSG_SUMMARY_PROPS = ["count", "totalMs", "totalSize"];
 
@@ -71,13 +57,6 @@ class StatusBar extends Component {
     const { summary, channelType } = this.props;
     const { count, totalMs, sentSize, receivedSize, totalSize } = summary;
 
-    const countText =
-      count === 0
-        ? MESSAGE_COUNT_EMPTY
-        : PluralForm.get(
-            count,
-            L10N.getStr("networkMenu.ws.summary.framesCount2")
-          ).replace("#1", count);
     const totalSizeText = getFormattedSize(totalSize);
     const sentSizeText = getFormattedSize(sentSize);
     const receivedText = getFormattedSize(receivedSize);
@@ -87,38 +66,57 @@ class StatusBar extends Component {
     // total size than showing all three sizes.
     const summaryText =
       channelType === CHANNEL_TYPE.WEB_SOCKET
-        ? L10N.getFormatStr(
-            "networkMenu.ws.summary.label.framesTranferredSize",
-            totalSizeText,
-            sentSizeText,
-            receivedText
-          )
+        ? Localized({
+            id: "network-menu-ws-summary-messages-transferred-size",
+            $formattedTotalSize: totalSizeText,
+            $formattedSentSize: sentSizeText,
+            $formattedReceivedSize: receivedText,
+          })
         : `${totalSizeText} total`;
 
     return footer(
       { className: "devtools-toolbar devtools-toolbar-bottom" },
-      div(
+      Localized(
         {
-          className: "status-bar-label message-network-summary-count",
-          title: TOOLTIP_MESSAGE_COUNT,
+          id: "network-menu-ws-summary-tooltip-messages-count",
+          attrs: { title: true },
         },
-        countText
+        div(
+          {
+            className: "status-bar-label message-network-summary-count",
+          },
+          Localized({
+            id: "network-menu-ws-summary-messages-count",
+            $messageCount: count,
+          })
+        )
       ),
       count !== 0 &&
-        div(
+        Localized(
           {
-            className: "status-bar-label message-network-summary-total-size",
-            title: TOOLTIP_MESSAGE_TOTAL_SIZE,
+            id: "network-menu-ws-summary-tooltip-messages-total-size",
+            attrs: { title: true },
           },
-          summaryText
+          div(
+            {
+              className: "status-bar-label message-network-summary-total-size",
+            },
+            summaryText
+          )
         ),
       count !== 0 &&
-        div(
+        Localized(
           {
-            className: "status-bar-label message-network-summary-total-millis",
-            title: TOOLTIP_MESSAGE_TOTAL_TIME,
+            id: "network-menu-ws-summary-tooltip-messages-total-time",
+            attrs: { title: true },
           },
-          totalMillisText
+          div(
+            {
+              className:
+                "status-bar-label message-network-summary-total-millis",
+            },
+            totalMillisText
+          )
         )
     );
   }
