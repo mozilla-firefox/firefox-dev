@@ -18,6 +18,7 @@ const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-t
 const {
   L10N,
 } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
 const {
   decodeUnicodeBase64,
   fetchNetworkUpdatePacket,
@@ -101,6 +102,7 @@ class ResponsePanel extends Component {
       defaultRawResponse: PropTypes.bool,
       setDefaultRawResponse: PropTypes.func,
       messages: PropTypes.array,
+      getString: PropTypes.func.isRequired,
     };
   }
 
@@ -235,14 +237,14 @@ class ResponsePanel extends Component {
       return null;
     }
 
+    const { getString } = this.props;
     const blockedMessage = BLOCKED_REASON_MESSAGES[blockedReason];
-    const messageText = L10N.getFormatStr(
-      "netmonitor.headers.blockedByCORS",
-      blockedMessage
-    );
+    const messageText = getString("netmonitor-headers-blocked-by-cors", {
+      reason: blockedMessage,
+    });
 
-    const learnMoreTooltip = L10N.getStr(
-      "netmonitor.headers.blockedByCORSTooltip"
+    const learnMoreTooltip = getString(
+      "netmonitor-headers-blocked-by-cors-tooltip"
     );
 
     // Create a notifications map with the CORS error notification
@@ -552,7 +554,9 @@ class ResponsePanel extends Component {
   }
 }
 
-module.exports = connect((state, props) => ({
-  // The messages are only needed for websockets or server sent events
-  messages: props.showMessagesView ? getDisplayedMessages(state) : null,
-}))(ResponsePanel);
+module.exports = FluentReact.withLocalization(
+  connect((state, props) => ({
+    // The messages are only needed for websockets or server sent events
+    messages: props.showMessagesView ? getDisplayedMessages(state) : null,
+  }))(ResponsePanel)
+);

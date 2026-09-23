@@ -11,11 +11,10 @@ const {
 const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-types.mjs");
 const dom = require("resource://devtools/client/shared/vendor/react-dom-factories.js");
 const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
-const {
   fetchNetworkUpdatePacket,
 } = require("resource://devtools/client/netmonitor/src/utils/request-utils.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+const Localized = createFactory(FluentReact.Localized);
 const {
   sortObjectKeys,
 } = require("resource://devtools/client/netmonitor/src/utils/sort-utils.js");
@@ -45,11 +44,6 @@ loader.lazyGetter(this, "TreeRow", function () {
 
 const { div } = dom;
 
-const COOKIES_EMPTY_TEXT = L10N.getStr("cookiesEmptyText");
-const COOKIES_FILTER_TEXT = L10N.getStr("cookiesFilterText");
-const REQUEST_COOKIES = L10N.getStr("requestCookies");
-const RESPONSE_COOKIES = L10N.getStr("responseCookies");
-
 /*
  * Cookies panel component
  * This tab lists full details of any cookies sent with the request or response
@@ -61,6 +55,7 @@ class CookiesPanel extends Component {
       openLink: PropTypes.func,
       request: PropTypes.object.isRequired,
       targetSearchResult: PropTypes.object,
+      getString: PropTypes.func.isRequired,
     };
   }
 
@@ -69,6 +64,8 @@ class CookiesPanel extends Component {
     this.state = {
       filterText: "",
     };
+    // passed to PropertiesView as a callback, so it needs its own `this`
+    this.getTargetCookiePath = this.getTargetCookiePath.bind(this);
   }
 
   componentDidMount() {
@@ -141,12 +138,18 @@ class CookiesPanel extends Component {
       return null;
     }
 
+    const { getString } = this.props;
+
     switch (searchResult.type) {
       case "requestCookies": {
-        return `/${REQUEST_COOKIES}/${searchResult.label}`;
+        return `/${getString("netmonitor-request-cookies")}/${
+          searchResult.label
+        }`;
       }
       case "responseCookies":
-        return `/${RESPONSE_COOKIES}/${searchResult.label}`;
+        return `/${getString("netmonitor-response-cookies")}/${
+          searchResult.label
+        }`;
     }
 
     return null;
@@ -159,15 +162,21 @@ class CookiesPanel extends Component {
         responseCookies = { cookies: [] },
       },
       targetSearchResult,
+      getString,
     } = this.props;
 
     const { filterText } = this.state;
+    const requestCookiesLabel = getString("netmonitor-request-cookies");
+    const responseCookiesLabel = getString("netmonitor-response-cookies");
 
     requestCookies = requestCookies.cookies || requestCookies;
     responseCookies = responseCookies.cookies || responseCookies;
 
     if (!requestCookies.length && !responseCookies.length) {
-      return div({ className: "empty-notice" }, COOKIES_EMPTY_TEXT);
+      return Localized(
+        { id: "netmonitor-cookies-empty-text" },
+        div({ className: "empty-notice" })
+      );
     }
 
     const items = [];
@@ -177,7 +186,7 @@ class CookiesPanel extends Component {
         component: PropertiesView,
         componentProps: {
           object: sortObjectKeys(
-            this.getProperties(responseCookies, RESPONSE_COOKIES)
+            this.getProperties(responseCookies, responseCookiesLabel)
           ),
           filterText,
           targetSearchResult,
@@ -185,7 +194,7 @@ class CookiesPanel extends Component {
           selectPath: this.getTargetCookiePath,
           renderRow: this.renderRow,
         },
-        header: RESPONSE_COOKIES,
+        header: responseCookiesLabel,
         id: "responseCookies",
         opened: true,
       });
@@ -196,7 +205,7 @@ class CookiesPanel extends Component {
         component: PropertiesView,
         componentProps: {
           object: sortObjectKeys(
-            this.getProperties(requestCookies, REQUEST_COOKIES)
+            this.getProperties(requestCookies, requestCookiesLabel)
           ),
           filterText,
           targetSearchResult,
@@ -204,7 +213,7 @@ class CookiesPanel extends Component {
           selectPath: this.getTargetCookiePath,
           renderRow: this.renderRow,
         },
-        header: REQUEST_COOKIES,
+        header: requestCookiesLabel,
         id: "requestCookies",
         opened: true,
       });
@@ -219,7 +228,7 @@ class CookiesPanel extends Component {
           type: "filter",
           initialValue: filterText,
           onChange: text => this.setState({ filterText: text }),
-          placeholder: COOKIES_FILTER_TEXT,
+          placeholder: getString("netmonitor-cookies-filter-text"),
         })
       ),
       Accordion({ items })
@@ -227,4 +236,4 @@ class CookiesPanel extends Component {
   }
 }
 
-module.exports = CookiesPanel;
+module.exports = FluentReact.withLocalization(CookiesPanel);

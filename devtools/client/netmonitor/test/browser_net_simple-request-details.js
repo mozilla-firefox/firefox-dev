@@ -7,11 +7,9 @@
  * Tests if requests render correct information in the details UI.
  */
 
-add_task(async function () {
-  const {
-    L10N,
-  } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
 
+add_task(async function () {
   const { monitor } = await initNetMonitor(SIMPLE_SJS, {
     requestCount: 1,
   });
@@ -155,13 +153,18 @@ add_task(async function () {
 
     ok(
       headerLabels[0].innerHTML.match(
-        new RegExp(L10N.getStr("responseHeaders") + " \\([0-9]+ .+\\)")
+        new RegExp(
+          l10n.formatValueSync("netmonitor-response-headers") +
+            " \\([0-9]+ .+\\)"
+        )
       ),
       "The response headers scope doesn't have the correct title."
     );
 
     ok(
-      headerLabels[1].innerHTML.includes(L10N.getStr("requestHeaders") + " ("),
+      headerLabels[1].innerHTML.includes(
+        l10n.formatValueSync("netmonitor-request-headers") + " ("
+      ),
       "The request headers scope doesn't have the correct title."
     );
 

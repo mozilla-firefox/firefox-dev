@@ -9,6 +9,8 @@
  * Note: Test has to run as a http3 test for the DoH servers to be used
  */
 
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+
 add_task(async function testCheckDNSResolution() {
   Services.dns.clearCache(true);
   // Force to use DNS Trusted Recursive Resolver only
@@ -40,7 +42,7 @@ add_task(async function testCheckDNSResolution() {
 
   is(
     dnsEl.querySelector(".tabpanel-summary-value").textContent,
-    L10N.getStr(`netmonitor.headers.dns.overHttps`),
+    l10n.formatValueSync("netmonitor-headers-dns-over-https"),
     "The DNS Resolution value showed correctly"
   );
 

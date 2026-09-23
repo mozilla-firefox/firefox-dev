@@ -614,3 +614,104 @@ netmonitor-security-cert-transparency-status-not-enough-scts = Not enough SCTs
 # Indicates that there are not enough diverse signed certificate timestamps.
 # This is a property for the "Transparency" field.
 netmonitor-security-cert-transparency-status-not-diverse-scts = Not diverse SCTs
+
+## Strings used in the headers panel of the DevTools Network Panel
+
+# The label of the block url toolbar button.
+netmonitor-headers-toolbar-block = Block
+# The text displayed when there are no headers available.
+netmonitor-headers-empty-text = No headers for this request
+# The text displayed for the filtering input.
+netmonitor-headers-filter-text = Filter Headers
+# The label identifying the request headers.
+netmonitor-request-headers = Request Headers
+# The label identifying the request headers from the upload stream of a POST
+# request's body.
+netmonitor-request-headers-from-upload = Request headers from upload stream
+# The label identifying the response headers.
+netmonitor-response-headers = Response Headers
+# The label identifying the early hints response headers. Do not translate
+# `Early Hints`, since it's the header type.
+netmonitor-early-hints-response-headers = Early Hints Response Headers
+# The label identifying the remote address.
+netmonitor-headers-address = Address
+# The label identifying the proxy address.
+netmonitor-headers-proxy-address = Proxy Address
+# The label identifying the early hints status code. `Early Hints` is an HTTP
+# status and should not be translated.
+netmonitor-headers-early-hints-status = Early Hints Status
+# The label identifying the status code.
+netmonitor-headers-status = Status
+# The label identifying the status code for the proxy.
+netmonitor-headers-proxy-status = Proxy Status
+# The label providing the size details.
+# Variables:
+#   $transferredSize (String): the transferred size.
+#   $contentSize (String): the size.
+netmonitor-headers-size-details = { $transferredSize } ({ $contentSize } size)
+# The label identifying the http version.
+netmonitor-headers-version = Version
+# The label identifying the http version of the proxy.
+netmonitor-headers-proxy-version = Proxy Version
+# The tooltip of the link to external documentation for status codes.
+netmonitor-summary-learn-more =
+    .title = Learn more about status code
+# The label identifying the referrer policy.
+netmonitor-headers-referrer-policy = Referrer Policy
+# The label identifying the content blocking mode.
+netmonitor-headers-content-blocking = Blocking
+# The label identifying the request priority.
+netmonitor-headers-request-priority = Request Priority
+# The label identifying the DNS resolution.
+netmonitor-headers-dns = DNS Resolution
+# The label value identifying the Basic DNS resolution.
+netmonitor-headers-dns-basic = System
+# The label value identifying the DNS over HTTPS resolution.
+netmonitor-headers-dns-over-https = DNS over HTTPS
+# The label of the button that opens a form to edit and resend the currently
+# displayed request.
+netmonitor-summary-edit-and-resend =
+    .label = Edit and Resend
+# The label of the button that toggles the view for raw request/response
+# headers of the currently displayed request.
+netmonitor-headers-raw = Raw
+# The message displayed in the notification shown when a request has been
+# blocked by CORS, with a more specific reason shown in the parenthesis.
+# Variables:
+#   $reason (String): the specific reason the request was blocked.
+netmonitor-headers-blocked-by-cors = Response body is not available to scripts (Reason: { $reason })
+# The tooltip displayed on the learn more link of the blocked by CORS
+# notification.
+netmonitor-headers-blocked-by-cors-tooltip = Learn more about this CORS error
+
+## Strings used in the cookies panel of the DevTools Network Panel
+
+# The text displayed when there are no cookies available.
+netmonitor-cookies-empty-text = No cookies for this request
+# The text displayed for the filtering input.
+netmonitor-cookies-filter-text = Filter Cookies
+# The label identifying the request cookies.
+netmonitor-request-cookies = Request Cookies
+# The label identifying the response cookies.
+netmonitor-response-cookies = Response Cookies
+
+## Strings used in the cache panel of the DevTools Network Panel
+
+# The label text for the parent node in the tree view.
+netmonitor-cache-cache = Cache
+# The text displayed when cache information is not available.
+netmonitor-cache-empty = No cache information
+# The text displayed under a node that has no information available.
+netmonitor-cache-not-available = Not Available
+# The label text for the data size of the cached object.
+netmonitor-cache-data-size = Data Size
+# The label text for the expires time of the cached object.
+netmonitor-cache-expires = Expires
+# The label text for the fetch count of the cached object.
+netmonitor-cache-fetch-count = Fetch Count
+# The label text for the last fetched date/time of the cached object.
+netmonitor-cache-last-fetched = Last Fetched
+# The label text for the last modified date/time of the cached object.
+netmonitor-cache-last-modified = Last Modified
+# The label text for the device a cached object was fetched from (e.g. "disk").
+netmonitor-cache-device = Device

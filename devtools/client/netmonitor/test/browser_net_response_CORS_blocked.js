@@ -8,6 +8,8 @@
  * and that it is not present when requests are not blocked
  */
 
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+
 add_task(async function testCORSNotificationPresent() {
   info("Test that CORS notification is present");
 
@@ -60,7 +62,9 @@ add_task(async function testCORSNotificationPresent() {
   ok(CORSNotification, "CORS Notification Present");
   is(
     CORSNotification?.innerText,
-    "Response body is not available to scripts (Reason: CORS Missing Allow Origin)",
+    l10n.formatValueSync("netmonitor-headers-blocked-by-cors", {
+      reason: "CORS Missing Allow Origin",
+    }),
     "Notification text is correct"
   );
 

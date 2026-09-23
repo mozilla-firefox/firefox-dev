@@ -516,3 +516,88 @@ netmonitor-security-cert-transparency-status-not-diverse-scts = { COPY(from_path
             ),
         ],
     )
+
+    ctx.add_transforms(
+        target,
+        target,
+        transforms_from(
+            """
+netmonitor-headers-toolbar-block = { COPY(from_path, "netmonitor.headers.toolbar.block") }
+netmonitor-headers-empty-text = { COPY(from_path, "headersEmptyText") }
+netmonitor-headers-filter-text = { COPY(from_path, "headersFilterText") }
+netmonitor-request-headers = { COPY(from_path, "requestHeaders") }
+netmonitor-request-headers-from-upload = { COPY(from_path, "requestHeadersFromUpload") }
+netmonitor-response-headers = { COPY(from_path, "responseHeaders") }
+netmonitor-early-hints-response-headers = { COPY(from_path, "earlyHintsResponseHeaders") }
+netmonitor-headers-address = { COPY(from_path, "netmonitor.headers.address") }
+netmonitor-headers-proxy-address = { COPY(from_path, "netmonitor.headers.proxyAddress") }
+netmonitor-headers-early-hints-status = { COPY(from_path, "netmonitor.headers.earlyHintsStatus") }
+netmonitor-headers-status = { COPY(from_path, "netmonitor.headers.status") }
+netmonitor-headers-proxy-status = { COPY(from_path, "netmonitor.headers.proxyStatus") }
+netmonitor-headers-version = { COPY(from_path, "netmonitor.headers.version") }
+netmonitor-headers-proxy-version = { COPY(from_path, "netmonitor.headers.proxyVersion") }
+netmonitor-summary-learn-more =
+    .title = { COPY(from_path, "netmonitor.summary.learnMore") }
+netmonitor-headers-referrer-policy = { COPY(from_path, "netmonitor.headers.referrerPolicy") }
+netmonitor-headers-content-blocking = { COPY(from_path, "netmonitor.headers.contentBlocking") }
+netmonitor-headers-request-priority = { COPY(from_path, "netmonitor.headers.requestPriority") }
+netmonitor-headers-dns = { COPY(from_path, "netmonitor.headers.dns") }
+netmonitor-headers-dns-basic = { COPY(from_path, "netmonitor.headers.dns.basic") }
+netmonitor-headers-dns-over-https = { COPY(from_path, "netmonitor.headers.dns.overHttps") }
+netmonitor-summary-edit-and-resend =
+    .label = { COPY(from_path, "netmonitor.summary.editAndResend") }
+netmonitor-headers-raw = { COPY(from_path, "netmonitor.headers.raw") }
+netmonitor-headers-blocked-by-cors-tooltip = { COPY(from_path, "netmonitor.headers.blockedByCORSTooltip") }
+netmonitor-cookies-empty-text = { COPY(from_path, "cookiesEmptyText") }
+netmonitor-cookies-filter-text = { COPY(from_path, "cookiesFilterText") }
+netmonitor-request-cookies = { COPY(from_path, "requestCookies") }
+netmonitor-response-cookies = { COPY(from_path, "responseCookies") }
+netmonitor-cache-cache = { COPY(from_path, "netmonitor.cache.cache") }
+netmonitor-cache-empty = { COPY(from_path, "netmonitor.cache.empty") }
+netmonitor-cache-not-available = { COPY(from_path, "netmonitor.cache.notAvailable") }
+netmonitor-cache-data-size = { COPY(from_path, "netmonitor.cache.dataSize") }
+netmonitor-cache-expires = { COPY(from_path, "netmonitor.cache.expires") }
+netmonitor-cache-fetch-count = { COPY(from_path, "netmonitor.cache.fetchCount") }
+netmonitor-cache-last-fetched = { COPY(from_path, "netmonitor.cache.lastFetched") }
+netmonitor-cache-last-modified = { COPY(from_path, "netmonitor.cache.lastModified") }
+netmonitor-cache-device = { COPY(from_path, "netmonitor.cache.device") }
+""",
+            from_path=source,
+        )
+        + [
+            FTL.Message(
+                id=FTL.Identifier("netmonitor-headers-size-details"),
+                value=REPLACE(
+                    source,
+                    "netmonitor.headers.sizeDetails",
+                    {
+                        "%1$S": VARIABLE_REFERENCE("transferredSize"),
+                        "%2$S": VARIABLE_REFERENCE("contentSize"),
+                    },
+                ),
+            ),
+            FTL.Message(
+                id=FTL.Identifier("netmonitor-headers-blocked-by-cors"),
+                value=REPLACE(
+                    source,
+                    "netmonitor.headers.blockedByCORS",
+                    {"%1$S": VARIABLE_REFERENCE("reason")},
+                ),
+            ),
+        ],
+    )
+
+    # every one of these takes a single time as its only placeholder
+    time_messages = {
+        "netmonitor-waterfall-tooltip-total": "netmonitor.waterfall.tooltip.total",
+        "netmonitor-waterfall-tooltip-blocked": "netmonitor.waterfall.tooltip.blocked",
+        "netmonitor-waterfall-tooltip-dns": "netmonitor.waterfall.tooltip.dns",
+        "netmonitor-waterfall-tooltip-ssl": "netmonitor.waterfall.tooltip.ssl",
+        "netmonitor-waterfall-tooltip-connect": "netmonitor.waterfall.tooltip.connect",
+        "netmonitor-waterfall-tooltip-send": "netmonitor.waterfall.tooltip.send",
+        "netmonitor-waterfall-tooltip-wait": "netmonitor.waterfall.tooltip.wait",
+        "netmonitor-waterfall-tooltip-receive": "netmonitor.waterfall.tooltip.receive",
+        "netmonitor-timings-queued-at": "netmonitor.timings.queuedAt",
+        "netmonitor-timings-started-at": "netmonitor.timings.startedAt",
+        "netmonitor-timings-downloaded-at": "netmonitor.timings.downloadedAt",
+    }

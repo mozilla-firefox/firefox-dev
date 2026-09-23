@@ -42,6 +42,7 @@ const {
   FILTER_SEARCH_DELAY,
 } = require("resource://devtools/client/netmonitor/src/constants.js");
 const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+const Localized = createFactory(FluentReact.Localized);
 // Components
 const PropertiesView = createFactory(
   require("resource://devtools/client/netmonitor/src/components/request-details/PropertiesView.js")
@@ -96,53 +97,28 @@ loader.lazyRequireGetter(
   true
 );
 
-loader.lazyGetter(this, "HEADERS_PROXY_STATUS", function () {
-  return L10N.getStr("netmonitor.headers.proxyStatus");
-});
-
-loader.lazyGetter(this, "HEADERS_PROXY_VERSION", function () {
-  return L10N.getStr("netmonitor.headers.proxyVersion");
-});
-
 const { div, input, label, span, textarea, tr, td, button } = dom;
 
-const EDIT_AND_RESEND = L10N.getStr("netmonitor.summary.editAndResend");
-const RAW_HEADERS = L10N.getStr("netmonitor.headers.raw");
-const HEADERS_EMPTY_TEXT = L10N.getStr("headersEmptyText");
-const HEADERS_FILTER_TEXT = L10N.getStr("headersFilterText");
-const HEADERS_STATUS = L10N.getStr("netmonitor.headers.status");
-const HEADERS_EARLYHINT_STATUS = L10N.getStr(
-  "netmonitor.headers.earlyHintsStatus"
-);
-const HEADERS_VERSION = L10N.getStr("netmonitor.headers.version");
-const SUMMARY_STATUS_LEARN_MORE = L10N.getStr("netmonitor.summary.learnMore");
 const SUMMARY_ETP_LEARN_MORE = L10N.getStr(
   "netmonitor.enhancedTrackingProtection.learnMore"
-);
-const HEADERS_REFERRER = L10N.getStr("netmonitor.headers.referrerPolicy");
-const HEADERS_CONTENT_BLOCKING = L10N.getStr(
-  "netmonitor.headers.contentBlocking"
 );
 const HEADERS_ETP = L10N.getStr(
   "netmonitor.trackingResource.enhancedTrackingProtection"
 );
-const HEADERS_PRIORITY = L10N.getStr("netmonitor.headers.requestPriority");
-const HEADERS_DNS = L10N.getStr("netmonitor.headers.dns");
 
 // Order is as displayed
 const HEADERS_CONFIG = {
   earlyHintsResponseHeaders: {
     // Key for fetching the data from the backend
     fetchKey: "earlyHintsResponseHeaders",
-    title: L10N.getStr("earlyHintsResponseHeaders"),
+    l10nId: "netmonitor-early-hints-response-headers",
     // Gets the content to be displayed when switched to the raw headers view
     rawHeaderValue: ({ headerData }) => {
       const preHeaderText = headerData.rawHeaders.split("\r\n")[0];
       return writeHeaderText(headerData.headers, preHeaderText).trim();
     },
     // Gets the full display text to be displayed in the header title bar(before the raw toggle button)
-    displayTitle: ({ headerData }) => {
-      const title = HEADERS_CONFIG.earlyHintsResponseHeaders.title;
+    displayTitle: ({ headerData, title }) => {
       if (headerData.headersSize) {
         return `${title} (${getFormattedSize(headerData.headersSize, 3)})`;
       }
@@ -154,15 +130,14 @@ const HEADERS_CONFIG = {
   responseHeaders: {
     // Key for fetching the data from the backend
     fetchKey: "responseHeaders",
-    title: L10N.getStr("responseHeaders"),
+    l10nId: "netmonitor-response-headers",
     // Gets the content to be displayed when switched to the raw headers view
     rawHeaderValue: ({ status, statusText, httpVersion, headerData }) => {
       const preHeaderText = `${httpVersion} ${status} ${statusText}`;
       return writeHeaderText(headerData.headers, preHeaderText).trim();
     },
     // Gets the full display text to be displayed in the header title bar(before the raw toggle button)
-    displayTitle: ({ status, statusText, httpVersion, headerData }) => {
-      const title = HEADERS_CONFIG.responseHeaders.title;
+    displayTitle: ({ status, statusText, httpVersion, headerData, title }) => {
       if (headerData.headersSize) {
         return `${title} (${getFormattedSize(headerData.headersSize, 3)})`;
       }
@@ -178,7 +153,7 @@ const HEADERS_CONFIG = {
   requestHeaders: {
     // See comment above
     fetchKey: "requestHeaders",
-    title: L10N.getStr("requestHeaders"),
+    l10nId: "netmonitor-request-headers",
     // See comment above
     rawHeaderValue: ({ method, httpVersion, headerData, urlDetails }) => {
       return getRequestHeadersRawText(
@@ -189,8 +164,7 @@ const HEADERS_CONFIG = {
       );
     },
     // See comment above
-    displayTitle: ({ method, httpVersion, headerData, urlDetails }) => {
-      const title = HEADERS_CONFIG.requestHeaders.title;
+    displayTitle: ({ method, httpVersion, headerData, urlDetails, title }) => {
       if (headerData.headersSize) {
         return `${title} (${getFormattedSize(headerData.headersSize, 3)})`;
       }
@@ -206,14 +180,13 @@ const HEADERS_CONFIG = {
   requestHeadersFromUploadStream: {
     // See comment above
     fetchKey: "requestPostData",
-    title: L10N.getStr("requestHeadersFromUpload"),
+    l10nId: "netmonitor-request-headers-from-upload",
     // See comment above
     rawHeaderValue: ({ headerData, preHeaderText = "" }) => {
       return writeHeaderText(headerData.headers, preHeaderText).trim();
     },
     // See comment above
-    displayTitle: ({ method, httpVersion, headerData, urlDetails }) => {
-      const title = HEADERS_CONFIG.requestHeadersFromUploadStream.title;
+    displayTitle: ({ method, httpVersion, headerData, urlDetails, title }) => {
       if (headerData.headersSize) {
         return `${title} (${getFormattedSize(headerData.headersSize, 3)})`;
       }
@@ -307,6 +280,7 @@ class HeadersPanel extends Component {
     return HEADERS_CONFIG[headerKey].displayTitle({
       ...this.props.request,
       headerData,
+      title: this.props.getString(HEADERS_CONFIG[headerKey].l10nId),
     });
   }
 
@@ -436,7 +410,10 @@ class HeadersPanel extends Component {
           onClick: event => event.stopPropagation(),
           onKeyDown: event => event.stopPropagation(),
         },
-        span({ className: "headers-summary-label" }, RAW_HEADERS),
+        Localized(
+          { id: "netmonitor-headers-raw" },
+          span({ className: "headers-summary-label" })
+        ),
         span(
           { className: "raw-headers-toggle-input" },
           input({
@@ -510,7 +487,7 @@ class HeadersPanel extends Component {
         },
       },
       {
-        label: EDIT_AND_RESEND,
+        ...getMenuItemStrings("netmonitor-summary-edit-and-resend"),
         type: "button",
         click: evt => {
           cloneSelectedRequest(evt);
@@ -564,7 +541,10 @@ class HeadersPanel extends Component {
     );
 
     if (!headersDataExists) {
-      return div({ className: "empty-notice" }, HEADERS_EMPTY_TEXT);
+      return Localized(
+        { id: "netmonitor-headers-empty-text" },
+        div({ className: "empty-notice" })
+      );
     }
 
     const items = [];
@@ -599,11 +579,10 @@ class HeadersPanel extends Component {
       }
     }
 
-    const sizeText = L10N.getFormatStrWithNumbers(
-      "netmonitor.headers.sizeDetails",
-      getFormattedSize(transferredSize),
-      getFormattedSize(contentSize)
-    );
+    const sizeText = getString("netmonitor-headers-size-details", {
+      transferredSize: getFormattedSize(transferredSize),
+      contentSize: getFormattedSize(contentSize),
+    });
 
     const summarySize = this.renderSummary(
       getString("netmonitor-toolbar-transferred"),
@@ -622,7 +601,7 @@ class HeadersPanel extends Component {
           {
             className: "tabpanel-summary-label headers-summary-label",
           },
-          HEADERS_EARLYHINT_STATUS
+          getString("netmonitor-headers-early-hints-status")
         ),
         span(
           {
@@ -637,10 +616,13 @@ class HeadersPanel extends Component {
               statusText: "",
             },
           }),
-          MDNLink({
-            url: getHTTPStatusCodeURL(earlyHintsStatus),
-            title: SUMMARY_STATUS_LEARN_MORE,
-          })
+          Localized(
+            {
+              id: "netmonitor-summary-learn-more",
+              attrs: { title: true },
+            },
+            MDNLink({ url: getHTTPStatusCodeURL(earlyHintsStatus) })
+          )
         )
       );
     }
@@ -655,7 +637,7 @@ class HeadersPanel extends Component {
           {
             className: "tabpanel-summary-label headers-summary-label",
           },
-          HEADERS_STATUS
+          getString("netmonitor-headers-status")
         ),
         span(
           {
@@ -666,10 +648,13 @@ class HeadersPanel extends Component {
             item: { fromCache, fromServiceWorker, status, statusText },
           }),
           statusText,
-          MDNLink({
-            url: getHTTPStatusCodeURL(status),
-            title: SUMMARY_STATUS_LEARN_MORE,
-          })
+          Localized(
+            {
+              id: "netmonitor-summary-learn-more",
+              attrs: { title: true },
+            },
+            MDNLink({ url: getHTTPStatusCodeURL(status) })
+          )
         )
       );
     }
@@ -686,7 +671,7 @@ class HeadersPanel extends Component {
           {
             className: "tabpanel-summary-label headers-summary-label",
           },
-          HEADERS_PROXY_STATUS
+          getString("netmonitor-headers-proxy-status")
         ),
         span(
           {
@@ -702,10 +687,13 @@ class HeadersPanel extends Component {
             },
           }),
           proxyStatusText,
-          MDNLink({
-            url: getHTTPStatusCodeURL(proxyStatus),
-            title: SUMMARY_STATUS_LEARN_MORE,
-          })
+          Localized(
+            {
+              id: "netmonitor-summary-learn-more",
+              attrs: { title: true },
+            },
+            MDNLink({ url: getHTTPStatusCodeURL(proxyStatus) })
+          )
         )
       );
     }
@@ -716,7 +704,7 @@ class HeadersPanel extends Component {
       const trackingProtectionDocURL = getTrackingProtectionURL();
 
       trackingProtectionStatus = this.renderSummary(
-        HEADERS_CONTENT_BLOCKING,
+        getString("netmonitor-headers-content-blocking"),
         div(null, span({ className: "tracking-resource" }), HEADERS_ETP)
       );
       trackingProtectionDetails = this.renderSummary(
@@ -738,31 +726,37 @@ class HeadersPanel extends Component {
     }
 
     const summaryVersion = httpVersion
-      ? this.renderSummary(HEADERS_VERSION, httpVersion)
+      ? this.renderSummary(getString("netmonitor-headers-version"), httpVersion)
       : null;
 
     const summaryProxyHttpVersion = proxyHttpVersion
       ? this.renderSummary(
-          HEADERS_PROXY_VERSION,
+          getString("netmonitor-headers-proxy-version"),
           proxyHttpVersion,
           "headers-proxy-version"
         )
       : null;
 
     const summaryReferrerPolicy = referrerPolicy
-      ? this.renderSummary(HEADERS_REFERRER, referrerPolicy)
+      ? this.renderSummary(
+          getString("netmonitor-headers-referrer-policy"),
+          referrerPolicy
+        )
       : null;
 
     const summaryPriority = priority
-      ? this.renderSummary(HEADERS_PRIORITY, getRequestPriorityAsText(priority))
+      ? this.renderSummary(
+          getString("netmonitor-headers-request-priority"),
+          getRequestPriorityAsText(priority)
+        )
       : null;
 
     const summaryDNS = this.renderSummary(
-      HEADERS_DNS,
-      L10N.getStr(
+      getString("netmonitor-headers-dns"),
+      getString(
         isResolvedByTRR
-          ? "netmonitor.headers.dns.overHttps"
-          : "netmonitor.headers.dns.basic"
+          ? "netmonitor-headers-dns-over-https"
+          : "netmonitor-headers-dns-basic"
       )
     );
 
@@ -796,17 +790,17 @@ class HeadersPanel extends Component {
           type: "filter",
           initialValue: this.state.filterText,
           onChange: text => this.setState({ filterText: text }),
-          placeholder: HEADERS_FILTER_TEXT,
+          placeholder: getString("netmonitor-headers-filter-text"),
         }),
         span({ className: "devtools-separator" }),
-        button(
-          {
+        Localized(
+          { id: "netmonitor-headers-toolbar-block" },
+          button({
             id: "block-button",
             className: "devtools-button",
             title: getMenuItemStrings("netmonitor-context-block-url").label,
             onClick: () => openRequestBlockingAndAddUrl(urlDetails.url),
-          },
-          L10N.getStr("netmonitor.headers.toolbar.block")
+          })
         ),
         span({ className: "devtools-separator" }),
         button(

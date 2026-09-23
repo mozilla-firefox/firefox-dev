@@ -11,11 +11,10 @@ const {
 const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-types.mjs");
 const dom = require("resource://devtools/client/shared/vendor/react-dom-factories.js");
 const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
-const {
   fetchNetworkUpdatePacket,
 } = require("resource://devtools/client/netmonitor/src/utils/request-utils.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+const Localized = createFactory(FluentReact.Localized);
 
 // Components
 const TreeViewClass = ChromeUtils.importESModule(
@@ -27,16 +26,6 @@ const PropertiesView = createFactory(
 
 const { div, input } = dom;
 
-const CACHE = L10N.getStr("netmonitor.cache.cache");
-const DATA_SIZE = L10N.getStr("netmonitor.cache.dataSize");
-const EXPIRES = L10N.getStr("netmonitor.cache.expires");
-const FETCH_COUNT = L10N.getStr("netmonitor.cache.fetchCount");
-const LAST_FETCHED = L10N.getStr("netmonitor.cache.lastFetched");
-const LAST_MODIFIED = L10N.getStr("netmonitor.cache.lastModified");
-const DEVICE = L10N.getStr("netmonitor.cache.device");
-const NOT_AVAILABLE = L10N.getStr("netmonitor.cache.notAvailable");
-const EMPTY = L10N.getStr("netmonitor.cache.empty");
-
 /**
  * Cache panel component
  * This tab lists full details of any cache information of the response.
@@ -47,6 +36,7 @@ class CachePanel extends Component {
       connector: PropTypes.object.isRequired,
       openLink: PropTypes.func,
       request: PropTypes.object.isRequired,
+      getString: PropTypes.func.isRequired,
     };
   }
 
@@ -104,11 +94,12 @@ class CachePanel extends Component {
   }
 
   render() {
-    const { request } = this.props;
+    const { request, getString } = this.props;
     const { responseCache } = request;
 
     let object;
     const cache = this.getProperties(responseCache);
+    const notAvailable = getString("netmonitor-cache-not-available");
 
     if (
       cache.lastFetched ||
@@ -119,17 +110,26 @@ class CachePanel extends Component {
       cache.deviceID
     ) {
       object = {
-        [CACHE]: {
-          [LAST_FETCHED]: this.getDate(cache.lastFetched) || NOT_AVAILABLE,
-          [FETCH_COUNT]: cache.fetchCount || NOT_AVAILABLE,
-          [DATA_SIZE]: cache.storageDataSize || NOT_AVAILABLE,
-          [LAST_MODIFIED]: this.getDate(cache.lastModified) || NOT_AVAILABLE,
-          [EXPIRES]: this.getDate(cache.expirationTime) || NOT_AVAILABLE,
-          [DEVICE]: cache.deviceID || NOT_AVAILABLE,
+        [getString("netmonitor-cache-cache")]: {
+          [getString("netmonitor-cache-last-fetched")]:
+            this.getDate(cache.lastFetched) || notAvailable,
+          [getString("netmonitor-cache-fetch-count")]:
+            cache.fetchCount || notAvailable,
+          [getString("netmonitor-cache-data-size")]:
+            cache.storageDataSize || notAvailable,
+          [getString("netmonitor-cache-last-modified")]:
+            this.getDate(cache.lastModified) || notAvailable,
+          [getString("netmonitor-cache-expires")]:
+            this.getDate(cache.expirationTime) || notAvailable,
+          [getString("netmonitor-cache-device")]:
+            cache.deviceID || notAvailable,
         },
       };
     } else {
-      return div({ className: "empty-notice" }, EMPTY);
+      return Localized(
+        { id: "netmonitor-cache-empty" },
+        div({ className: "empty-notice" })
+      );
     }
 
     return div(
@@ -143,4 +143,4 @@ class CachePanel extends Component {
   }
 }
 
-module.exports = CachePanel;
+module.exports = FluentReact.withLocalization(CachePanel);

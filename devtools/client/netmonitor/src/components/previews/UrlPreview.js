@@ -13,11 +13,9 @@ const PropertiesView = createFactory(
   require("resource://devtools/client/netmonitor/src/components/request-details/PropertiesView.js")
 );
 const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
-const {
   parseQueryString,
 } = require("resource://devtools/client/netmonitor/src/utils/request-utils.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
 
 const TreeRow = createFactory(
   ChromeUtils.importESModule(
@@ -73,6 +71,7 @@ class UrlPreview extends Component {
       proxyStatus: PropTypes.string,
       shouldExpandPreview: PropTypes.bool,
       onTogglePreview: PropTypes.func,
+      getString: PropTypes.func.isRequired,
     };
   }
 
@@ -232,10 +231,10 @@ class UrlPreview extends Component {
       // makes sure the remote address section is expanded
       expandedNodes.add(`/${method}/remote`);
       urlObject[method].remote = {
-        [L10N.getStr(
+        [this.props.getString(
           proxyStatus
-            ? "netmonitor.headers.proxyAddress"
-            : "netmonitor.headers.address"
+            ? "netmonitor-headers-proxy-address"
+            : "netmonitor-headers-address"
         )]: address,
       };
     }
@@ -296,4 +295,4 @@ class UrlPreview extends Component {
   }
 }
 
-module.exports = UrlPreview;
+module.exports = FluentReact.withLocalization(UrlPreview);
