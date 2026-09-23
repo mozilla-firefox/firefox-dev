@@ -195,3 +195,180 @@ netmonitor-toolbar-resize-column-to-fit-content-title =
 netmonitor-toolbar-timings = Timings
 # This is the label for the submenu grouping the response header columns.
 netmonitor-toolbar-response-headers = Response Headers
+
+## Strings used in the context menus of the DevTools Network Panel
+
+# This is the label displayed for the copy sub-menu in the context menu for a
+# request.
+netmonitor-context-copy-value =
+    .label = Copy Value
+    .accesskey = C
+# This is the label displayed on the context menu that copies all data.
+netmonitor-context-copy-all =
+    .label = Copy All
+    .accesskey = A
+# This is the label displayed on the context menu that copies the selected
+# request's url.
+netmonitor-context-copy-url =
+    .label = Copy URL
+    .accesskey = U
+# This is the label displayed on the context menu that copies the selected
+# request's url parameters.
+netmonitor-context-copy-url-params =
+    .label = Copy URL Parameters
+    .accesskey = P
+# This is the label displayed on the context menu that copies the selected
+# request's data.
+# Variables:
+#   $method (String): the request method, e.g. POST, PATCH, PUT or DELETE.
+netmonitor-context-copy-request-data =
+    .label = Copy { $method } Data
+    .accesskey = D
+# This is the label displayed on the context menu that copies the selected
+# request as a PowerShell command.
+netmonitor-context-copy-as-powershell =
+    .label = Copy as PowerShell
+    .accesskey = S
+# This is the label displayed on the context menu that copies the selected
+# request as a cURL command. The capitalization is part of the official name
+# and should be used throughout all languages.
+# See https://en.wikipedia.org/wiki/CURL
+netmonitor-context-copy-as-curl =
+    .label = Copy as cURL
+    .accesskey = C
+# This is the label displayed on the context menu that copies the selected
+# request as a cURL command for Windows.
+netmonitor-context-copy-as-curl-win =
+    .label = { netmonitor-context-copy-as-curl.label } (Windows)
+    .accesskey = C
+# This is the label displayed on the context menu that copies the selected
+# request as a cURL command for POSIX platforms.
+netmonitor-context-copy-as-curl-posix =
+    .label = { netmonitor-context-copy-as-curl.label } (POSIX)
+    .accesskey = P
+# This is the label displayed on the context menu that copies the selected
+# request as a fetch request.
+netmonitor-context-copy-as-fetch =
+    .label = Copy as Fetch
+    .accesskey = F
+# This is the label displayed on the context menu that copies the selected
+# item's request headers.
+netmonitor-context-copy-request-headers =
+    .label = Copy Request Headers
+    .accesskey = q
+# This is the label displayed on the context menu that copies the selected
+# item's response headers.
+netmonitor-context-copy-response-headers =
+    .label = Copy Response Headers
+    .accesskey = s
+# This is the label displayed on the context menu that copies the selected
+# response as a string.
+netmonitor-context-copy-response =
+    .label = Copy Response
+    .accesskey = R
+# This is the label displayed on the context menu that copies the selected
+# image as a data URI.
+netmonitor-context-copy-image-as-data-uri =
+    .label = Copy Image as Data URI
+    .accesskey = I
+# This is the label displayed on the context menu that sets a network override
+# for the URL of the request. Note that this menu item is only displayed when
+# netmonitor-context-remove-override is not, and vice versa.
+netmonitor-context-set-override =
+    .label = Set Network Override
+    .accesskey = O
+# This is the label displayed on the context menu that removes a network
+# override for the URL of the request. Note that this menu item is only
+# displayed when netmonitor-context-set-override is not, and vice versa.
+netmonitor-context-remove-override =
+    .label = Remove Network Override
+    .accesskey = O
+# This is the label displayed on the context menu that opens the selected
+# request as a fetch command in the console.
+netmonitor-context-use-as-fetch =
+    .label = Use as Fetch in Console
+    .accesskey = F
+# This is the label displayed on the context menu that saves the response.
+netmonitor-context-save-response-as =
+    .label = Save Response As
+    .accesskey = v
+# This is the label displayed on the context menu that copies all requests in
+# the HAR format.
+netmonitor-context-copy-all-as-har =
+    .label = Copy All as HAR
+    .accesskey = o
+# This is the label displayed on the context menu that saves the selected
+# request in the HAR format.
+netmonitor-context-save-as-har =
+    .label = Save as HAR
+    .accesskey = H
+# This is the label displayed on the context menu that saves all requests in
+# the HAR format.
+netmonitor-context-save-all-as-har =
+    .label = Save All as HAR
+    .accesskey = H
+# This is the label displayed on the settings menu item that imports a HAR
+# file. The file picker it opens is titled with
+# netmonitor-har-import-har-dialog-title.
+netmonitor-context-import-har =
+    .label = Import HAR File
+    .accesskey = I
+# This is the label displayed on the context menu for requests in search panel
+# result entries when no other operations are possible as the request no longer
+# exists.
+netmonitor-context-hint-request-not-available =
+    .label = No operations possible because the request is no longer available
+# This is the label displayed on the context menu that resends the currently
+# displayed request immediately.
+netmonitor-context-resend =
+    .label = Resend
+    .accesskey = n
+# This is the label displayed on the context menu that opens a form to edit and
+# resend the currently displayed request.
+netmonitor-context-edit-and-resend =
+    .label = Edit and Resend
+    .accesskey = E
+# This is the label displayed on the context menu that blocks any requests
+# matching the selected request's URL.
+netmonitor-context-block-url =
+    .label = Block URL
+# This is the label displayed on the context menu that unblocks any requests
+# matching the selected request's URL.
+netmonitor-context-unblock-url =
+    .label = Unblock URL
+# This is the label displayed on the context menu that opens the selected
+# request in a new tab.
+netmonitor-context-new-tab =
+    .label = Open in New Tab
+    .accesskey = T
+# This is the label displayed on the context menu that opens the selected
+# request in the debugger.
+netmonitor-context-open-in-debugger =
+    .label = Open in Debugger
+    .accesskey = D
+# This is the label displayed on the context menu that opens the selected
+# request in the style editor.
+netmonitor-context-open-in-style-editor =
+    .label = Open in Style Editor
+    .accesskey = S
+# This is the label displayed on the context menu that shows the performance
+# analysis tools.
+netmonitor-context-perf-tools =
+    .label = Start Performance Analysis…
+    .accesskey = A
+
+## Strings used in the request blocking context menu of the DevTools Network
+## Panel
+
+netmonitor-request-blocking-menu-enable-all-blocked-urls = Enable all
+netmonitor-request-blocking-menu-disable-all-blocked-urls = Disable all
+netmonitor-request-blocking-menu-remove-all-blocked-urls = Remove all
+
+## Strings used for the HAR import and export of the DevTools Network Panel
+
+# This is the label used for the import file open dialog.
+netmonitor-har-import-har-dialog-title = Import HAR File
+# This is the label for the HAR file filter of the import file open dialog.
+netmonitor-har-import-dialog-har-filter = HAR Files
+# This is the label for the “all files” filter of the import file open dialog.
+netmonitor-har-import-dialog-all-filter = All Files

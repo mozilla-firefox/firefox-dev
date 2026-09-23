@@ -28,6 +28,7 @@ const {
   autocompleteProvider,
 } = require("resource://devtools/client/netmonitor/src/utils/filter-autocomplete-provider.js");
 const {
+  getMenuItemStrings,
   L10N,
 } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
 const {
@@ -553,16 +554,14 @@ class Toolbar extends Component {
       MenuItem({
         key: "request-list-context-import-har",
         className: "menu-item netmonitor-settings-import-har-item",
-        label: L10N.getStr("netmonitor.har.importHarDialogTitle"),
+        ...getMenuItemStrings("netmonitor-context-import-har"),
         tooltip: L10N.getStr("netmonitor.settings.importHarTooltip"),
-        accesskey: L10N.getStr("netmonitor.context.importHar.accesskey"),
         onClick: () => HarMenuUtils.openHarFile(actions, openSplitConsole),
       }),
       MenuItem({
         key: "request-list-context-save-all-as-har",
         className: "menu-item netmonitor-settings-save-har-item",
-        label: L10N.getStr("netmonitor.context.saveAllAsHar"),
-        accesskey: L10N.getStr("netmonitor.context.saveAllAsHar.accesskey"),
+        ...getMenuItemStrings("netmonitor-context-save-all-as-har"),
         tooltip: L10N.getStr("netmonitor.settings.saveHarTooltip"),
         disabled: !displayedRequests.length,
         onClick: () => HarMenuUtils.saveAllAsHar(displayedRequests, connector),
@@ -570,8 +569,7 @@ class Toolbar extends Component {
       MenuItem({
         key: "request-list-context-copy-all-as-har",
         className: "menu-item netmonitor-settings-copy-har-item",
-        label: L10N.getStr("netmonitor.context.copyAllAsHar"),
-        accesskey: L10N.getStr("netmonitor.context.copyAllAsHar.accesskey"),
+        ...getMenuItemStrings("netmonitor-context-copy-all-as-har"),
         tooltip: L10N.getStr("netmonitor.settings.copyHarTooltip"),
         disabled: !displayedRequests.length,
         onClick: () => HarMenuUtils.copyAllAsHar(displayedRequests, connector),

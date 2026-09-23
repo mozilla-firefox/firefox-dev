@@ -21,6 +21,7 @@ const {
   getRequestPriorityAsText,
 } = require("resource://devtools/client/netmonitor/src/utils/format-utils.js");
 const {
+  getMenuItemStrings,
   L10N,
 } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
 const {
@@ -105,7 +106,6 @@ loader.lazyGetter(this, "HEADERS_PROXY_VERSION", function () {
 
 const { div, input, label, span, textarea, tr, td, button } = dom;
 
-const RESEND = L10N.getStr("netmonitor.context.resend.label");
 const EDIT_AND_RESEND = L10N.getStr("netmonitor.summary.editAndResend");
 const RAW_HEADERS = L10N.getStr("netmonitor.headers.raw");
 const HEADERS_EMPTY_TEXT = L10N.getStr("headersEmptyText");
@@ -502,7 +502,7 @@ class HeadersPanel extends Component {
     } = this.props;
     const menuItems = [
       {
-        label: RESEND,
+        ...getMenuItemStrings("netmonitor-context-resend"),
         type: "button",
         click: () => {
           cloneRequest(id);
@@ -556,6 +556,7 @@ class HeadersPanel extends Component {
       openHTTPCustomRequestTab,
       shouldExpandPreview,
       setHeadersUrlPreviewExpanded,
+      getString,
     } = this.props;
 
     const headersDataExists = Object.keys(HEADERS_CONFIG).some(
@@ -605,7 +606,7 @@ class HeadersPanel extends Component {
     );
 
     const summarySize = this.renderSummary(
-      this.props.getString("netmonitor-toolbar-transferred"),
+      getString("netmonitor-toolbar-transferred"),
       sizeText
     );
 
@@ -782,6 +783,9 @@ class HeadersPanel extends Component {
     const newEditAndResendPref = Services.prefs.getBoolPref(
       "devtools.netmonitor.features.newEditAndResend"
     );
+    const { label: resendLabel } = getMenuItemStrings(
+      "netmonitor-context-resend"
+    );
 
     return div(
       { className: "headers-panel-container" },
@@ -799,7 +803,7 @@ class HeadersPanel extends Component {
           {
             id: "block-button",
             className: "devtools-button",
-            title: L10N.getStr("netmonitor.context.blockURL"),
+            title: getMenuItemStrings("netmonitor-context-block-url").label,
             onClick: () => openRequestBlockingAndAddUrl(urlDetails.url),
           },
           L10N.getStr("netmonitor.headers.toolbar.block")
@@ -811,14 +815,14 @@ class HeadersPanel extends Component {
             className: !newEditAndResendPref
               ? "devtools-button devtools-dropdown-button"
               : "devtools-button",
-            title: RESEND,
+            title: resendLabel,
             onClick: !newEditAndResendPref
               ? this.onShowResendMenu
               : () => {
                   openHTTPCustomRequestTab();
                 },
           },
-          span({ className: "title" }, RESEND)
+          span({ className: "title" }, resendLabel)
         )
       ),
       div(

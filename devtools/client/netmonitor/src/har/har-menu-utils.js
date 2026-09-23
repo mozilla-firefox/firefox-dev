@@ -4,9 +4,6 @@
 
 "use strict";
 
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
 const EventEmitter = require("resource://devtools/shared/event-emitter.js");
 
 loader.lazyRequireGetter(
@@ -20,6 +17,12 @@ loader.lazyGetter(this, "HarImporter", function () {
   return require("resource://devtools/client/netmonitor/src/har/har-importer.js")
     .HarImporter;
 });
+
+loader.lazyGetter(
+  this,
+  "l10n",
+  () => new Localization(["devtools/client/netmonitor.ftl"], true)
+);
 
 /**
  * Helper object with HAR related context menu actions.
@@ -63,16 +66,19 @@ var HarMenuUtils = {
     const fp = Cc["@mozilla.org/filepicker;1"].createInstance(Ci.nsIFilePicker);
     fp.init(
       window.browsingContext,
-      L10N.getStr("netmonitor.har.importHarDialogTitle"),
+      l10n.formatValueSync("netmonitor-har-import-har-dialog-title"),
       Ci.nsIFilePicker.modeOpen
     );
 
     // Append file filters
     fp.appendFilter(
-      L10N.getStr("netmonitor.har.importDialogHARFilter"),
+      l10n.formatValueSync("netmonitor-har-import-dialog-har-filter"),
       "*.har"
     );
-    fp.appendFilter(L10N.getStr("netmonitor.har.importDialogAllFilter"), "*.*");
+    fp.appendFilter(
+      l10n.formatValueSync("netmonitor-har-import-dialog-all-filter"),
+      "*.*"
+    );
 
     fp.open(rv => {
       if (rv == Ci.nsIFilePicker.returnOK) {

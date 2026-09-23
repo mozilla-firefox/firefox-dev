@@ -16,6 +16,30 @@ const NET_STRINGS_URI = "devtools/client/locales/netmonitor.properties";
 
 exports.L10N = new LocalizationHelper(NET_STRINGS_URI);
 
+loader.lazyGetter(
+  this,
+  "l10n",
+  () => new Localization(["devtools/client/netmonitor.ftl"], true)
+);
+
+/**
+ * Read the attributes of a menu item's message.
+ *
+ * @param string id
+ *        Fluent id of a message carrying a .label attribute, and a .accesskey
+ *        attribute where the item has an access key.
+ * @param object args [optional]
+ *        Variables referenced by the message.
+ * @return object
+ *         The attributes keyed by name, ready to be spread into a menu item.
+ */
+function getMenuItemStrings(id, args) {
+  const [message] = l10n.formatMessagesSync([{ id, args }]);
+  return Object.fromEntries(
+    message.attributes.map(({ name, value }) => [name, value])
+  );
+}
+
 function getBlockedReasonString(blockedReason, extension) {
   if (!blockedReason) {
     return null;
@@ -47,3 +71,4 @@ function getBlockedReasonString(blockedReason, extension) {
 }
 
 exports.getBlockedReasonString = getBlockedReasonString;
+exports.getMenuItemStrings = getMenuItemStrings;

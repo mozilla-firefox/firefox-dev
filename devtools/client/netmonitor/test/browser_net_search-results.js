@@ -629,7 +629,7 @@ async function checkResourceMenuNotAvailbale(resourceMatch, monitor) {
     "context menu item 'copy all as HAR' should not be present"
   );
   is(
-    !!getContextMenuItem(monitor, "netmonitor.context.blockURL"),
+    !!getContextMenuItem(monitor, "request-list-context-block-url"),
     false,
     "context menu item 'block URL' should not be present"
   );

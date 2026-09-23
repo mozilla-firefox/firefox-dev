@@ -2,7 +2,11 @@
 # http://creativecommons.org/publicdomain/zero/1.0/
 
 import fluent.syntax.ast as FTL
-from fluent.migrate.helpers import VARIABLE_REFERENCE, transforms_from
+from fluent.migrate.helpers import (
+    MESSAGE_REFERENCE,
+    VARIABLE_REFERENCE,
+    transforms_from,
+)
 from fluent.migrate.transforms import COPY, PLURALS, REPLACE, REPLACE_IN_TEXT
 
 
@@ -154,4 +158,168 @@ netmonitor-toolbar-response-headers = { COPY(from_path, "netmonitor.toolbar.resp
 """,
             from_path=source,
         ),
+    )
+
+    ctx.add_transforms(
+        target,
+        target,
+        transforms_from(
+            """
+netmonitor-context-copy-value =
+    .label = { COPY(from_path, "netmonitor.context.copyValue") }
+    .accesskey = { COPY(from_path, "netmonitor.context.copyValue.accesskey") }
+netmonitor-context-copy-all =
+    .label = { COPY(from_path, "netmonitor.context.copyAll") }
+    .accesskey = { COPY(from_path, "netmonitor.context.copyAll.accesskey") }
+netmonitor-context-copy-url =
+    .label = { COPY(from_path, "netmonitor.context.copyUrl") }
+    .accesskey = { COPY(from_path, "netmonitor.context.copyUrl.accesskey") }
+netmonitor-context-copy-url-params =
+    .label = { COPY(from_path, "netmonitor.context.copyUrlParams") }
+    .accesskey = { COPY(from_path, "netmonitor.context.copyUrlParams.accesskey") }
+netmonitor-context-copy-as-powershell =
+    .label = { COPY(from_path, "netmonitor.context.copyAsPowerShell") }
+    .accesskey = { COPY(from_path, "netmonitor.context.copyAsPowerShell.accesskey") }
+netmonitor-context-copy-as-curl =
+    .label = { COPY(from_path, "netmonitor.context.copyAsCurl") }
+    .accesskey = { COPY(from_path, "netmonitor.context.copyAsCurl.accesskey") }
+netmonitor-context-copy-as-fetch =
+    .label = { COPY(from_path, "netmonitor.context.copyAsFetch") }
+    .accesskey = { COPY(from_path, "netmonitor.context.copyAsFetch.accesskey") }
+netmonitor-context-copy-request-headers =
+    .label = { COPY(from_path, "netmonitor.context.copyRequestHeaders") }
+    .accesskey = { COPY(from_path, "netmonitor.context.copyRequestHeaders.accesskey") }
+netmonitor-context-copy-response-headers =
+    .label = { COPY(from_path, "netmonitor.context.copyResponseHeaders") }
+    .accesskey = { COPY(from_path, "netmonitor.context.copyResponseHeaders.accesskey") }
+netmonitor-context-copy-response =
+    .label = { COPY(from_path, "netmonitor.context.copyResponse") }
+    .accesskey = { COPY(from_path, "netmonitor.context.copyResponse.accesskey") }
+netmonitor-context-copy-image-as-data-uri =
+    .label = { COPY(from_path, "netmonitor.context.copyImageAsDataUri") }
+    .accesskey = { COPY(from_path, "netmonitor.context.copyImageAsDataUri.accesskey") }
+netmonitor-context-set-override =
+    .label = { COPY(from_path, "netmonitor.context.setOverride") }
+    .accesskey = { COPY(from_path, "netmonitor.context.setOverride.accesskey") }
+netmonitor-context-remove-override =
+    .label = { COPY(from_path, "netmonitor.context.removeOverride") }
+    .accesskey = { COPY(from_path, "netmonitor.context.removeOverride.accesskey") }
+netmonitor-context-use-as-fetch =
+    .label = { COPY(from_path, "netmonitor.context.useAsFetch") }
+    .accesskey = { COPY(from_path, "netmonitor.context.useAsFetch.accesskey") }
+netmonitor-context-save-response-as =
+    .label = { COPY(from_path, "netmonitor.context.saveResponseAs") }
+    .accesskey = { COPY(from_path, "netmonitor.context.saveResponseAs.accesskey") }
+netmonitor-context-copy-all-as-har =
+    .label = { COPY(from_path, "netmonitor.context.copyAllAsHar") }
+    .accesskey = { COPY(from_path, "netmonitor.context.copyAllAsHar.accesskey") }
+netmonitor-context-save-as-har =
+    .label = { COPY(from_path, "netmonitor.context.saveAsHar") }
+    .accesskey = { COPY(from_path, "netmonitor.context.saveAsHar.accesskey") }
+netmonitor-context-save-all-as-har =
+    .label = { COPY(from_path, "netmonitor.context.saveAllAsHar") }
+    .accesskey = { COPY(from_path, "netmonitor.context.saveAllAsHar.accesskey") }
+netmonitor-context-import-har =
+    .label = { COPY(from_path, "netmonitor.har.importHarDialogTitle") }
+    .accesskey = { COPY(from_path, "netmonitor.context.importHar.accesskey") }
+netmonitor-context-hint-request-not-available =
+    .label = { COPY(from_path, "netmonitor.context.hintRequestNotAvailable") }
+netmonitor-context-resend =
+    .label = { COPY(from_path, "netmonitor.context.resend.label") }
+    .accesskey = { COPY(from_path, "netmonitor.context.resend.accesskey") }
+netmonitor-context-edit-and-resend =
+    .label = { COPY(from_path, "netmonitor.context.editAndResend") }
+    .accesskey = { COPY(from_path, "netmonitor.context.editAndResend.accesskey") }
+netmonitor-context-block-url =
+    .label = { COPY(from_path, "netmonitor.context.blockURL") }
+netmonitor-context-unblock-url =
+    .label = { COPY(from_path, "netmonitor.context.unblockURL") }
+netmonitor-context-new-tab =
+    .label = { COPY(from_path, "netmonitor.context.newTab") }
+    .accesskey = { COPY(from_path, "netmonitor.context.newTab.accesskey") }
+netmonitor-context-open-in-debugger =
+    .label = { COPY(from_path, "netmonitor.context.openInDebugger") }
+    .accesskey = { COPY(from_path, "netmonitor.context.openInDebugger.accesskey") }
+netmonitor-context-open-in-style-editor =
+    .label = { COPY(from_path, "netmonitor.context.openInStyleEditor") }
+    .accesskey = { COPY(from_path, "netmonitor.context.openInStyleEditor.accesskey") }
+netmonitor-context-perf-tools =
+    .label = { COPY(from_path, "netmonitor.context.perfTools") }
+    .accesskey = { COPY(from_path, "netmonitor.context.perfTools.accesskey") }
+netmonitor-request-blocking-menu-enable-all-blocked-urls = { COPY(from_path, "netmonitor.requestBlockingMenu.enableAllBlockedUrls") }
+netmonitor-request-blocking-menu-disable-all-blocked-urls = { COPY(from_path, "netmonitor.requestBlockingMenu.disableAllBlockedUrls") }
+netmonitor-request-blocking-menu-remove-all-blocked-urls = { COPY(from_path, "netmonitor.requestBlockingMenu.removeAllBlockedUrls") }
+netmonitor-har-import-har-dialog-title = { COPY(from_path, "netmonitor.har.importHarDialogTitle") }
+netmonitor-har-import-dialog-har-filter = { COPY(from_path, "netmonitor.har.importDialogHARFilter") }
+netmonitor-har-import-dialog-all-filter = { COPY(from_path, "netmonitor.har.importDialogAllFilter") }
+""",
+            from_path=source,
+        )
+        + [
+            FTL.Message(
+                id=FTL.Identifier("netmonitor-context-copy-request-data"),
+                attributes=[
+                    FTL.Attribute(
+                        id=FTL.Identifier("label"),
+                        value=REPLACE(
+                            source,
+                            "netmonitor.context.copyRequestData",
+                            {"%1$S": VARIABLE_REFERENCE("method")},
+                        ),
+                    ),
+                    FTL.Attribute(
+                        id=FTL.Identifier("accesskey"),
+                        value=COPY(
+                            source, "netmonitor.context.copyRequestData.accesskey"
+                        ),
+                    ),
+                ],
+            ),
+            FTL.Message(
+                id=FTL.Identifier("netmonitor-context-copy-as-curl-win"),
+                attributes=[
+                    FTL.Attribute(
+                        id=FTL.Identifier("label"),
+                        value=REPLACE(
+                            source,
+                            "netmonitor.context.copyAsCurl.win",
+                            {
+                                "%1$S": MESSAGE_REFERENCE(
+                                    "netmonitor-context-copy-as-curl.label"
+                                )
+                            },
+                        ),
+                    ),
+                    FTL.Attribute(
+                        id=FTL.Identifier("accesskey"),
+                        value=COPY(
+                            source, "netmonitor.context.copyAsCurl.win.accesskey"
+                        ),
+                    ),
+                ],
+            ),
+            FTL.Message(
+                id=FTL.Identifier("netmonitor-context-copy-as-curl-posix"),
+                attributes=[
+                    FTL.Attribute(
+                        id=FTL.Identifier("label"),
+                        value=REPLACE(
+                            source,
+                            "netmonitor.context.copyAsCurl.posix",
+                            {
+                                "%1$S": MESSAGE_REFERENCE(
+                                    "netmonitor-context-copy-as-curl.label"
+                                )
+                            },
+                        ),
+                    ),
+                    FTL.Attribute(
+                        id=FTL.Identifier("accesskey"),
+                        value=COPY(
+                            source, "netmonitor.context.copyAsCurl.posix.accesskey"
+                        ),
+                    ),
+                ],
+            ),
+        ],
     )
