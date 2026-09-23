@@ -634,3 +634,56 @@ netmonitor-timings-learn-more =
             for ftl_id, key in time_messages.items()
         ],
     )
+
+    ctx.add_transforms(
+        target,
+        target,
+        transforms_from(
+            """
+netmonitor-custom-new-request = { COPY(from_path, "netmonitor.custom.newRequest") }
+netmonitor-custom-new-request-method-label = { COPY(from_path, "netmonitor.custom.newRequestMethodLabel") }
+netmonitor-custom-new-request-url-label = { COPY(from_path, "netmonitor.custom.newRequestUrlLabel") }
+netmonitor-custom-query = { COPY(from_path, "netmonitor.custom.query") }
+netmonitor-custom-url-parameters = { COPY(from_path, "netmonitor.custom.urlParameters") }
+netmonitor-custom-headers = { COPY(from_path, "netmonitor.custom.headers") }
+netmonitor-custom-new-request-headers = { COPY(from_path, "netmonitor.custom.newRequestHeaders") }
+netmonitor-custom-placeholder-name =
+    .placeholder = { COPY(from_path, "netmonitor.custom.placeholder.name") }
+netmonitor-custom-placeholder-value =
+    .placeholder = { COPY(from_path, "netmonitor.custom.placeholder.value") }
+netmonitor-custom-post-body = { COPY(from_path, "netmonitor.custom.postBody") }
+netmonitor-custom-post-body-placeholder =
+    .placeholder = { COPY(from_path, "netmonitor.custom.postBody.placeholder") }
+netmonitor-custom-post-data = { COPY(from_path, "netmonitor.custom.postData") }
+netmonitor-custom-send = { COPY(from_path, "netmonitor.custom.send") }
+netmonitor-custom-cancel = { COPY(from_path, "netmonitor.custom.cancel") }
+netmonitor-custom-clear = { COPY(from_path, "netmonitor.custom.clear") }
+netmonitor-custom-remove-item =
+    .title = { COPY(from_path, "netmonitor.custom.removeItem") }
+    .aria-label = { COPY(from_path, "netmonitor.custom.removeItem") }
+""",
+            from_path=source,
+        ),
+    )
+
+    # every one of these takes a single size, time or count as its only
+    # placeholder
+    single_placeholder_messages = {
+        "charts-size-kb": ("charts.size.kB", "size"),
+        "charts-transferred-size-kb": ("charts.transferredSize.kB", "size"),
+        "charts-total-s": ("charts.totalS", "time"),
+        "charts-total-transferred-size-kb": (
+            "charts.totalTransferredSize.kB",
+            "size",
+        ),
+        "charts-total-size-kb": ("charts.totalSize.kB", "size"),
+        "charts-total-cached": ("charts.totalCached", "count"),
+        "charts-total-count": ("charts.totalCount", "count"),
+    }
+
+    # the plural form is picked from a separate numeric variable, because the
+    # displayed time is a preformatted string
+    seconds_messages = {
+        "charts-total-seconds": "charts.totalSeconds",
+        "charts-total-seconds-non-blocking": "charts.totalSecondsNonBlocking",
+    }

@@ -795,3 +795,47 @@ netmonitor-timings-handled-by-service-worker = Handle fetch:
 # The tooltip of the link to external documentation for timings.
 netmonitor-timings-learn-more =
     .title = Learn more about timings
+
+## Strings used in the custom request forms of the DevTools Network Panel
+
+# The title of the new custom request form.
+netmonitor-custom-new-request = New Request
+# The label above the method text input field of the new custom request form.
+netmonitor-custom-new-request-method-label = Method
+# The label above the url text input field of the new custom request form.
+netmonitor-custom-new-request-url-label = URL
+# The label above the query string entry in the custom request form.
+netmonitor-custom-query = Query String
+# The label above the query string entry in the new custom request form.
+netmonitor-custom-url-parameters = URL Parameters
+# The label above the request headers entry in the custom request form.
+netmonitor-custom-headers = Request Headers
+# The label above the request headers entry in the new custom request form.
+netmonitor-custom-new-request-headers = Headers
+# The placeholder on the name input of the headers and query params in the new
+# custom request form.
+netmonitor-custom-placeholder-name =
+    .placeholder = name
+# The placeholder on the value input of the headers and query params in the new
+# custom request form.
+netmonitor-custom-placeholder-value =
+    .placeholder = value
+# The label above the request body entry in the new custom request form.
+netmonitor-custom-post-body = Body
+# The placeholder on the body textarea in the new custom request form.
+netmonitor-custom-post-body-placeholder =
+    .placeholder = payload
+# The label above the request body entry in the custom request form.
+netmonitor-custom-post-data = Request Body
+# The label on the button which sends the custom request.
+netmonitor-custom-send = Send
+# The label on the button which cancels and closes the custom request form.
+netmonitor-custom-cancel = Cancel
+# The label on the button which clears the content of the new custom request
+# panel.
+netmonitor-custom-clear = Clear
+# The tooltip and accessible name of the remove button of a headers or query
+# params item.
+netmonitor-custom-remove-item =
+    .title = Remove item
+    .aria-label = Remove item

@@ -6,6 +6,7 @@
 
 const {
   Component,
+  createFactory,
 } = require("resource://devtools/client/shared/vendor/react.mjs");
 const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-types.mjs");
 const dom = require("resource://devtools/client/shared/vendor/react-dom-factories.js");
@@ -13,11 +14,10 @@ const {
   connect,
 } = require("resource://devtools/client/shared/vendor/react-redux.js");
 const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
-const {
   fetchNetworkUpdatePacket,
 } = require("resource://devtools/client/netmonitor/src/utils/request-utils.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+const Localized = createFactory(FluentReact.Localized);
 const Actions = require("resource://devtools/client/netmonitor/src/actions/index.js");
 const {
   getSelectedRequest,
@@ -29,19 +29,6 @@ const {
 } = require("resource://devtools/client/netmonitor/src/utils/request-utils.js");
 
 const { button, div, input, label, textarea } = dom;
-
-const CUSTOM_CANCEL = L10N.getStr("netmonitor.custom.cancel");
-const CUSTOM_HEADERS = L10N.getStr("netmonitor.custom.headers");
-const CUSTOM_NEW_REQUEST = L10N.getStr("netmonitor.custom.newRequest");
-const CUSTOM_NEW_REQUEST_METHOD_LABEL = L10N.getStr(
-  "netmonitor.custom.newRequestMethodLabel"
-);
-const CUSTOM_NEW_REQUEST_URL_LABEL = L10N.getStr(
-  "netmonitor.custom.newRequestUrlLabel"
-);
-const CUSTOM_POSTDATA = L10N.getStr("netmonitor.custom.postData");
-const CUSTOM_QUERY = L10N.getStr("netmonitor.custom.query");
-const CUSTOM_SEND = L10N.getStr("netmonitor.custom.send");
 
 /*
  * Custom request panel component
@@ -223,9 +210,9 @@ class CustomRequestPanel extends Component {
 
     return div(
       { className: "custom-request-panel" },
-      div(
-        { className: "custom-request-label custom-header" },
-        CUSTOM_NEW_REQUEST
+      Localized(
+        { id: "netmonitor-custom-new-request" },
+        div({ className: "custom-request-label custom-header" })
       ),
       div(
         { className: "custom-request-panel-content" },
@@ -233,21 +220,21 @@ class CustomRequestPanel extends Component {
           { className: "tabpanel-summary-container custom-request" },
           div(
             { className: "custom-request-button-container" },
-            button(
-              {
+            Localized(
+              { id: "netmonitor-custom-cancel" },
+              button({
                 className: "devtools-button",
                 id: "custom-request-close-button",
                 onClick: removeSelectedCustomRequest,
-              },
-              CUSTOM_CANCEL
+              })
             ),
-            button(
-              {
+            Localized(
+              { id: "netmonitor-custom-send" },
+              button({
                 className: "devtools-button",
                 id: "custom-request-send-button",
                 onClick: sendCustomRequest,
-              },
-              CUSTOM_SEND
+              })
             )
           )
         ),
@@ -256,12 +243,12 @@ class CustomRequestPanel extends Component {
             className: "tabpanel-summary-container custom-method-and-url",
             id: "custom-method-and-url",
           },
-          label(
-            {
+          Localized(
+            { id: "netmonitor-custom-new-request-method-label" },
+            label({
               className: "custom-method-value-label custom-request-label",
               htmlFor: "custom-method-value",
-            },
-            CUSTOM_NEW_REQUEST_METHOD_LABEL
+            })
           ),
           input({
             className: "custom-method-value",
@@ -272,12 +259,12 @@ class CustomRequestPanel extends Component {
               this.updateCustomRequestFields(evt, request, updateRequest),
             value: method,
           }),
-          label(
-            {
+          Localized(
+            { id: "netmonitor-custom-new-request-url-label" },
+            label({
               className: "custom-url-value-label custom-request-label",
               htmlFor: "custom-url-value",
-            },
-            CUSTOM_NEW_REQUEST_URL_LABEL
+            })
           ),
           input({
             className: "custom-url-value",
@@ -294,12 +281,12 @@ class CustomRequestPanel extends Component {
                 className: "tabpanel-summary-container custom-section",
                 id: "custom-query",
               },
-              label(
-                {
+              Localized(
+                { id: "netmonitor-custom-query" },
+                label({
                   className: "custom-request-label",
                   htmlFor: "custom-query-value",
-                },
-                CUSTOM_QUERY
+                })
               ),
               textarea({
                 className: "tabpanel-summary-input",
@@ -317,12 +304,12 @@ class CustomRequestPanel extends Component {
             id: "custom-headers",
             className: "tabpanel-summary-container custom-section",
           },
-          label(
-            {
+          Localized(
+            { id: "netmonitor-custom-headers" },
+            label({
               className: "custom-request-label",
               htmlFor: "custom-headers-value",
-            },
-            CUSTOM_HEADERS
+            })
           ),
           textarea({
             className: "tabpanel-summary-input",
@@ -339,12 +326,12 @@ class CustomRequestPanel extends Component {
             id: "custom-postdata",
             className: "tabpanel-summary-container custom-section",
           },
-          label(
-            {
+          Localized(
+            { id: "netmonitor-custom-post-data" },
+            label({
               className: "custom-request-label",
               htmlFor: "custom-postdata-value",
-            },
-            CUSTOM_POSTDATA
+            })
           ),
           textarea({
             className: "tabpanel-summary-input",

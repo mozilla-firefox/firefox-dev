@@ -6,24 +6,14 @@
 
 const {
   Component,
+  createFactory,
   createRef,
 } = require("resource://devtools/client/shared/vendor/react.mjs");
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
 const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-types.mjs");
 const dom = require("resource://devtools/client/shared/vendor/react-dom-factories.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+const Localized = createFactory(FluentReact.Localized);
 const { div, input, textarea, button } = dom;
-
-const CUSTOM_NEW_REQUEST_INPUT_NAME = L10N.getStr(
-  "netmonitor.custom.placeholder.name"
-);
-
-const CUSTOM_NEW_REQUEST_INPUT_VALUE = L10N.getStr(
-  "netmonitor.custom.placeholder.value"
-);
-
-const REMOVE_ITEM = L10N.getStr("netmonitor.custom.removeItem");
 
 /**
  * Editable name and value list component with optional form to add new items
@@ -143,12 +133,16 @@ class InputMap extends Component {
           ),
           !item.disabled &&
             onDelete &&
-            button({
-              className: "http-custom-delete-button",
-              title: REMOVE_ITEM,
-              "aria-label": REMOVE_ITEM,
-              onClick: () => onDelete(index),
-            })
+            Localized(
+              {
+                id: "netmonitor-custom-remove-item",
+                attrs: { title: true, "aria-label": true },
+              },
+              button({
+                className: "http-custom-delete-button",
+                onClick: () => onDelete(index),
+              })
+            )
         );
       }),
       onAdd &&
@@ -170,17 +164,22 @@ class InputMap extends Component {
                 "data-replicated-value": name,
                 title: value,
               },
-              textarea({
-                className: "http-custom-input-name",
-                type: "text",
-                ref: "addInputName",
-                checked: true,
-                value: name,
-                rows: 1,
-                placeholder: CUSTOM_NEW_REQUEST_INPUT_NAME,
-                onChange: e => this.setState({ name: e.target.value }),
-                onKeyDown,
-              })
+              Localized(
+                {
+                  id: "netmonitor-custom-placeholder-name",
+                  attrs: { placeholder: true },
+                },
+                textarea({
+                  className: "http-custom-input-name",
+                  type: "text",
+                  ref: "addInputName",
+                  checked: true,
+                  value: name,
+                  rows: 1,
+                  onChange: e => this.setState({ name: e.target.value }),
+                  onKeyDown,
+                })
+              )
             )
           ),
           div(
@@ -191,16 +190,21 @@ class InputMap extends Component {
                 "data-replicated-value": value,
                 title: value,
               },
-              textarea({
-                className: "http-custom-input-value",
-                type: "text",
-                ref: "addInputValue",
-                value,
-                onChange: e => this.setState({ value: e.target.value }),
-                rows: 1,
-                placeholder: CUSTOM_NEW_REQUEST_INPUT_VALUE,
-                onKeyDown,
-              })
+              Localized(
+                {
+                  id: "netmonitor-custom-placeholder-value",
+                  attrs: { placeholder: true },
+                },
+                textarea({
+                  className: "http-custom-input-value",
+                  type: "text",
+                  ref: "addInputValue",
+                  value,
+                  onChange: e => this.setState({ value: e.target.value }),
+                  rows: 1,
+                  onKeyDown,
+                })
+              )
             )
           )
         )

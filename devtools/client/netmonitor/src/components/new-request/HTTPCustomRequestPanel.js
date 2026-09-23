@@ -14,10 +14,9 @@ const dom = require("resource://devtools/client/shared/vendor/react-dom-factorie
 const {
   connect,
 } = require("resource://devtools/client/shared/vendor/react-redux.js");
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
 const Actions = require("resource://devtools/client/netmonitor/src/actions/index.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+const Localized = createFactory(FluentReact.Localized);
 const {
   getClickedRequest,
 } = require("resource://devtools/client/netmonitor/src/selectors/index.js");
@@ -29,18 +28,6 @@ const InputMap = createFactory(
   require("resource://devtools/client/netmonitor/src/components/new-request/InputMap.js")
 );
 const { button, div, footer, label, textarea, select, option } = dom;
-
-const CUSTOM_HEADERS = L10N.getStr("netmonitor.custom.newRequestHeaders");
-const CUSTOM_NEW_REQUEST_URL_LABEL = L10N.getStr(
-  "netmonitor.custom.newRequestUrlLabel"
-);
-const CUSTOM_POSTDATA = L10N.getStr("netmonitor.custom.postBody");
-const CUSTOM_POSTDATA_PLACEHOLDER = L10N.getStr(
-  "netmonitor.custom.postBody.placeholder"
-);
-const CUSTOM_QUERY = L10N.getStr("netmonitor.custom.urlParameters");
-const CUSTOM_SEND = L10N.getStr("netmonitor.custom.send");
-const CUSTOM_CLEAR = L10N.getStr("netmonitor.custom.clear");
 
 const FIREFOX_DEFAULT_HEADERS = [
   "Accept-Charset",
@@ -91,6 +78,7 @@ class HTTPCustomRequestPanel extends Component {
       connector: PropTypes.object.isRequired,
       request: PropTypes.object,
       sendCustomRequest: PropTypes.func.isRequired,
+      getString: PropTypes.func.isRequired,
     };
   }
 
@@ -314,6 +302,8 @@ class HTTPCustomRequestPanel extends Component {
   }
 
   render() {
+    const { getString } = this.props;
+
     return div(
       { className: "http-custom-request-panel" },
       div(
@@ -353,7 +343,7 @@ class HTTPCustomRequestPanel extends Component {
               className: "http-custom-url-value",
               id: "http-custom-url-value",
               name: "url",
-              placeholder: CUSTOM_NEW_REQUEST_URL_LABEL,
+              placeholder: getString("netmonitor-custom-new-request-url-label"),
               onChange: event => {
                 this.handleChangeURL(event);
               },
@@ -368,12 +358,12 @@ class HTTPCustomRequestPanel extends Component {
             className: "tabpanel-summary-container http-custom-section",
             id: "http-custom-query",
           },
-          label(
-            {
+          Localized(
+            { id: "netmonitor-custom-url-parameters" },
+            label({
               className: "http-custom-request-label",
               htmlFor: "http-custom-query-value",
-            },
-            CUSTOM_QUERY
+            })
           ),
           // This is the input map for the Url Parameters Component
           InputMap({
@@ -413,12 +403,12 @@ class HTTPCustomRequestPanel extends Component {
             id: "http-custom-headers",
             className: "tabpanel-summary-container http-custom-section",
           },
-          label(
-            {
+          Localized(
+            { id: "netmonitor-custom-new-request-headers" },
+            label({
               className: "http-custom-request-label",
               htmlFor: "custom-headers-value",
-            },
-            CUSTOM_HEADERS
+            })
           ),
           // This is the input map for the Headers Component
           InputMap({
@@ -440,37 +430,43 @@ class HTTPCustomRequestPanel extends Component {
             id: "http-custom-postdata",
             className: "tabpanel-summary-container http-custom-section",
           },
-          label(
-            {
+          Localized(
+            { id: "netmonitor-custom-post-body" },
+            label({
               className: "http-custom-request-label",
               htmlFor: "http-custom-postdata-value",
-            },
-            CUSTOM_POSTDATA
+            })
           ),
-          textarea({
-            className: "tabpanel-summary-input",
-            id: "http-custom-postdata-value",
-            name: "postBody",
-            placeholder: CUSTOM_POSTDATA_PLACEHOLDER,
-            onChange: this.handleInputChange,
-            rows: 6,
-            value: this.state.postBody,
-            wrap: "off",
-          })
+          Localized(
+            {
+              id: "netmonitor-custom-post-body-placeholder",
+              attrs: { placeholder: true },
+            },
+            textarea({
+              className: "tabpanel-summary-input",
+              id: "http-custom-postdata-value",
+              name: "postBody",
+              onChange: this.handleInputChange,
+              rows: 6,
+              value: this.state.postBody,
+              wrap: "off",
+            })
+          )
         )
       ),
       footer(
         { className: "http-custom-request-button-container" },
-        button(
-          {
+        Localized(
+          { id: "netmonitor-custom-clear" },
+          button({
             className: "devtools-button",
             id: "http-custom-request-clear-button",
             onClick: this.handleClear,
-          },
-          CUSTOM_CLEAR
+          })
         ),
-        button(
-          {
+        Localized(
+          { id: "netmonitor-custom-send" },
+          button({
             className: "devtools-button",
             id: "http-custom-request-send-button",
             disabled:
@@ -501,18 +497,19 @@ class HTTPCustomRequestPanel extends Component {
               }
               this.props.sendCustomRequest(newRequest);
             },
-          },
-          CUSTOM_SEND
+          })
         )
       )
     );
   }
 }
 
-module.exports = connect(
-  state => ({ request: getClickedRequest(state) }),
-  dispatch => ({
-    sendCustomRequest: request =>
-      dispatch(Actions.sendHTTPCustomRequest(request)),
-  })
-)(HTTPCustomRequestPanel);
+module.exports = FluentReact.withLocalization(
+  connect(
+    state => ({ request: getClickedRequest(state) }),
+    dispatch => ({
+      sendCustomRequest: request =>
+        dispatch(Actions.sendHTTPCustomRequest(request)),
+    })
+  )(HTTPCustomRequestPanel)
+);
