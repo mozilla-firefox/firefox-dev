@@ -7,11 +7,9 @@
  * Tests if the POST requests display the correct information in the UI,
  * for raw payloads with attached content-type headers.
  */
-add_task(async function () {
-  const {
-    L10N,
-  } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
 
+add_task(async function () {
   const { tab, monitor } = await initNetMonitor(POST_RAW_URL, {
     requestCount: 1,
   });
@@ -59,7 +57,7 @@ add_task(async function () {
 
   is(
     tabpanel.querySelector(".data-label").textContent,
-    L10N.getStr("paramsFormData"),
+    l10n.formatValueSync("netmonitor-params-form-data"),
     "The post section doesn't have the correct title."
   );
 

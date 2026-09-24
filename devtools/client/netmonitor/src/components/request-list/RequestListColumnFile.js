@@ -8,9 +8,6 @@ const {
   Component,
 } = require("resource://devtools/client/shared/vendor/react.mjs");
 const dom = require("resource://devtools/client/shared/vendor/react-dom-factories.js");
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
 const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-types.mjs");
 const {
   connect,
@@ -29,6 +26,14 @@ const {
 const {
   getOverriddenUrl,
 } = require("resource://devtools/client/netmonitor/src/selectors/index.js");
+
+// one instance of this column is rendered per request, so the string is read
+// directly instead of subscribing every row to the localization context
+loader.lazyGetter(
+  this,
+  "l10n",
+  () => new Localization(["devtools/client/netmonitor.ftl"], true)
+);
 
 const UPDATED_FILE_PROPS = ["urlDetails", "waitingTime"];
 
@@ -76,11 +81,10 @@ class RequestListColumnFile extends Component {
       dom.div({}, truncateString(requestedFile, MAX_UI_STRING_LENGTH)),
       isSlow &&
         dom.div({
-          title: L10N.getFormatStr(
-            "netmonitor.audits.slowIconTooltip",
-            getFormattedTime(waitingTime),
-            getFormattedTime(slowLimit)
-          ),
+          title: l10n.formatValueSync("netmonitor-audits-slow-icon-tooltip", {
+            waitingTime: getFormattedTime(waitingTime),
+            slowLimit: getFormattedTime(slowLimit),
+          }),
           onMouseDown: onWaterfallMouseDown,
           className: "requests-list-slow-button",
         })

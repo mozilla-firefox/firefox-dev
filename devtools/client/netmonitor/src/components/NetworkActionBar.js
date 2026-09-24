@@ -14,9 +14,7 @@ const {
 const {
   div,
 } = require("resource://devtools/client/shared/vendor/react-dom-factories.js");
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
 const Actions = require("resource://devtools/client/netmonitor/src/actions/index.js");
 const {
   PANELS,
@@ -55,6 +53,7 @@ class NetworkActionBar extends Component {
   static get propTypes() {
     return {
       connector: PropTypes.object.isRequired,
+      getString: PropTypes.func.isRequired,
       selectedActionBarTabId: PropTypes.string,
       selectActionBarTab: PropTypes.func.isRequired,
       toggleNetworkActionBar: PropTypes.func.isRequired,
@@ -64,6 +63,7 @@ class NetworkActionBar extends Component {
   render() {
     const {
       connector,
+      getString,
       selectedActionBarTabId,
       selectActionBarTab,
       toggleNetworkActionBar,
@@ -85,7 +85,7 @@ class NetworkActionBar extends Component {
           onSelect: id => selectActionBarTab(id),
           sidebarToggleButton: {
             collapsed: false,
-            collapsePaneTitle: L10N.getStr("collapseActionPane"),
+            collapsePaneTitle: getString("netmonitor-collapse-action-pane"),
             expandPaneTitle: "",
             onClick: toggleNetworkActionBar,
             alignRight: true,
@@ -96,7 +96,7 @@ class NetworkActionBar extends Component {
           TabPanel(
             {
               id: PANELS.HTTP_CUSTOM_REQUEST,
-              title: L10N.getStr("netmonitor.actionbar.HTTPCustomRequest"),
+              title: getString("netmonitor-actionbar-http-custom-request"),
               className: "network-action-bar-HTTP-custom-request",
             },
             HTTPCustomRequestPanel({ connector })
@@ -104,7 +104,7 @@ class NetworkActionBar extends Component {
         TabPanel(
           {
             id: PANELS.SEARCH,
-            title: L10N.getStr("netmonitor.actionbar.search"),
+            title: getString("netmonitor-actionbar-search"),
             className: "network-action-bar-search",
           },
           SearchPanel({ connector })
@@ -113,7 +113,7 @@ class NetworkActionBar extends Component {
           TabPanel(
             {
               id: PANELS.BLOCKING,
-              title: L10N.getStr("netmonitor.actionbar.requestBlocking2"),
+              title: getString("netmonitor-actionbar-request-blocking"),
               className: "network-action-bar-blocked",
             },
             RequestBlockingPanel()
@@ -123,12 +123,14 @@ class NetworkActionBar extends Component {
   }
 }
 
-module.exports = connect(
-  state => ({
-    selectedActionBarTabId: state.ui.selectedActionBarTabId,
-  }),
-  dispatch => ({
-    selectActionBarTab: id => dispatch(Actions.selectActionBarTab(id)),
-    toggleNetworkActionBar: () => dispatch(Actions.toggleNetworkActionBar()),
-  })
-)(NetworkActionBar);
+module.exports = FluentReact.withLocalization(
+  connect(
+    state => ({
+      selectedActionBarTabId: state.ui.selectedActionBarTabId,
+    }),
+    dispatch => ({
+      selectActionBarTab: id => dispatch(Actions.selectActionBarTab(id)),
+      toggleNetworkActionBar: () => dispatch(Actions.toggleNetworkActionBar()),
+    })
+  )(NetworkActionBar)
+);

@@ -7,6 +7,8 @@
  * Tests if JSON responses containing null values are properly displayed.
  */
 
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+
 add_task(async function () {
   const { tab, monitor } = await initNetMonitor(JSON_BASIC_URL + "?name=null", {
     requestCount: 1,
@@ -92,7 +94,8 @@ add_task(async function () {
     );
     const jsonView = panel.querySelector(".data-label") || {};
     is(
-      jsonView.textContent === L10N.getStr("jsonScopeName"),
+      jsonView.textContent ===
+        l10n.formatValueSync("netmonitor-json-scope-name"),
       true,
       "The response json view has the intended visibility."
     );

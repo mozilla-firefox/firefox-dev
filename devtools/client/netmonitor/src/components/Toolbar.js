@@ -29,7 +29,6 @@ const {
 } = require("resource://devtools/client/netmonitor/src/utils/filter-autocomplete-provider.js");
 const {
   getMenuItemStrings,
-  L10N,
 } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
 const {
   fetchNetworkUpdatePacket,
@@ -516,16 +515,18 @@ class Toolbar extends Component {
 
   renderSettingsMenuButton() {
     const { toolboxDoc } = this.props;
-    return MenuButton(
-      {
-        menuId: "netmonitor-settings-menu-button",
-        toolboxDoc,
-        className: "devtools-button netmonitor-settings-menu-button",
-        title: L10N.getStr("netmonitor.settings.menuTooltip"),
-      },
-      // We pass the children in a function so we don't require the MenuItem and MenuList
-      // components until we need to display them (i.e. when the button is clicked).
-      () => this.renderSettingsMenuItems()
+    return Localized(
+      { id: "netmonitor-settings-menu-tooltip", attrs: { title: true } },
+      MenuButton(
+        {
+          menuId: "netmonitor-settings-menu-button",
+          toolboxDoc,
+          className: "devtools-button netmonitor-settings-menu-button",
+        },
+        // We pass the children in a function so we don't require the MenuItem and MenuList
+        // components until we need to display them (i.e. when the button is clicked).
+        () => this.renderSettingsMenuItems()
+      )
     );
   }
 
@@ -555,14 +556,14 @@ class Toolbar extends Component {
         key: "request-list-context-import-har",
         className: "menu-item netmonitor-settings-import-har-item",
         ...getMenuItemStrings("netmonitor-context-import-har"),
-        tooltip: L10N.getStr("netmonitor.settings.importHarTooltip"),
+        tooltip: getString("netmonitor-settings-import-har-tooltip"),
         onClick: () => HarMenuUtils.openHarFile(actions, openSplitConsole),
       }),
       MenuItem({
         key: "request-list-context-save-all-as-har",
         className: "menu-item netmonitor-settings-save-har-item",
         ...getMenuItemStrings("netmonitor-context-save-all-as-har"),
-        tooltip: L10N.getStr("netmonitor.settings.saveHarTooltip"),
+        tooltip: getString("netmonitor-settings-save-har-tooltip"),
         disabled: !displayedRequests.length,
         onClick: () => HarMenuUtils.saveAllAsHar(displayedRequests, connector),
       }),
@@ -570,7 +571,7 @@ class Toolbar extends Component {
         key: "request-list-context-copy-all-as-har",
         className: "menu-item netmonitor-settings-copy-har-item",
         ...getMenuItemStrings("netmonitor-context-copy-all-as-har"),
-        tooltip: L10N.getStr("netmonitor.settings.copyHarTooltip"),
+        tooltip: getString("netmonitor-settings-copy-har-tooltip"),
         disabled: !displayedRequests.length,
         onClick: () => HarMenuUtils.copyAllAsHar(displayedRequests, connector),
       }),

@@ -24,11 +24,10 @@ ChromeUtils.defineESModuleGetters(
   { global: "contextual" }
 );
 
-loader.lazyRequireGetter(
+loader.lazyGetter(
   this,
-  "L10N",
-  "resource://devtools/client/netmonitor/src/utils/l10n.js",
-  true
+  "l10n",
+  () => new Localization(["devtools/client/netmonitor.ftl"], true)
 );
 
 const {
@@ -387,19 +386,23 @@ function getUrlToolTip(urlDetails) {
   const url = urlDetails.url;
   const decodedURL = urlDetails.unicodeUrl;
 
+  // this runs for every row on every render, and a url can be megabytes long,
+  // so avoid formatting anything when there is nothing to decode
+  if (url === decodedURL) {
+    return url;
+  }
+
   // The `originalFileURL` below refers to "File" because it was initially created for use in the File column.
   // Now it is also being used in the Path and URL columns, while retaining the original name.
-  const ORIGINAL_URL = L10N.getFormatStr(
-    "netRequest.originalFileURL.tooltip",
-    url
+  const ORIGINAL_URL = l10n.formatValueSync(
+    "netmonitor-request-original-file-url-tooltip",
+    { url }
   );
-  const DECODED_URL = L10N.getFormatStr(
-    "netRequest.decodedFileURL.tooltip",
-    decodedURL
+  const DECODED_URL = l10n.formatValueSync(
+    "netmonitor-request-decoded-file-url-tooltip",
+    { url: decodedURL }
   );
-  const toolTip =
-    url === decodedURL ? url : ORIGINAL_URL + "\n\n" + DECODED_URL;
-  return toolTip;
+  return ORIGINAL_URL + "\n\n" + DECODED_URL;
 }
 
 /**

@@ -859,3 +859,100 @@ network-menu-blocked-tooltip = { COPY(from_path, "networkMenu.blockedTooltip") }
         ),
         "netmonitor-override-enabled": ("netmonitor.override.enabled", "path"),
     }
+
+    ctx.add_transforms(
+        target,
+        target,
+        transforms_from(
+            """
+netmonitor-collapse-details-pane = { COPY(from_path, "collapseDetailsPane") }
+netmonitor-all-tabs-menu-button-tooltip = { COPY(from_path, "allTabsMenuButton.tooltip") }
+netmonitor-tab-headers = { COPY(from_path, "netmonitor.tab.headers") }
+netmonitor-tab-cookies = { COPY(from_path, "netmonitor.tab.cookies") }
+netmonitor-tab-cache = { COPY(from_path, "netmonitor.tab.cache") }
+netmonitor-tab-request = { COPY(from_path, "netmonitor.tab.request") }
+netmonitor-tab-response = { COPY(from_path, "netmonitor.tab.response") }
+netmonitor-tab-timings = { COPY(from_path, "netmonitor.tab.timings") }
+netmonitor-tab-stack-trace = { COPY(from_path, "netmonitor.tab.stackTrace") }
+netmonitor-tab-security = { COPY(from_path, "netmonitor.tab.security") }
+netmonitor-params-no-payload-text = { COPY(from_path, "paramsNoPayloadText") }
+netmonitor-params-filter-text = { COPY(from_path, "paramsFilterText") }
+netmonitor-params-form-data = { COPY(from_path, "paramsFormData") }
+netmonitor-params-post-payload = { COPY(from_path, "paramsPostPayload") }
+netmonitor-request-raw = { COPY(from_path, "netmonitor.request.raw") }
+netmonitor-request-truncated = { COPY(from_path, "requestTruncated") }
+netmonitor-response-empty-text = { COPY(from_path, "responseEmptyText") }
+netmonitor-response-redirect-empty-text = { COPY(from_path, "responseRedirectEmptyText") }
+netmonitor-response-payload = { COPY(from_path, "responsePayload") }
+netmonitor-response-raw = { COPY(from_path, "netmonitor.response.raw") }
+netmonitor-response-html = { COPY(from_path, "netmonitor.response.html") }
+netmonitor-response-truncated = { COPY(from_path, "responseTruncated") }
+    .title = { COPY(from_path, "responseTruncated") }
+netmonitor-json-filter-text = { COPY(from_path, "jsonFilterText") }
+netmonitor-json-scope-name = { COPY(from_path, "jsonScopeName") }
+netmonitor-jsonl-scope-name = { COPY(from_path, "jsonlScopeName") }
+netmonitor-response-name = { COPY(from_path, "netmonitor.response.name") }
+netmonitor-response-dimensions = { COPY(from_path, "netmonitor.response.dimensions") }
+netmonitor-response-mime = { COPY(from_path, "netmonitor.response.mime") }
+netmonitor-response-font-preview-failed = { COPY(from_path, "netmonitor.response.fontPreviewFailed") }
+netmonitor-messages-empty-text = { COPY(from_path, "messagesEmptyText") }
+netmonitor-toggle-messages-truncation = { COPY(from_path, "toggleMessagesTruncation") }
+netmonitor-toggle-messages-truncation-title =
+    .title = { COPY(from_path, "toggleMessagesTruncation.title") }
+netmonitor-message-data-truncated = { COPY(from_path, "messageDataTruncated") }
+netmonitor-collapse-action-pane = { COPY(from_path, "collapseActionPane") }
+netmonitor-actionbar-http-custom-request = { COPY(from_path, "netmonitor.actionbar.HTTPCustomRequest") }
+netmonitor-actionbar-search = { COPY(from_path, "netmonitor.actionbar.search") }
+netmonitor-actionbar-request-blocking = { COPY(from_path, "netmonitor.actionbar.requestBlocking2") }
+netmonitor-actionbar-enable-blocking = { COPY(from_path, "netmonitor.actionbar.enableBlocking") }
+netmonitor-actionbar-block-search-placeholder =
+    .placeholder = { COPY(from_path, "netmonitor.actionbar.blockSearchPlaceholder") }
+netmonitor-actionbar-remove-blocked-url =
+    .title = { COPY(from_path, "netmonitor.actionbar.removeBlockedUrl") }
+    .aria-label = { COPY(from_path, "netmonitor.actionbar.removeBlockedUrl") }
+netmonitor-actionbar-request-blocking-usage-notice = { COPY(from_path, "netmonitor.actionbar.requestBlockingUsageNotice") }
+netmonitor-actionbar-request-blocking-add-notice = { COPY(from_path, "netmonitor.actionbar.requestBlockingAddNotice") }
+netmonitor-perf-notice-1 = { COPY(from_path, "netmonitor.perfNotice1") }
+netmonitor-perf-notice-2 = { COPY(from_path, "netmonitor.perfNotice2") }
+netmonitor-perf-notice-3 =
+    .title = { COPY(from_path, "netmonitor.perfNotice3") }
+netmonitor-reload-notice-1 = { COPY(from_path, "netmonitor.reloadNotice1") }
+netmonitor-reload-notice-2 = { COPY(from_path, "netmonitor.reloadNotice2") }
+netmonitor-reload-notice-3 = { COPY(from_path, "netmonitor.reloadNotice3") }
+netmonitor-empty-browser-toolbox = { COPY(from_path, "netmonitor.emptyBrowserToolbox") }
+netmonitor-tracking-resource-tooltip = { COPY(from_path, "netmonitor.trackingResource.tooltip") }
+netmonitor-tracking-resource-enhanced-tracking-protection = { COPY(from_path, "netmonitor.trackingResource.enhancedTrackingProtection") }
+netmonitor-enhanced-tracking-protection-learn-more = { COPY(from_path, "netmonitor.enhancedTrackingProtection.learnMore") }
+netmonitor-override-disabled = { COPY(from_path, "netmonitor.override.disabled") }
+netmonitor-back-button = { COPY(from_path, "netmonitor.backButton") }
+    .title = { COPY(from_path, "netmonitor.backButton") }
+netmonitor-label-drop-har-files = { COPY(from_path, "netmonitor.label.dropHarFiles") }
+netmonitor-settings-menu-tooltip =
+    .title = { COPY(from_path, "netmonitor.settings.menuTooltip") }
+netmonitor-settings-import-har-tooltip = { COPY(from_path, "netmonitor.settings.importHarTooltip") }
+netmonitor-settings-save-har-tooltip = { COPY(from_path, "netmonitor.settings.saveHarTooltip") }
+netmonitor-settings-copy-har-tooltip = { COPY(from_path, "netmonitor.settings.copyHarTooltip") }
+""",
+            from_path=source,
+        )
+        + [
+            FTL.Message(
+                id=FTL.Identifier(ftl_id),
+                value=REPLACE(source, key, {"%1$S": VARIABLE_REFERENCE(name)}),
+            )
+            for ftl_id, (key, name) in single_placeholder_messages.items()
+        ]
+        + [
+            FTL.Message(
+                id=FTL.Identifier("netmonitor-audits-slow-icon-tooltip"),
+                value=REPLACE(
+                    source,
+                    "netmonitor.audits.slowIconTooltip",
+                    {
+                        "%1$S": VARIABLE_REFERENCE("waitingTime"),
+                        "%2$S": VARIABLE_REFERENCE("slowLimit"),
+                    },
+                ),
+            ),
+        ],
+    )

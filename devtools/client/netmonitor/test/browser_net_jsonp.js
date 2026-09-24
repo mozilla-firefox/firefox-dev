@@ -10,10 +10,6 @@
 const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
 
 add_task(async function () {
-  const {
-    L10N,
-  } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
-
   const { tab, monitor } = await initNetMonitor(JSONP_URL, { requestCount: 1 });
   info("Starting test... ");
 
@@ -150,7 +146,7 @@ add_task(async function () {
     );
     is(
       tabpanel.querySelector(".data-label").textContent,
-      L10N.getFormatStr("jsonpScopeName", func),
+      l10n.formatValueSync("netmonitor-jsonp-scope-name", { callback: func }),
       "The response json view has the intened visibility and correct title."
     );
     is(

@@ -6,6 +6,7 @@
 
 const {
   Component,
+  createFactory,
 } = require("resource://devtools/client/shared/vendor/react.mjs");
 const {
   button,
@@ -22,28 +23,13 @@ const {
   connect,
 } = require("resource://devtools/client/shared/vendor/react-redux.js");
 const Actions = require("resource://devtools/client/netmonitor/src/actions/index.js");
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+const Localized = createFactory(FluentReact.Localized);
 const {
   PANELS,
 } = require("resource://devtools/client/netmonitor/src/constants.js");
 
 const RequestBlockingContextMenu = require("resource://devtools/client/netmonitor/src/widgets/RequestBlockingContextMenu.js");
-
-const ENABLE_BLOCKING_LABEL = L10N.getStr(
-  "netmonitor.actionbar.enableBlocking"
-);
-const ADD_URL_PLACEHOLDER = L10N.getStr(
-  "netmonitor.actionbar.blockSearchPlaceholder"
-);
-const REQUEST_BLOCKING_USAGE_NOTICE = L10N.getStr(
-  "netmonitor.actionbar.requestBlockingUsageNotice"
-);
-const REQUEST_BLOCKING_ADD_NOTICE = L10N.getStr(
-  "netmonitor.actionbar.requestBlockingAddNotice"
-);
-const REMOVE_URL_TOOLTIP = L10N.getStr("netmonitor.actionbar.removeBlockedUrl");
 
 class RequestBlockingPanel extends Component {
   static get propTypes() {
@@ -118,7 +104,10 @@ class RequestBlockingPanel extends Component {
                 this.refs.enabledCheckbox.checked
               ),
           }),
-          span({ className: "request-blocking-label" }, ENABLE_BLOCKING_LABEL)
+          Localized(
+            { id: "netmonitor-actionbar-enable-blocking" },
+            span({ className: "request-blocking-label" })
+          )
         )
       )
     );
@@ -148,12 +137,16 @@ class RequestBlockingPanel extends Component {
           url
         )
       ),
-      button({
-        className: "request-blocking-remove-button",
-        title: REMOVE_URL_TOOLTIP,
-        "aria-label": REMOVE_URL_TOOLTIP,
-        onClick: () => removeBlockedUrl(url),
-      })
+      Localized(
+        {
+          id: "netmonitor-actionbar-remove-blocked-url",
+          attrs: { title: true, "aria-label": true },
+        },
+        button({
+          className: "request-blocking-remove-button",
+          onClick: () => removeBlockedUrl(url),
+        })
+      )
     );
   }
 
@@ -178,21 +171,26 @@ class RequestBlockingPanel extends Component {
             this.setState({ editingUrl: null });
           },
         },
-        input({
-          type: "text",
-          defaultValue: url,
-          ref: "editInput",
-          className: "devtools-searchinput",
-          placeholder: ADD_URL_PLACEHOLDER,
-          onBlur: () => this.setState({ editingUrl: null }),
-          onKeyDown: e => {
-            if (e.key === "Escape") {
-              e.stopPropagation();
-              e.preventDefault();
-              this.setState({ editingUrl: null });
-            }
+        Localized(
+          {
+            id: "netmonitor-actionbar-block-search-placeholder",
+            attrs: { placeholder: true },
           },
-        }),
+          input({
+            type: "text",
+            defaultValue: url,
+            ref: "editInput",
+            className: "devtools-searchinput",
+            onBlur: () => this.setState({ editingUrl: null }),
+            onKeyDown: e => {
+              if (e.key === "Escape") {
+                e.stopPropagation();
+                e.preventDefault();
+                this.setState({ editingUrl: null });
+              }
+            },
+          })
+        ),
 
         input({ type: "submit", style: { display: "none" } })
       )
@@ -270,22 +268,27 @@ class RequestBlockingPanel extends Component {
             this.scrollToBottom();
           },
         },
-        input({
-          type: "text",
-          ref: "addInput",
-          className: "devtools-searchinput",
-          placeholder: ADD_URL_PLACEHOLDER,
-          onKeyDown: e => {
-            if (e.key === "Escape") {
-              e.stopPropagation();
-              e.preventDefault();
-
-              const { addInput } = this.refs;
-              addInput.value = "";
-              addInput.focus();
-            }
+        Localized(
+          {
+            id: "netmonitor-actionbar-block-search-placeholder",
+            attrs: { placeholder: true },
           },
-        }),
+          input({
+            type: "text",
+            ref: "addInput",
+            className: "devtools-searchinput",
+            onKeyDown: e => {
+              if (e.key === "Escape") {
+                e.stopPropagation();
+                e.preventDefault();
+
+                const { addInput } = this.refs;
+                addInput.value = "";
+                addInput.focus();
+              }
+            },
+          })
+        ),
         input({ type: "submit", style: { display: "none" } })
       )
     );
@@ -294,13 +297,13 @@ class RequestBlockingPanel extends Component {
   renderEmptyListNotice() {
     return div(
       { className: "request-blocking-list-empty-notice" },
-      div(
-        { className: "request-blocking-notice-element" },
-        REQUEST_BLOCKING_USAGE_NOTICE
+      Localized(
+        { id: "netmonitor-actionbar-request-blocking-usage-notice" },
+        div({ className: "request-blocking-notice-element" })
       ),
-      div(
-        { className: "request-blocking-notice-element" },
-        REQUEST_BLOCKING_ADD_NOTICE
+      Localized(
+        { id: "netmonitor-actionbar-request-blocking-add-notice" },
+        div({ className: "request-blocking-notice-element" })
       )
     );
   }

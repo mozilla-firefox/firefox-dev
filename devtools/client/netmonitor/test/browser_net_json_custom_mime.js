@@ -17,7 +17,6 @@ add_task(async function () {
 
   const { document, store, windowRequire } = monitor.panelWin;
   const Actions = windowRequire("devtools/client/netmonitor/src/actions/index");
-  const { L10N } = windowRequire("devtools/client/netmonitor/src/utils/l10n");
   const { getDisplayedRequests, getSortedRequests } = windowRequire(
     "devtools/client/netmonitor/src/selectors/index"
   );
@@ -106,7 +105,8 @@ add_task(async function () {
     );
     const jsonView = tabpanel.querySelector(".data-label") || {};
     is(
-      jsonView.textContent === L10N.getStr("jsonScopeName"),
+      jsonView.textContent ===
+        l10n.formatValueSync("netmonitor-json-scope-name"),
       true,
       "The response json view has the intended visibility."
     );

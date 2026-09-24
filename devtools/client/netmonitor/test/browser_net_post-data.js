@@ -9,10 +9,6 @@
 const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
 
 add_task(async function () {
-  const {
-    L10N,
-  } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
-
   // Set a higher panel height in order to get full CodeMirror content
   Services.prefs.setIntPref("devtools.toolbox.footer.height", 600);
 
@@ -119,8 +115,10 @@ add_task(async function () {
 
     is(
       tabpanel.querySelector(".data-label").textContent,
-      L10N.getStr(
-        type == "urlencoded" ? "paramsFormData" : "paramsPostPayload"
+      l10n.formatValueSync(
+        type == "urlencoded"
+          ? "netmonitor-params-form-data"
+          : "netmonitor-params-post-payload"
       ),
       "The post section doesn't have the correct title."
     );

@@ -8,11 +8,9 @@
  * for JSON payloads.
  */
 
-add_task(async function () {
-  const {
-    L10N,
-  } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
 
+add_task(async function () {
   const { tab, monitor } = await initNetMonitor(POST_JSON_URL, {
     requestCount: 1,
   });
@@ -59,7 +57,7 @@ add_task(async function () {
 
   is(
     tabpanel.querySelector(".data-label").textContent,
-    L10N.getStr("jsonScopeName"),
+    l10n.formatValueSync("netmonitor-json-scope-name"),
     "The post section doesn't have the correct title."
   );
 
@@ -79,7 +77,7 @@ add_task(async function () {
 
   is(
     tabpanel.querySelector(".data-label").textContent,
-    L10N.getStr("paramsPostPayload"),
+    l10n.formatValueSync("netmonitor-params-post-payload"),
     "The post section doesn't have the correct title."
   );
   is(

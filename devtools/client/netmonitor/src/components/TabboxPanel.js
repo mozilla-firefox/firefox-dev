@@ -12,9 +12,7 @@ const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-t
 const {
   connect,
 } = require("resource://devtools/client/shared/vendor/react-redux.js");
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
 const {
   PANELS,
 } = require("resource://devtools/client/netmonitor/src/constants.js");
@@ -56,17 +54,6 @@ const TimingsPanel = createFactory(
   require("resource://devtools/client/netmonitor/src/components/request-details/TimingsPanel.js")
 );
 
-const COLLAPSE_DETAILS_PANE = L10N.getStr("collapseDetailsPane");
-const ALL_TABS_MENU_BUTTON_TOOLTIP = L10N.getStr("allTabsMenuButton.tooltip");
-const CACHE_TITLE = L10N.getStr("netmonitor.tab.cache");
-const COOKIES_TITLE = L10N.getStr("netmonitor.tab.cookies");
-const HEADERS_TITLE = L10N.getStr("netmonitor.tab.headers");
-const REQUEST_TITLE = L10N.getStr("netmonitor.tab.request");
-const RESPONSE_TITLE = L10N.getStr("netmonitor.tab.response");
-const SECURITY_TITLE = L10N.getStr("netmonitor.tab.security");
-const STACK_TRACE_TITLE = L10N.getStr("netmonitor.tab.stackTrace");
-const TIMINGS_TITLE = L10N.getStr("netmonitor.tab.timings");
-
 /**
  * Tabbox panel component
  * Display the network request details
@@ -77,6 +64,7 @@ class TabboxPanel extends Component {
       activeTabId: PropTypes.string,
       cloneSelectedRequest: PropTypes.func,
       connector: PropTypes.object.isRequired,
+      getString: PropTypes.func.isRequired,
       openLink: PropTypes.func,
       request: PropTypes.object,
       selectTab: PropTypes.func.isRequired,
@@ -123,6 +111,7 @@ class TabboxPanel extends Component {
       activeTabId,
       cloneSelectedRequest = () => {},
       connector,
+      getString,
       hideToggleButton,
       openLink,
       defaultRawResponse,
@@ -144,6 +133,7 @@ class TabboxPanel extends Component {
     const isSse = request.isEventStream;
 
     const showMessagesView = (isWs || isSse) && this.props.showMessagesView;
+    const responseTitle = getString("netmonitor-tab-response");
     return Tabbar(
       {
         activeTabId,
@@ -151,12 +141,14 @@ class TabboxPanel extends Component {
         onSelect: selectTab,
         renderOnlySelected: true,
         showAllTabsMenu: true,
-        allTabsMenuButtonTooltip: ALL_TABS_MENU_BUTTON_TOOLTIP,
+        allTabsMenuButtonTooltip: getString(
+          "netmonitor-all-tabs-menu-button-tooltip"
+        ),
         sidebarToggleButton: hideToggleButton
           ? null
           : {
               collapsed: false,
-              collapsePaneTitle: COLLAPSE_DETAILS_PANE,
+              collapsePaneTitle: getString("netmonitor-collapse-details-pane"),
               expandPaneTitle: "",
               onClick: toggleNetworkDetails,
             },
@@ -164,7 +156,7 @@ class TabboxPanel extends Component {
       TabPanel(
         {
           id: PANELS.HEADERS,
-          title: HEADERS_TITLE,
+          title: getString("netmonitor-tab-headers"),
           className: "panel-with-code",
         },
         HeadersPanel({
@@ -178,7 +170,7 @@ class TabboxPanel extends Component {
       TabPanel(
         {
           id: PANELS.COOKIES,
-          title: COOKIES_TITLE,
+          title: getString("netmonitor-tab-cookies"),
           className: "panel-with-code",
         },
         CookiesPanel({
@@ -191,7 +183,7 @@ class TabboxPanel extends Component {
       TabPanel(
         {
           id: PANELS.REQUEST,
-          title: REQUEST_TITLE,
+          title: getString("netmonitor-tab-request"),
           className: "panel-with-code",
         },
         RequestPanel({
@@ -204,16 +196,15 @@ class TabboxPanel extends Component {
       TabPanel(
         {
           id: PANELS.RESPONSE,
-          title: RESPONSE_TITLE,
+          title: responseTitle,
           className:
             "panel-with-code" +
             (isOverridden ? " tab-response-overridden" : ""),
           tooltip: isOverridden
-            ? L10N.getFormatStr(
-                "netmonitor.tab.response-overridden.tooltip",
-                overriddenUrl
-              )
-            : RESPONSE_TITLE,
+            ? getString("netmonitor-tab-response-overridden-tooltip", {
+                path: overriddenUrl,
+              })
+            : responseTitle,
         },
         ResponsePanel({
           request,
@@ -229,14 +220,14 @@ class TabboxPanel extends Component {
         TabPanel(
           {
             id: PANELS.CACHE,
-            title: CACHE_TITLE,
+            title: getString("netmonitor-tab-cache"),
           },
           CachePanel({ request, openLink, connector })
         ),
       TabPanel(
         {
           id: PANELS.TIMINGS,
-          title: TIMINGS_TITLE,
+          title: getString("netmonitor-tab-timings"),
         },
         TimingsPanel({
           connector,
@@ -247,7 +238,7 @@ class TabboxPanel extends Component {
         TabPanel(
           {
             id: PANELS.STACK_TRACE,
-            title: STACK_TRACE_TITLE,
+            title: getString("netmonitor-tab-stack-trace"),
             className: "panel-with-code",
           },
           StackTracePanel({ connector, openLink, request, sourceMapURLService })
@@ -257,7 +248,7 @@ class TabboxPanel extends Component {
         TabPanel(
           {
             id: PANELS.SECURITY,
-            title: SECURITY_TITLE,
+            title: getString("netmonitor-tab-security"),
           },
           SecurityPanel({
             connector,
@@ -268,6 +259,8 @@ class TabboxPanel extends Component {
     );
   }
 }
+
+const LocalizedTabboxPanel = FluentReact.withLocalization(TabboxPanel);
 
 module.exports = {
   ConnectedTabboxPanel: connect(
@@ -284,8 +277,8 @@ module.exports = {
     {},
     undefined,
     { storeKey: "toolbox-store" }
-  )(TabboxPanel),
+  )(LocalizedTabboxPanel),
   // Export the non-connected variant of the component for the browser console
   // which might not have toolbox store available.
-  TabboxPanel,
+  TabboxPanel: LocalizedTabboxPanel,
 };

@@ -7,6 +7,8 @@
  * Tests if empty JSON responses are properly displayed.
  */
 
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+
 add_task(async function () {
   const { tab, monitor } = await initNetMonitor(
     JSON_EMPTY_URL + "?name=empty",
@@ -15,7 +17,6 @@ add_task(async function () {
   info("Starting test... ");
 
   const { document, store, windowRequire } = monitor.panelWin;
-  const { L10N } = windowRequire("devtools/client/netmonitor/src/utils/l10n");
   const Actions = windowRequire("devtools/client/netmonitor/src/actions/index");
 
   store.dispatch(Actions.batchEnable(false));
@@ -67,7 +68,7 @@ add_task(async function () {
 
   const jsonView = tabpanel.querySelector(".data-label") || {};
   is(
-    jsonView.textContent === L10N.getStr("jsonScopeName"),
+    jsonView.textContent === l10n.formatValueSync("netmonitor-json-scope-name"),
     true,
     "The response json view has the intended visibility."
   );

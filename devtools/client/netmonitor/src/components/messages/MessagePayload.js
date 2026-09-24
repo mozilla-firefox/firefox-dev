@@ -17,9 +17,6 @@ const {
 } = require("resource://devtools/client/shared/vendor/react-redux.js");
 
 const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
-const {
   getMessagePayload,
   getResponseHeader,
   parseJSON,
@@ -30,7 +27,6 @@ const {
 const MESSAGE_DATA_LIMIT = Services.prefs.getIntPref(
   "devtools.netmonitor.msg.messageDataLimit"
 );
-const MESSAGE_DATA_TRUNCATED = L10N.getStr("messageDataTruncated");
 const SocketIODecoder = require("resource://devtools/client/netmonitor/src/components/messages/parsers/socket-io/index.js");
 const {
   JsonHubProtocol,
@@ -49,6 +45,7 @@ const {
   getRequestByChannelId,
 } = require("resource://devtools/client/netmonitor/src/selectors/index.js");
 const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+const Localized = createFactory(FluentReact.Localized);
 
 // Components
 const RawData = createFactory(
@@ -59,8 +56,6 @@ loader.lazyGetter(this, "PropertiesView", function () {
     require("resource://devtools/client/netmonitor/src/components/request-details/PropertiesView.js")
   );
 });
-
-const RAW_DATA = L10N.getStr("netmonitor.response.raw");
 
 /**
  * Shows the full payload of a message.
@@ -376,7 +371,10 @@ class MessagePayload extends Component {
             event.stopPropagation();
           },
         },
-        span({ className: "raw-data-toggle-label" }, RAW_DATA),
+        Localized(
+          { id: "netmonitor-response-raw" },
+          span({ className: "raw-data-toggle-label" })
+        ),
         span(
           { className: "raw-data-toggle-input" },
           input({
@@ -431,11 +429,9 @@ class MessagePayload extends Component {
         className: "message-payload",
       },
       isTruncated &&
-        div(
-          {
-            className: "truncated-data-message",
-          },
-          MESSAGE_DATA_TRUNCATED
+        Localized(
+          { id: "netmonitor-message-data-truncated" },
+          div({ className: "truncated-data-message" })
         ),
       h2({ className: "data-header", role: "heading" }, [
         span({ key: "data-label", className: "data-label" }, dataLabel),

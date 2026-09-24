@@ -83,9 +83,6 @@ add_task(async function testStackTraceForRedirects() {
  */
 
 add_task(async function testResponseForRedirects() {
-  const {
-    L10N,
-  } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
   // This test explicitly checks http->https redirects and should not force https.
   await pushPref("dom.security.https_first", false);
 
@@ -133,7 +130,7 @@ add_task(async function testResponseForRedirects() {
   const emptyNotice = document.querySelector(".empty-notice");
   is(
     emptyNotice.innerText,
-    L10N.getStr("responseRedirectEmptyText"),
+    l10n.formatValueSync("netmonitor-response-redirect-empty-text"),
     "No response content should be displayed for the redirect request"
   );
 

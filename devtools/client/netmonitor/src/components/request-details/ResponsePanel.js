@@ -15,10 +15,8 @@ const {
 } = require("resource://devtools/client/netmonitor/src/selectors/index.js");
 const dom = require("resource://devtools/client/shared/vendor/react-dom-factories.js");
 const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-types.mjs");
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
 const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+const Localized = createFactory(FluentReact.Localized);
 const {
   decodeUnicodeBase64,
   fetchNetworkUpdatePacket,
@@ -74,16 +72,6 @@ loader.lazyGetter(this, "MODE", function () {
 });
 
 const { div, input, label, span, h2 } = dom;
-const JSON_SCOPE_NAME = L10N.getStr("jsonScopeName");
-const JSONL_SCOPE_NAME = L10N.getStr("jsonlScopeName");
-const JSON_FILTER_TEXT = L10N.getStr("jsonFilterText");
-const RESPONSE_PAYLOAD = L10N.getStr("responsePayload");
-const RAW_RESPONSE_PAYLOAD = L10N.getStr("netmonitor.response.raw");
-const HTML_RESPONSE = L10N.getStr("netmonitor.response.html");
-const RESPONSE_EMPTY_TEXT = L10N.getStr("responseEmptyText");
-const RESPONSE_REDIRECT_EMPTY_TEXT = L10N.getStr("responseRedirectEmptyText");
-const RESPONSE_TRUNCATED = L10N.getStr("responseTruncated");
-
 const JSON_VIEW_MIME_TYPE = "application/vnd.mozilla.json.view";
 const JSONLINES_VIEW_MIME_TYPE = "application/vnd.mozilla.jsonlines.view";
 
@@ -179,7 +167,7 @@ class ResponsePanel extends Component {
    * as text/plain instead.
    */
   handleJSONResponse(mimeType, response) {
-    const { request } = this.props;
+    const { getString, request } = this.props;
 
     // Check if the response has been truncated, in which case no parse should
     // be attempted.
@@ -188,7 +176,7 @@ class ResponsePanel extends Component {
     // of truncated requests!
     if (request.truncated) {
       const result = {};
-      result.error = RESPONSE_TRUNCATED;
+      result.error = getString("netmonitor-response-truncated");
       return result;
     }
 
@@ -294,7 +282,7 @@ class ResponsePanel extends Component {
    *              that XSSI characters were stripped from the response
    */
   renderJsonHtmlAndSource() {
-    const { request, targetSearchResult } = this.props;
+    const { getString, request, targetSearchResult } = this.props;
     const { responseContent, responseHeaders, url } = request;
     let { encoding, mimeType, text } = responseContent.content;
     const { filterText, rawResponsePayloadDisplayed } = this.state;
@@ -315,19 +303,18 @@ class ResponsePanel extends Component {
     let component;
     let componentProps;
     let xssiStrippedCharsInfoBox;
-    let responsePayloadLabel = RESPONSE_PAYLOAD;
+    let responsePayloadLabel = getString("netmonitor-response-payload");
     let hasFormattedDisplay = false;
 
     if (json) {
       if (isJsonl) {
-        responsePayloadLabel = JSONL_SCOPE_NAME;
+        responsePayloadLabel = getString("netmonitor-jsonl-scope-name");
       } else if (jsonpCallback) {
-        responsePayloadLabel = L10N.getFormatStr(
-          "jsonpScopeName",
-          jsonpCallback
-        );
+        responsePayloadLabel = getString("netmonitor-jsonp-scope-name", {
+          callback: jsonpCallback,
+        });
       } else {
-        responsePayloadLabel = JSON_SCOPE_NAME;
+        responsePayloadLabel = getString("netmonitor-json-scope-name");
       }
 
       // If raw response payload is not displayed render xssi info box if
@@ -353,7 +340,7 @@ class ResponsePanel extends Component {
       hasFormattedDisplay = true;
     } else if (Filters.html(this.props.request)) {
       // Display HTML
-      responsePayloadLabel = HTML_RESPONSE;
+      responsePayloadLabel = getString("netmonitor-response-html");
       component = HtmlPreview;
       componentProps = { responseContent, responseHeaders, url };
       hasFormattedDisplay = true;
@@ -391,7 +378,10 @@ class ResponsePanel extends Component {
             event.stopPropagation();
           },
         },
-        span({ className: "raw-data-toggle-label" }, RAW_RESPONSE_PAYLOAD),
+        span(
+          { className: "raw-data-toggle-label" },
+          this.props.getString("netmonitor-response-raw")
+        ),
         span(
           { className: "raw-data-toggle-input" },
           input({
@@ -428,7 +418,9 @@ class ResponsePanel extends Component {
     if (!strippedChars || this.state.rawRequestPayloadDisplayed) {
       return null;
     }
-    const message = L10N.getFormatStr("jsonXssiStripped", strippedChars);
+    const message = this.props.getString("netmonitor-json-xssi-stripped", {
+      strippedChars,
+    });
 
     const notifications = new Map();
     notifications.set("xssi-string-removed-info-box", {
@@ -450,7 +442,8 @@ class ResponsePanel extends Component {
   }
 
   render() {
-    const { connector, showMessagesView, request, messages } = this.props;
+    const { connector, getString, showMessagesView, request, messages } =
+      this.props;
     const { blockedReason, responseContent, url, isRedirect } = request;
     const { filterText, rawResponsePayloadDisplayed } = this.state;
 
@@ -482,13 +475,17 @@ class ResponsePanel extends Component {
         // Response body limit configuration may lead to completely empty response body
         // often because of encoded response which would cut the whole encoded chunk.
         request.truncated &&
-          div(
-            { className: "response-error-header", title: RESPONSE_TRUNCATED },
-            RESPONSE_TRUNCATED
+          Localized(
+            { id: "netmonitor-response-truncated", attrs: { title: true } },
+            div({ className: "response-error-header" })
           ),
-        div(
-          { className: "empty-notice" },
-          isRedirect ? RESPONSE_REDIRECT_EMPTY_TEXT : RESPONSE_EMPTY_TEXT
+        Localized(
+          {
+            id: isRedirect
+              ? "netmonitor-response-redirect-empty-text"
+              : "netmonitor-response-empty-text",
+          },
+          div({ className: "empty-notice" })
         )
       );
     }
@@ -529,7 +526,7 @@ class ResponsePanel extends Component {
             delay: FILTER_SEARCH_DELAY,
             type: "filter",
             onChange: filter => this.setState({ filterText: filter }),
-            placeholder: JSON_FILTER_TEXT,
+            placeholder: getString("netmonitor-json-filter-text"),
             initialValue: filterText,
           })
         ),

@@ -6,15 +6,15 @@
 
 const {
   Component,
+  createFactory,
 } = require("resource://devtools/client/shared/vendor/react.mjs");
 const {
   findDOMNode,
 } = require("resource://devtools/client/shared/vendor/react-dom.mjs");
 const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-types.mjs");
 const dom = require("resource://devtools/client/shared/vendor/react-dom-factories.js");
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+const Localized = createFactory(FluentReact.Localized);
 
 loader.lazyRequireGetter(
   this,
@@ -24,8 +24,6 @@ loader.lazyRequireGetter(
 );
 
 const { div } = dom;
-
-const DROP_HAR_FILES = L10N.getStr("netmonitor.label.dropHarFiles");
 
 /**
  * Helper component responsible for handling and  importing
@@ -111,7 +109,10 @@ class DropHarHandler extends Component {
         onDrop: this.onDrop,
       },
       this.props.children,
-      div({ className: "dropHarFiles" }, div({}, DROP_HAR_FILES))
+      div(
+        { className: "dropHarFiles" },
+        Localized({ id: "netmonitor-label-drop-har-files" }, div({}))
+      )
     );
   }
 }

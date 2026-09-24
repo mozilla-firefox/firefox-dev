@@ -6,11 +6,11 @@
 
 const {
   Component,
+  createFactory,
 } = require("resource://devtools/client/shared/vendor/react.mjs");
 const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-types.mjs");
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+const Localized = createFactory(FluentReact.Localized);
 
 const {
   div,
@@ -21,10 +21,6 @@ const {
   formDataURI,
   getUrlBaseName,
 } = require("resource://devtools/client/netmonitor/src/utils/request-utils.js");
-
-const RESPONSE_IMG_NAME = L10N.getStr("netmonitor.response.name");
-const RESPONSE_IMG_DIMENSIONS = L10N.getStr("netmonitor.response.dimensions");
-const RESPONSE_IMG_MIMETYPE = L10N.getStr("netmonitor.response.mime");
 
 class ImagePreview extends Component {
   static get propTypes() {
@@ -71,17 +67,26 @@ class ImagePreview extends Component {
       }),
       div(
         { className: "response-summary" },
-        div({ className: "tabpanel-summary-label" }, RESPONSE_IMG_NAME),
+        Localized(
+          { id: "netmonitor-response-name" },
+          div({ className: "tabpanel-summary-label" })
+        ),
         div({ className: "tabpanel-summary-value" }, getUrlBaseName(url))
       ),
       div(
         { className: "response-summary" },
-        div({ className: "tabpanel-summary-label" }, RESPONSE_IMG_DIMENSIONS),
+        Localized(
+          { id: "netmonitor-response-dimensions" },
+          div({ className: "tabpanel-summary-label" })
+        ),
         div({ className: "tabpanel-summary-value" }, `${width} × ${height}`)
       ),
       div(
         { className: "response-summary" },
-        div({ className: "tabpanel-summary-label" }, RESPONSE_IMG_MIMETYPE),
+        Localized(
+          { id: "netmonitor-response-mime" },
+          div({ className: "tabpanel-summary-label" })
+        ),
         div({ className: "tabpanel-summary-value" }, mimeType)
       )
     );

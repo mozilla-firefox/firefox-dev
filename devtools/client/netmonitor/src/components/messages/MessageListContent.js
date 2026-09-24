@@ -20,20 +20,13 @@ const {
 const dom = require("resource://devtools/client/shared/vendor/react-dom-factories.js");
 const { table, tbody, tr, td, div, input, label, hr, p } = dom;
 const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
-const MESSAGES_EMPTY_TEXT = L10N.getStr("messagesEmptyText");
-const TOGGLE_MESSAGES_TRUNCATION = L10N.getStr("toggleMessagesTruncation");
-const TOGGLE_MESSAGES_TRUNCATION_TITLE = L10N.getStr(
-  "toggleMessagesTruncation.title"
-);
-const {
   CHANNEL_TYPE,
   WEB_SOCKET_OPCODE,
   MESSAGE_HEADERS,
 } = require("resource://devtools/client/netmonitor/src/constants.js");
 const Actions = require("resource://devtools/client/netmonitor/src/actions/index.js");
 const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+const Localized = createFactory(FluentReact.Localized);
 
 const {
   getSelectedMessage,
@@ -266,9 +259,9 @@ class MessageListContent extends Component {
     } = this.props;
 
     if (messages.length === 0) {
-      return div(
-        { className: "empty-notice message-list-empty-notice" },
-        MESSAGES_EMPTY_TEXT
+      return Localized(
+        { id: "netmonitor-messages-empty-text" },
+        div({ className: "empty-notice message-list-empty-notice" })
       );
     }
 
@@ -343,19 +336,27 @@ class MessageListContent extends Component {
                       MESSAGES_TRUNCATED
                     )
                   ),
-                  label(
+                  Localized(
                     {
-                      className: "truncated-messages-checkbox-label",
-                      title: TOGGLE_MESSAGES_TRUNCATION_TITLE,
+                      id: "netmonitor-toggle-messages-truncation-title",
+                      attrs: { title: true },
                     },
-                    input({
-                      type: "checkbox",
-                      className: "truncation-checkbox",
-                      title: TOGGLE_MESSAGES_TRUNCATION_TITLE,
-                      checked: this.state.checked,
-                      onChange: this.toggleTruncationCheckBox,
-                    }),
-                    TOGGLE_MESSAGES_TRUNCATION
+                    label(
+                      { className: "truncated-messages-checkbox-label" },
+                      Localized(
+                        {
+                          id: "netmonitor-toggle-messages-truncation-title",
+                          attrs: { title: true },
+                        },
+                        input({
+                          type: "checkbox",
+                          className: "truncation-checkbox",
+                          checked: this.state.checked,
+                          onChange: this.toggleTruncationCheckBox,
+                        })
+                      ),
+                      getString("netmonitor-toggle-messages-truncation")
+                    )
                   )
                 )
             )

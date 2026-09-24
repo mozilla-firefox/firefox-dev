@@ -11,6 +11,7 @@ const {
 const dom = require("resource://devtools/client/shared/vendor/react-dom-factories.js");
 const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-types.mjs");
 const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+const Localized = createFactory(FluentReact.Localized);
 const {
   connect,
 } = require("resource://devtools/client/shared/vendor/react-redux.js");
@@ -18,9 +19,6 @@ const Actions = require("resource://devtools/client/netmonitor/src/actions/index
 const {
   ACTIVITY_TYPE,
 } = require("resource://devtools/client/netmonitor/src/constants.js");
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
 const {
   getPerformanceAnalysisURL,
 } = require("resource://devtools/client/netmonitor/src/utils/doc-utils.js");
@@ -31,14 +29,6 @@ const MDNLink = createFactory(
 );
 
 const { button, div, span } = dom;
-
-const RELOAD_NOTICE_1 = L10N.getStr("netmonitor.reloadNotice1");
-const RELOAD_NOTICE_2 = L10N.getStr("netmonitor.reloadNotice2");
-const RELOAD_NOTICE_3 = L10N.getStr("netmonitor.reloadNotice3");
-const RELOAD_NOTICE_BT = L10N.getStr("netmonitor.emptyBrowserToolbox");
-const PERFORMANCE_NOTICE_1 = L10N.getStr("netmonitor.perfNotice1");
-const PERFORMANCE_NOTICE_2 = L10N.getStr("netmonitor.perfNotice2");
-const PERFORMANCE_NOTICE_3 = L10N.getStr("netmonitor.perfNotice3");
 
 /**
  * UI displayed when the request list is empty. Contains instructions on reloading
@@ -66,33 +56,35 @@ class RequestListEmptyNotice extends Component {
         !toolbox.commands.descriptorFront.isWebExtensionDescriptor
         ? div(
             { className: "notice-reload-message empty-notice-element" },
-            span(null, RELOAD_NOTICE_1),
-            button(
-              {
+            Localized({ id: "netmonitor-reload-notice-1" }, span(null)),
+            Localized(
+              { id: "netmonitor-reload-notice-2" },
+              button({
                 className:
                   "devtools-button devtools-button-standalone requests-list-reload-notice-button",
                 onClick: this.props.onReloadClick,
-              },
-              RELOAD_NOTICE_2
+              })
             ),
-            span(null, RELOAD_NOTICE_3)
+            Localized({ id: "netmonitor-reload-notice-3" }, span(null))
           )
         : div(
             { className: "notice-reload-message empty-notice-element" },
-            span(null, RELOAD_NOTICE_BT)
+            Localized({ id: "netmonitor-empty-browser-toolbox" }, span(null))
           ),
       !toolbox.isBrowserToolbox &&
         !toolbox.commands.descriptorFront.isWebExtensionDescriptor
         ? div(
             { className: "notice-perf-message empty-notice-element" },
-            span(null, PERFORMANCE_NOTICE_1),
-            button({
-              title: PERFORMANCE_NOTICE_3,
-              className:
-                "devtools-button devtools-button-standalone requests-list-perf-notice-button",
-              onClick: this.props.onPerfClick,
-            }),
-            span(null, PERFORMANCE_NOTICE_2),
+            Localized({ id: "netmonitor-perf-notice-1" }, span(null)),
+            Localized(
+              { id: "netmonitor-perf-notice-3", attrs: { title: true } },
+              button({
+                className:
+                  "devtools-button devtools-button-standalone requests-list-perf-notice-button",
+                onClick: this.props.onPerfClick,
+              })
+            ),
+            Localized({ id: "netmonitor-perf-notice-2" }, span(null)),
             MDNLink({
               url: getPerformanceAnalysisURL(),
               title: getString("charts-learn-more"),

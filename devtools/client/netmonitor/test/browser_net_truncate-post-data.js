@@ -13,6 +13,8 @@ const defaultBodyLimit = Services.prefs.getIntPref(
  * Verifies that requests with large post data are not truncated if
  * devtools.netmonitor.bodyLimit is 0.
  */
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+
 add_task(async function () {
   await pushPref("devtools.netmonitor.bodyLimit", 0);
 
@@ -47,10 +49,6 @@ async function checkPostDataRequest(expectErrorDisplay) {
   });
 
   info("Starting test... ");
-
-  const {
-    L10N,
-  } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
 
   const { document, store, windowRequire } = monitor.panelWin;
   const Actions = windowRequire("devtools/client/netmonitor/src/actions/index");
@@ -89,7 +87,7 @@ async function checkPostDataRequest(expectErrorDisplay) {
   }
   const jsonView = tabpanel.querySelector(".data-label") || {};
   is(
-    jsonView.textContent === L10N.getStr("jsonScopeName"),
+    jsonView.textContent === l10n.formatValueSync("netmonitor-json-scope-name"),
     false,
     "The params json view doesn't have the intended visibility."
   );

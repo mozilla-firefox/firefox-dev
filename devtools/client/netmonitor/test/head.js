@@ -44,9 +44,10 @@ const {
   EVENTS,
   TEST_EVENTS,
 } = require("resource://devtools/client/netmonitor/src/constants.js");
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+
+// head.js shares its scope with each test, so this cannot be named `l10n`
+// without colliding with the tests that declare their own.
+const headL10n = new Localization(["devtools/client/netmonitor.ftl"], true);
 
 /* eslint-disable no-unused-vars, max-len */
 const EXAMPLE_URL =
@@ -647,13 +648,13 @@ async function verifyRequestItemTarget(
 
   // Bug 1414981 - Request URL should not show #hash
   const unicodeUrl = getUnicodeUrl(url.split("#")[0]);
-  const ORIGINAL_FILE_URL = L10N.getFormatStr(
-    "netRequest.originalFileURL.tooltip",
-    url
+  const ORIGINAL_FILE_URL = headL10n.formatValueSync(
+    "netmonitor-request-original-file-url-tooltip",
+    { url }
   );
-  const DECODED_FILE_URL = L10N.getFormatStr(
-    "netRequest.decodedFileURL.tooltip",
-    unicodeUrl
+  const DECODED_FILE_URL = headL10n.formatValueSync(
+    "netmonitor-request-decoded-file-url-tooltip",
+    { url: unicodeUrl }
   );
   const fileToolTip =
     url === unicodeUrl ? url : ORIGINAL_FILE_URL + "\n\n" + DECODED_FILE_URL;

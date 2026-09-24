@@ -8,6 +8,8 @@
  * displayed correctly.
  */
 
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
+
 add_task(async function () {
   const { tab, monitor } = await initNetMonitor(PARAMS_URL, {
     requestCount: 1,
@@ -112,9 +114,7 @@ async function testRequestWithFormattedView(
   rawValue,
   dataType
 ) {
-  const { document, windowRequire } = monitor.panelWin;
-  const { L10N } = windowRequire("devtools/client/netmonitor/src/utils/l10n");
-
+  const { document } = monitor.panelWin;
   // Wait for header and properties view to be displayed
   let onDomUpdated = Promise.all([
     waitForDOM(document, "#request-panel .data-header"),
@@ -127,11 +127,11 @@ async function testRequestWithFormattedView(
   let headerLabel;
   switch (dataType) {
     case 1:
-      headerLabel = L10N.getStr("paramsFormData");
+      headerLabel = l10n.formatValueSync("netmonitor-params-form-data");
       break;
 
     case 2:
-      headerLabel = L10N.getStr("jsonScopeName");
+      headerLabel = l10n.formatValueSync("netmonitor-json-scope-name");
       break;
   }
 
@@ -192,7 +192,7 @@ async function testRequestWithFormattedView(
   const dataLabel = tabpanel.querySelector(".data-label") ?? {};
   is(
     dataLabel.textContent,
-    L10N.getStr("paramsPostPayload"),
+    l10n.formatValueSync("netmonitor-params-post-payload"),
     "The label for the raw request payload is correct."
   );
   is(
@@ -241,9 +241,7 @@ async function testRequestWithOnlyRawDataView(
   requestListItem,
   paramName
 ) {
-  const { document, windowRequire } = monitor.panelWin;
-  const { L10N } = windowRequire("devtools/client/netmonitor/src/utils/l10n");
-
+  const { document } = monitor.panelWin;
   // Wait for header and CodeMirror editor to be displayed
   const onDomUpdated = Promise.all([
     waitForDOM(document, "#request-panel .data-header"),
@@ -257,7 +255,7 @@ async function testRequestWithOnlyRawDataView(
   const dataLabel = tabpanel.querySelector(".data-label") ?? {};
   is(
     dataLabel.textContent,
-    L10N.getStr("paramsPostPayload"),
+    l10n.formatValueSync("netmonitor-params-post-payload"),
     "The label for the raw request payload is correct."
   );
   is(
@@ -321,7 +319,7 @@ async function testRequestWithoutRequestData(monitor, requestListItem) {
   );
   is(
     tabpanel.querySelector(".empty-notice").textContent,
-    L10N.getStr("paramsNoPayloadText"),
+    l10n.formatValueSync("netmonitor-params-no-payload-text"),
     "The empty notice should be correct."
   );
 }

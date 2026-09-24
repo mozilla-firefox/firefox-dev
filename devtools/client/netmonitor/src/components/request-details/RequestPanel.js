@@ -13,9 +13,7 @@ const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-t
 const {
   connect,
 } = require("resource://devtools/client/shared/vendor/react-redux.js");
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
 const {
   fetchNetworkUpdatePacket,
   getRequestHeader,
@@ -51,15 +49,6 @@ loader.lazyGetter(this, "SourcePreview", function () {
 
 const { div, input, label, span, h2 } = dom;
 
-const JSON_SCOPE_NAME = L10N.getStr("jsonScopeName");
-const JSONL_SCOPE_NAME = L10N.getStr("jsonlScopeName");
-const REQUEST_EMPTY_TEXT = L10N.getStr("paramsNoPayloadText");
-const REQUEST_FILTER_TEXT = L10N.getStr("paramsFilterText");
-const REQUEST_FORM_DATA = L10N.getStr("paramsFormData");
-const REQUEST_POST_PAYLOAD = L10N.getStr("paramsPostPayload");
-const RAW_REQUEST_PAYLOAD = L10N.getStr("netmonitor.request.raw");
-const REQUEST_TRUNCATED = L10N.getStr("requestTruncated");
-
 /**
  * Params panel component
  * Displays the GET parameters and POST data of a request
@@ -68,6 +57,7 @@ class RequestPanel extends Component {
   static get propTypes() {
     return {
       connector: PropTypes.object.isRequired,
+      getString: PropTypes.func.isRequired,
       openLink: PropTypes.func,
       request: PropTypes.object.isRequired,
       updateRequest: PropTypes.func.isRequired,
@@ -177,7 +167,10 @@ class RequestPanel extends Component {
             event.stopPropagation();
           },
         },
-        span({ className: "raw-data-toggle-label" }, RAW_REQUEST_PAYLOAD),
+        span(
+          { className: "raw-data-toggle-label" },
+          this.props.getString("netmonitor-request-raw")
+        ),
         span(
           { className: "raw-data-toggle-input" },
           input({
@@ -227,18 +220,21 @@ class RequestPanel extends Component {
   }
 
   render() {
-    const { request, targetSearchResult } = this.props;
+    const { getString, request, targetSearchResult } = this.props;
     const { filterText, rawRequestPayloadDisplayed } = this.state;
     const { formDataSections, mimeType, requestPostData, url } = request;
     const postData = requestPostData ? requestPostData.postData?.text : null;
 
     if ((!formDataSections || formDataSections.length === 0) && !postData) {
-      return div({ className: "empty-notice" }, REQUEST_EMPTY_TEXT);
+      return div(
+        { className: "empty-notice" },
+        getString("netmonitor-params-no-payload-text")
+      );
     }
 
     let component;
     let componentProps;
-    let requestPayloadLabel = REQUEST_POST_PAYLOAD;
+    let requestPayloadLabel = getString("netmonitor-params-post-payload");
     let hasFormattedDisplay = false;
 
     let error;
@@ -253,7 +249,7 @@ class RequestPanel extends Component {
         defaultSelectFirstNode: false,
         url,
       };
-      requestPayloadLabel = REQUEST_FORM_DATA;
+      requestPayloadLabel = getString("netmonitor-params-form-data");
       hasFormattedDisplay = true;
     }
 
@@ -263,7 +259,7 @@ class RequestPanel extends Component {
     // Check if the request post data has been truncated from the backend,
     // in which case no parse should be attempted.
     if (postData && limit > 0 && limit <= postData.length) {
-      error = REQUEST_TRUNCATED;
+      error = getString("netmonitor-request-truncated");
     }
     if (
       formDataSections &&
@@ -281,9 +277,11 @@ class RequestPanel extends Component {
           defaultSelectFirstNode: false,
           url,
         };
-        requestPayloadLabel = parsedPayload.isJsonl
-          ? JSONL_SCOPE_NAME
-          : JSON_SCOPE_NAME;
+        requestPayloadLabel = getString(
+          parsedPayload.isJsonl
+            ? "netmonitor-jsonl-scope-name"
+            : "netmonitor-json-scope-name"
+        );
         hasFormattedDisplay = true;
       }
     }
@@ -299,7 +297,7 @@ class RequestPanel extends Component {
         targetSearchResult,
         url,
       };
-      requestPayloadLabel = REQUEST_POST_PAYLOAD;
+      requestPayloadLabel = getString("netmonitor-params-post-payload");
     }
 
     return div(
@@ -312,7 +310,7 @@ class RequestPanel extends Component {
           type: "filter",
           initialValue: filterText,
           onChange: text => this.setState({ filterText: text }),
-          placeholder: REQUEST_FILTER_TEXT,
+          placeholder: getString("netmonitor-params-filter-text"),
         })
       ),
       h2({ className: "data-header", role: "heading" }, [
@@ -335,7 +333,9 @@ class RequestPanel extends Component {
   }
 }
 
-module.exports = connect(null, dispatch => ({
-  updateRequest: (id, data, batch) =>
-    dispatch(Actions.updateRequest(id, data, batch)),
-}))(RequestPanel);
+module.exports = FluentReact.withLocalization(
+  connect(null, dispatch => ({
+    updateRequest: (id, data, batch) =>
+      dispatch(Actions.updateRequest(id, data, batch)),
+  }))(RequestPanel)
+);

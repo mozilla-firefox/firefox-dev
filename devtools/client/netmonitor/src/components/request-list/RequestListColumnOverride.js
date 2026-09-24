@@ -16,9 +16,14 @@ const {
 const {
   getOverriddenUrl,
 } = require("resource://devtools/client/netmonitor/src/selectors/index.js");
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+
+// one instance of this column is rendered per request, so the strings are read
+// directly instead of subscribing every row to the localization context
+loader.lazyGetter(
+  this,
+  "l10n",
+  () => new Localization(["devtools/client/netmonitor.ftl"], true)
+);
 
 class RequestListColumnOverrideContent extends Component {
   static get propTypes() {
@@ -37,8 +42,10 @@ class RequestListColumnOverrideContent extends Component {
         "requests-list-column requests-list-override" +
         (isOverridden ? " request-override-enabled" : ""),
       title: isOverridden
-        ? L10N.getFormatStr("netmonitor.override.enabled", overriddenUrl)
-        : L10N.getStr("netmonitor.override.disabled"),
+        ? l10n.formatValueSync("netmonitor-override-enabled", {
+            path: overriddenUrl,
+          })
+        : l10n.formatValueSync("netmonitor-override-disabled"),
     });
   }
 }

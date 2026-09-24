@@ -4,37 +4,19 @@
 "use strict";
 
 /**
- * Tests if the preferences and localization objects work correctly.
+ * Tests if the preferences object works correctly.
  */
 
 add_task(async function () {
-  const {
-    L10N,
-  } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
-
   const { monitor } = await initNetMonitor(SIMPLE_URL, { requestCount: 1 });
   info("Starting test... ");
 
   const { windowRequire } = monitor.panelWin;
   const { Prefs } = windowRequire("devtools/client/netmonitor/src/utils/prefs");
 
-  testL10N();
   testPrefs();
 
   return teardown(monitor);
-
-  function testL10N() {
-    is(
-      typeof L10N.getStr("collapseDetailsPane"),
-      "string",
-      "The getStr() method didn't return a valid string."
-    );
-    is(
-      typeof L10N.getFormatStr("netmonitor.override.enabled", "foo"),
-      "string",
-      "The getFormatStr() method didn't return a valid string."
-    );
-  }
 
   function testPrefs() {
     is(

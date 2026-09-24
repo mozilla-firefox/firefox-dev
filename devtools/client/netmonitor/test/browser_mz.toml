@@ -154,9 +154,9 @@ support-files = [
 
 ["browser_net_post-data.js"]
 
-["browser_net_prefs-and-l10n.js"]
-
 ["browser_net_prefs-reload.js"]
+
+["browser_net_prefs.js"]
 
 ["browser_net_raw_headers.js"]
 

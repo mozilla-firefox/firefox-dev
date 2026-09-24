@@ -17,9 +17,6 @@ const {
 const { Chart } = require("resource://devtools/client/shared/widgets/Chart.js");
 const Actions = require("resource://devtools/client/netmonitor/src/actions/index.js");
 const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
-const {
   getPerformanceAnalysisURL,
 } = require("resource://devtools/client/netmonitor/src/utils/doc-utils.js");
 const {
@@ -29,6 +26,7 @@ const {
   getStatisticsData,
 } = require("resource://devtools/client/netmonitor/src/selectors/index.js");
 const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+const Localized = createFactory(FluentReact.Localized);
 
 // Components
 const MDNLink = createFactory(
@@ -39,7 +37,6 @@ const { button, div } = dom;
 const MediaQueryList = window.matchMedia("(min-width: 700px)");
 
 const NETWORK_ANALYSIS_PIE_CHART_DIAMETER = 200;
-const BACK_BUTTON = L10N.getStr("netmonitor.backButton");
 
 /*
  * Statistics panel component
@@ -226,14 +223,13 @@ class StatisticsPanel extends Component {
 
     return div(
       { className: "statistics-panel" },
-      button(
-        {
+      Localized(
+        { id: "netmonitor-back-button", attrs: { title: true } },
+        button({
           className: "back-button devtools-button",
           "data-text-only": "true",
-          title: BACK_BUTTON,
           onClick: closeStatistics,
-        },
-        BACK_BUTTON
+        })
       ),
       div(
         { className: "charts-container" },

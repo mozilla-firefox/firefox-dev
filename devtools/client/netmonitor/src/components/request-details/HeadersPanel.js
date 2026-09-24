@@ -22,7 +22,6 @@ const {
 } = require("resource://devtools/client/netmonitor/src/utils/format-utils.js");
 const {
   getMenuItemStrings,
-  L10N,
 } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
 const {
   getHeadersURL,
@@ -98,13 +97,6 @@ loader.lazyRequireGetter(
 );
 
 const { div, input, label, span, textarea, tr, td, button } = dom;
-
-const SUMMARY_ETP_LEARN_MORE = L10N.getStr(
-  "netmonitor.enhancedTrackingProtection.learnMore"
-);
-const HEADERS_ETP = L10N.getStr(
-  "netmonitor.trackingResource.enhancedTrackingProtection"
-);
 
 // Order is as displayed
 const HEADERS_CONFIG = {
@@ -705,7 +697,11 @@ class HeadersPanel extends Component {
 
       trackingProtectionStatus = this.renderSummary(
         getString("netmonitor-headers-content-blocking"),
-        div(null, span({ className: "tracking-resource" }), HEADERS_ETP)
+        div(
+          null,
+          span({ className: "tracking-resource" }),
+          getString("netmonitor-tracking-resource-enhanced-tracking-protection")
+        )
       );
       trackingProtectionDetails = this.renderSummary(
         "",
@@ -714,11 +710,13 @@ class HeadersPanel extends Component {
             key: "tracking-protection",
             className: "tracking-protection",
           },
-          L10N.getStr("netmonitor.trackingResource.tooltip"),
+          getString("netmonitor-tracking-resource-tooltip"),
           trackingProtectionDocURL
             ? MDNLink({
                 url: trackingProtectionDocURL,
-                title: SUMMARY_ETP_LEARN_MORE,
+                title: getString(
+                  "netmonitor-enhanced-tracking-protection-learn-more"
+                ),
               })
             : span({ className: "headers-summary learn-more-link" })
         )

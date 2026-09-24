@@ -135,7 +135,8 @@ add_task(async function () {
     );
     const jsonView = tabpanel.querySelector(".data-label") || {};
     is(
-      jsonView.textContent === L10N.getStr("jsonScopeName"),
+      jsonView.textContent ===
+        l10n.formatValueSync("netmonitor-json-scope-name"),
       true,
       "The response json view has the intended visibility."
     );
@@ -162,7 +163,7 @@ add_task(async function () {
 
     is(
       tabpanel.querySelector(".data-label").textContent,
-      L10N.getStr("jsonScopeName"),
+      l10n.formatValueSync("netmonitor-json-scope-name"),
       "The json view section doesn't have the correct title."
     );
   }

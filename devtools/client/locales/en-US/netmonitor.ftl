@@ -1020,3 +1020,203 @@ netmonitor-status-tooltip-worker = { $status } { $statusText } (service worker)
 #   $status (String): the status code.
 #   $statusText (String): the status text.
 netmonitor-status-tooltip-cached-worker = { $status } { $statusText } (cached, service worker)
+
+## Strings used in the request details pane of the DevTools Network Panel
+
+# The tooltip for the button that collapses the request details pane.
+netmonitor-collapse-details-pane = Hide request details
+# The tooltip that is displayed when hovering over the tabs overflow button.
+netmonitor-all-tabs-menu-button-tooltip = Show all tabs
+# The label identifying the headers tab.
+netmonitor-tab-headers = Headers
+# The label identifying the cookies tab.
+netmonitor-tab-cookies = Cookies
+# The label identifying the cache tab.
+netmonitor-tab-cache = Cache
+# The label identifying the request tab.
+netmonitor-tab-request = Request
+# The label identifying the response tab.
+netmonitor-tab-response = Response
+# The tooltip displayed for the response tab when the response is overridden.
+# Variables:
+#   $path (String): the path of the file used for the override, for example
+#     path/to/override.html.
+netmonitor-tab-response-overridden-tooltip = Response (override set to { $path })
+# The label identifying the timings tab.
+netmonitor-tab-timings = Timings
+# The label identifying the stack trace tab.
+netmonitor-tab-stack-trace = Stack Trace
+# The label identifying the security tab.
+netmonitor-tab-security = Security
+
+## Strings used in the request and response panels of the DevTools Network
+## Panel
+
+# The text displayed in the request panel when there are no params available.
+netmonitor-params-no-payload-text = No payload for this request
+# The text displayed in the request panel for the filtering input.
+netmonitor-params-filter-text = Filter Request Parameters
+# The label identifying the form data in the request panel.
+netmonitor-params-form-data = Form data
+# The label identifying the request payload in the request panel.
+netmonitor-params-post-payload = Request payload
+# The label on the button in the request panel that toggles the view of the
+# request between the raw data and the formatted display.
+netmonitor-request-raw = Raw
+# The text displayed in the request panel when the request is over the
+# truncation limit and thus was truncated.
+netmonitor-request-truncated = Request has been truncated
+# The text displayed in the response panel when the response is empty or not
+# available to be shown.
+netmonitor-response-empty-text = No response data available for this request
+# The text displayed in the response panel for a redirect request, as there is
+# no response content available.
+netmonitor-response-redirect-empty-text = No response data shown for this request because it was redirected
+# The label identifying the response payload in the response panel.
+netmonitor-response-payload = Response Payload
+# The label on the button in the response panel that toggles the view of the
+# response between the raw data and the formatted display.
+netmonitor-response-raw = Raw
+# The text displayed in the response panel for an HTML preview.
+netmonitor-response-html = HTML
+# The text and tooltip displayed in the response panel when the response is
+# over the truncation limit and thus was truncated.
+netmonitor-response-truncated = Response has been truncated
+    .title = Response has been truncated
+# The text displayed in the response panel for the JSON filtering input.
+netmonitor-json-filter-text = Filter properties
+# The text displayed in the response panel for a JSON scope.
+netmonitor-json-scope-name = JSON
+# The text displayed in the request and response panels for a JSON Lines (also
+# known as JSONL or NDJSON) payload, which is displayed as a list of entries,
+# one per line of the document.
+netmonitor-jsonl-scope-name = JSON Lines
+# The text displayed in the response panel for a JSONP scope.
+# Variables:
+#   $callback (String): the name of the JSONP callback.
+netmonitor-jsonp-scope-name = JSONP → callback { $callback }()
+# The text displayed in a notification in the response panel when a JSON
+# payload had XSSI escape characters which were removed.
+# Variables:
+#   $strippedChars (String): the characters that were removed.
+netmonitor-json-xssi-stripped = The string “{ $strippedChars }” was removed from the beginning of the JSON shown below
+# The label identifying an image's file name or a font face's name in the
+# response panel.
+netmonitor-response-name = Name:
+# The label identifying an image's dimensions in the response panel.
+netmonitor-response-dimensions = Dimensions:
+# The label identifying an image's or a font's MIME type in the response panel.
+netmonitor-response-mime = MIME Type:
+# The notice displayed in the response panel if the font preview could not be
+# generated due to an error.
+netmonitor-response-font-preview-failed = Font preview could not be generated
+
+## Strings used for message truncation in the DevTools Network Panel messages
+## panel
+
+# The text displayed in the messages panel when there are no messages
+# available.
+netmonitor-messages-empty-text = No messages for this request
+# The label of the checkbox used to toggle message truncation.
+netmonitor-toggle-messages-truncation = Keep all future messages
+# The title used to describe the checkbox used to toggle message truncation.
+netmonitor-toggle-messages-truncation-title =
+    .title = Keep all future messages or continue showing truncated messages
+# The text used to describe data truncation in the messages panel.
+netmonitor-message-data-truncated = Data has been truncated
+
+## Strings used in the action bar of the DevTools Network Panel
+
+# The tooltip for the button that collapses the network action pane.
+netmonitor-collapse-action-pane = Hide network action
+# The label of the action bar's edit and resend tab.
+netmonitor-actionbar-http-custom-request = New Request
+# The label of the action bar's search tab.
+netmonitor-actionbar-search = Search
+# The label of the action bar's request blocking tab.
+netmonitor-actionbar-request-blocking = Blocking
+# The label of the checkbox that enables request blocking.
+netmonitor-actionbar-enable-blocking = Enable Request Blocking
+# The placeholder text for the blocking pattern addition form.
+netmonitor-actionbar-block-search-placeholder =
+    .placeholder = Block resource when URL contains
+# The tooltip of the remove button for a blocked URL item.
+netmonitor-actionbar-remove-blocked-url =
+    .title = Remove pattern
+    .aria-label = Remove pattern
+# The usage notice displayed when the blocking list is empty.
+netmonitor-actionbar-request-blocking-usage-notice = Add URL patterns here to block matching requests.
+# The notice explaining the ways to add a blocking pattern, displayed when the
+# blocking list is empty.
+netmonitor-actionbar-request-blocking-add-notice = Start by adding a pattern or dragging a row from the network table.
+
+## Strings used in the request table of the DevTools Network Panel when it is
+## empty, and for the file, override and tracking indicators of a request
+
+# The labels displayed in the request table when it is empty, to start
+# performance analysis. The second one follows a button whose tooltip is the
+# third one.
+netmonitor-perf-notice-1 = • Click on the
+netmonitor-perf-notice-2 = button to start performance analysis.
+netmonitor-perf-notice-3 =
+    .title = Analyze
+# The labels displayed in the request table when it is empty, to start logging
+# network requests. The first one is followed by a button labelled with the
+# second one.
+netmonitor-reload-notice-1 = • Perform a request or
+netmonitor-reload-notice-2 = Reload
+netmonitor-reload-notice-3 = the page to see detailed information about network activity.
+# The label displayed in the request table when it is empty and the panel is
+# part of the Browser Toolbox, where reloading is not offered.
+netmonitor-empty-browser-toolbox = Perform a request to see detailed information about network activity.
+# The tooltip displayed for the file's original URL value in the file column of
+# a request.
+# Variables:
+#   $url (String): the original URL.
+netmonitor-request-original-file-url-tooltip = Original: { $url }
+# The tooltip displayed for the file's decoded URL value in the file column of
+# a request.
+# Variables:
+#   $url (String): the decoded URL.
+netmonitor-request-decoded-file-url-tooltip = Decoded: { $url }
+# The tooltip of the slow icon button in the file column of a request.
+# Variables:
+#   $waitingTime (String): the time spent waiting for the response.
+#   $slowLimit (String): the threshold above which a response is considered
+#     slow.
+netmonitor-audits-slow-icon-tooltip = Slow server response time ({ $waitingTime }). The recommended limit is { $slowLimit }.
+# Shown both as the tooltip of the tracking resource icon of a request, and as
+# the explanation in the tracking protection section of the headers panel.
+netmonitor-tracking-resource-tooltip = This URL matches a known tracker and it would be blocked with Content Blocking enabled.
+# The label used for showing enhanced tracking protection.
+netmonitor-tracking-resource-enhanced-tracking-protection = Enhanced Tracking Protection
+# A link to external documentation for enhanced tracking protection, displayed
+# in the headers panel.
+netmonitor-enhanced-tracking-protection-learn-more = Learn more about enhanced tracking protection
+# The tooltip displayed when hovering the override cell of a request which was
+# not overridden.
+netmonitor-override-disabled = No override set
+# The tooltip displayed when hovering the override cell of a request which was
+# overridden.
+# Variables:
+#   $path (String): the path of the file used for the override.
+netmonitor-override-enabled = Override set to { $path }
+# The label and tooltip of the button that exits the performance statistics
+# view.
+netmonitor-back-button = Back
+    .title = Back
+# The label rendered within the panel when *.har file(s) are dragged over the
+# content.
+netmonitor-label-drop-har-files = Drop HAR files here
+
+## Strings used in the settings menu of the DevTools Network Panel
+
+# The tooltip that is displayed when the settings menu button is hovered.
+netmonitor-settings-menu-tooltip =
+    .title = Network Settings
+# The tooltip that is displayed when the HAR import menu item is hovered.
+netmonitor-settings-import-har-tooltip = Import a HAR file of network data
+# The tooltip that is displayed when the HAR save menu item is hovered.
+netmonitor-settings-save-har-tooltip = Save network data to HAR file
+# The tooltip that is displayed when the HAR copy menu item is hovered.
+netmonitor-settings-copy-har-tooltip = Copy network data to the clipboard

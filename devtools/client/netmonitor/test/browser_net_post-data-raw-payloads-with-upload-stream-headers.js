@@ -7,11 +7,9 @@
  * Tests if the POST requests display the correct information in the UI,
  * for raw payloads with content-type headers attached to the upload stream.
  */
-add_task(async function () {
-  const {
-    L10N,
-  } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
 
+add_task(async function () {
   const { tab, monitor } = await initNetMonitor(POST_RAW_WITH_HEADERS_URL, {
     requestCount: 1,
   });
@@ -161,7 +159,7 @@ add_task(async function () {
       await waitUntil(
         () =>
           tabpanel.querySelector(".data-label").textContent ==
-          L10N.getStr("paramsFormData")
+          l10n.formatValueSync("netmonitor-params-form-data")
       );
 
       labels = tabpanel.querySelectorAll("tr .treeLabelCell .treeLabel");
@@ -187,7 +185,7 @@ add_task(async function () {
     await waitUntil(
       () =>
         tabpanel.querySelector(".data-label").textContent ==
-          L10N.getStr("paramsPostPayload") &&
+          l10n.formatValueSync("netmonitor-params-post-payload") &&
         tabpanel.querySelector(
           ".panel-container .editor-row-container .cm-content"
         )

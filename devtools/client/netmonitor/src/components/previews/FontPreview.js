@@ -8,11 +8,11 @@ const {
 } = require("resource://devtools/client/framework/devtools.js");
 const {
   Component,
+  createFactory,
 } = require("resource://devtools/client/shared/vendor/react.mjs");
 const PropTypes = require("resource://devtools/client/shared/vendor/react-prop-types.mjs");
-const {
-  L10N,
-} = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+const FluentReact = require("resource://devtools/client/shared/vendor/fluent-react.js");
+const Localized = createFactory(FluentReact.Localized);
 
 const {
   div,
@@ -22,12 +22,6 @@ const {
 const {
   getCssVariableColor,
 } = require("resource://devtools/client/shared/theme.js");
-
-const FONT_NAME = L10N.getStr("netmonitor.response.name");
-const FONT_MIME_TYPE = L10N.getStr("netmonitor.response.mime");
-const FONT_PREVIEW_FAILED = L10N.getStr(
-  "netmonitor.response.fontPreviewFailed"
-);
 
 const FONT_PREVIEW_TEXT =
   "ABCDEFGHIJKLM\nNOPQRSTUVWXYZ\nabcdefghijklm\nnopqrstuvwxyz\n0123456789";
@@ -110,7 +104,10 @@ class FontPreview extends Component {
     const { name, dataURL } = this.state;
 
     if (dataURL === "") {
-      return div({ className: "empty-notice" }, FONT_PREVIEW_FAILED);
+      return Localized(
+        { id: "netmonitor-response-font-preview-failed" },
+        div({ className: "empty-notice" })
+      );
     }
 
     return div(
@@ -122,12 +119,18 @@ class FontPreview extends Component {
       }),
       div(
         { className: "response-summary" },
-        div({ className: "tabpanel-summary-label" }, FONT_NAME),
+        Localized(
+          { id: "netmonitor-response-name" },
+          div({ className: "tabpanel-summary-label" })
+        ),
         div({ className: "tabpanel-summary-value" }, name)
       ),
       div(
         { className: "response-summary" },
-        div({ className: "tabpanel-summary-label" }, FONT_MIME_TYPE),
+        Localized(
+          { id: "netmonitor-response-mime" },
+          div({ className: "tabpanel-summary-label" })
+        ),
         div({ className: "tabpanel-summary-value" }, mimeType)
       )
     );
