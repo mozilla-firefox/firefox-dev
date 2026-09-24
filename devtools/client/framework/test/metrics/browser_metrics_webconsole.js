@@ -35,6 +35,7 @@ add_task(async function () {
     "resource://devtools/client/netmonitor/src/utils/request-utils.js",
     "resource://devtools/client/webconsole/types.js",
     "resource://devtools/client/shared/vendor/fluent-react.js",
+    "resource://devtools/client/shared/fluent-l10n/fluent-l10n.js",
     "resource://devtools/client/shared/vendor/react-redux.js",
     "resource://devtools/client/shared/vendor/redux.js",
     "resource://devtools/client/shared/redux/middleware/thunk.js",

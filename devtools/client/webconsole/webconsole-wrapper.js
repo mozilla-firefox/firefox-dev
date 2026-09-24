@@ -57,7 +57,6 @@ loader.lazyGetter(this, "L10N", function () {
   return new LocalizationHelper("devtools/client/locales/startup.properties");
 });
 
-// Only Browser Console needs Fluent bundles at the moment
 loader.lazyRequireGetter(
   this,
   "FluentL10n",
@@ -105,12 +104,15 @@ class WebConsoleWrapper extends EventEmitter {
   async init() {
     const { webConsoleUI } = this;
 
-    let fluentBundles;
+    // the network message details are rendered with the netmonitor's own
+    // components, so its bundle is needed here as well
+    const resourceIds = ["devtools/client/netmonitor.ftl"];
     if (webConsoleUI.isBrowserConsole) {
-      const fluentL10n = new FluentL10n();
-      await fluentL10n.init(["devtools/client/toolbox.ftl"]);
-      fluentBundles = fluentL10n.getBundles();
+      resourceIds.push("devtools/client/toolbox.ftl");
     }
+    const fluentL10n = new FluentL10n();
+    await fluentL10n.init(resourceIds);
+    const fluentBundles = fluentL10n.getBundles();
 
     return new Promise(resolve => {
       store = configureStore(this.webConsoleUI, {
@@ -150,9 +152,11 @@ class WebConsoleWrapper extends EventEmitter {
 
       // Render the root Application component.
       if (this.parentNode) {
-        const maybeLocalizedElement = fluentBundles
-          ? createElement(LocalizationProvider, { bundles: fluentBundles }, app)
-          : app;
+        const localizedElement = createElement(
+          LocalizationProvider,
+          { bundles: fluentBundles },
+          app
+        );
 
         this.body = ReactDOM.render(
           createElement(
@@ -161,7 +165,7 @@ class WebConsoleWrapper extends EventEmitter {
             createElement(
               createProvider(this.hud.commands.targetCommand.storeId),
               { store: this.hud.commands.targetCommand.store },
-              maybeLocalizedElement
+              localizedElement
             )
           ),
           this.parentNode
