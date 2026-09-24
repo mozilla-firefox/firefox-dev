@@ -10,10 +10,6 @@
 const l10n = new Localization(["devtools/client/netmonitor.ftl"], true);
 
 add_task(async function () {
-  const {
-    L10N,
-  } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
-
   const { tab, monitor } = await initNetMonitor(JSON_LONG_URL, {
     requestCount: 1,
   });

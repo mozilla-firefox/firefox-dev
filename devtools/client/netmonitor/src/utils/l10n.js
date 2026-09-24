@@ -4,17 +4,12 @@
 
 "use strict";
 
-const { LocalizationHelper } = require("resource://devtools/shared/l10n.js");
 loader.lazyRequireGetter(
   this,
   "BLOCKED_REASON_MESSAGES",
   "resource://devtools/client/netmonitor/src/constants.js",
   true
 );
-
-const NET_STRINGS_URI = "devtools/client/locales/netmonitor.properties";
-
-exports.L10N = new LocalizationHelper(NET_STRINGS_URI);
 
 loader.lazyGetter(
   this,

@@ -27,6 +27,42 @@ const getNumberFormatter = function (decimals) {
   return formatter;
 };
 
+/**
+ * Converts a number to a locale-aware string format and keeps a certain
+ * number of decimals.
+ *
+ * @param number number
+ *        The number to convert.
+ * @param number decimals [optional]
+ *        Total decimals to keep.
+ * @return string
+ *         The localized number as a string.
+ */
+function numberWithDecimals(number, decimals = 0) {
+  // Do not show decimals for integers.
+  if (number === (number | 0)) {
+    return getNumberFormatter(0).format(number);
+  }
+
+  // If this isn't a number (and yes, `isNaN(null)` is false), return zero.
+  if (isNaN(number) || number === null) {
+    return getNumberFormatter(0).format(0);
+  }
+
+  // Localize the number using a memoized Intl.NumberFormat formatter.
+  const localized = getNumberFormatter(decimals).format(number);
+
+  // Convert the localized number to a number again.
+  const localizedNumber = localized * 1;
+  // Check if this number is now equal to an integer.
+  if (localizedNumber === (localizedNumber | 0)) {
+    // If it is, remove the fraction part.
+    return getNumberFormatter(0).format(localizedNumber);
+  }
+
+  return localized;
+}
+
 function getPropertiesFile(url) {
   let isNodeEnv = false;
   try {
@@ -152,28 +188,7 @@ class LocalizationHelper {
    *         The localized number as a string.
    */
   numberWithDecimals(number, decimals = 0) {
-    // Do not show decimals for integers.
-    if (number === (number | 0)) {
-      return getNumberFormatter(0).format(number);
-    }
-
-    // If this isn't a number (and yes, `isNaN(null)` is false), return zero.
-    if (isNaN(number) || number === null) {
-      return getNumberFormatter(0).format(0);
-    }
-
-    // Localize the number using a memoized Intl.NumberFormat formatter.
-    const localized = getNumberFormatter(decimals).format(number);
-
-    // Convert the localized number to a number again.
-    const localizedNumber = localized * 1;
-    // Check if this number is now equal to an integer.
-    if (localizedNumber === (localizedNumber | 0)) {
-      // If it is, remove the fraction part.
-      return getNumberFormatter(0).format(localizedNumber);
-    }
-
-    return localized;
+    return numberWithDecimals(number, decimals);
   }
 }
 
@@ -274,6 +289,7 @@ class MultiLocalizationHelper {
 }
 
 exports.LocalizationHelper = LocalizationHelper;
+exports.numberWithDecimals = numberWithDecimals;
 exports.localizeMarkup = localizeMarkup;
 exports.MultiLocalizationHelper = MultiLocalizationHelper;
 Object.defineProperty(exports, "ELLIPSIS", {

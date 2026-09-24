@@ -8,9 +8,7 @@
  */
 
 add_task(async function () {
-  const {
-    L10N,
-  } = require("resource://devtools/client/netmonitor/src/utils/l10n.js");
+  const { numberWithDecimals } = require("resource://devtools/shared/l10n.js");
 
   const { monitor } = await initNetMonitor(HTTPS_SIMPLE_URL, {
     requestCount: 1,
@@ -44,8 +42,8 @@ add_task(async function () {
       label2: (value, index) => value + ["foo", "bar", "baz"][index],
     },
     totals: {
-      label1: value => "Hello " + L10N.numberWithDecimals(value, 2),
-      label2: value => "World " + L10N.numberWithDecimals(value, 2),
+      label1: value => "Hello " + numberWithDecimals(value, 2),
+      label2: value => "World " + numberWithDecimals(value, 2),
     },
     header: {
       label1: "label1header",
