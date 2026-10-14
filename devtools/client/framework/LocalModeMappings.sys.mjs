@@ -90,6 +90,7 @@ export const LocalModeMappings = {
       LOCAL_MODE_MAPPINGS_PREF_PREFIX,
       prefObserver
     );
+    prefObserver.cancel();
   },
 
   getAllMappings,
