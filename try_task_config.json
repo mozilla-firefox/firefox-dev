@@ -1,0 +1,18 @@
+{
+    "parameters": {
+        "base_rev": "0a663c2511915210918dc86255360d7d28220c1c",
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "beetmover-install-script-linux64/opt"
+            ],
+            "worker-overrides": {
+                "beetmover": "scriptworker-k8s/gecko-1-beetmover-dev"
+            }
+        }
+    },
+    "version": 2
+}
