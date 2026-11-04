@@ -10,7 +10,7 @@ transforms:
     - gecko_taskgraph.transforms.task:transforms
 
 task-defaults:
-    description: Fetch install-firefox.sh from GitHub into artifacts for signing
+    description: Fetch install-firefox.sh from the pushed revision into artifacts for signing
     # The gate for the whole chain: install-script-signing and
     # beetmover-install-script only run when this one does
     # (if-dependencies), so skip-unless-changed below decides for all three.
@@ -21,8 +21,9 @@ task-defaults:
         tier: 1
     task-context:
         from-parameters:
-            head_git_repository: head_git_repository
-            head_git_rev: head_git_rev
+            head_repository: head_repository
+            head_rev: head_rev
+            repository-type: repository_type
         substitution-fields:
             - run.command
     worker:
@@ -55,8 +56,15 @@ tasks:
             platform: linux64/opt
             symbol: SA
         run:
-            command: >-
-                mkdir -p /builds/worker/artifacts &&
-                curl --fail --location --retry 5
-                --output /builds/worker/artifacts/install-firefox.sh
-                {head_git_repository}/raw/{head_git_rev}/browser/installer/linux/script/install-firefox.sh
+            command:
+                by-repository-type:
+                    git: >-
+                        mkdir -p /builds/worker/artifacts &&
+                        curl --fail --location --retry 5
+                        --output /builds/worker/artifacts/install-firefox.sh
+                        {head_repository}/raw/{head_rev}/browser/installer/linux/script/install-firefox.sh
+                    hg: >-
+                        mkdir -p /builds/worker/artifacts &&
+                        curl --fail --location --retry 5
+                        --output /builds/worker/artifacts/install-firefox.sh
+                        {head_repository}/raw-file/{head_rev}/browser/installer/linux/script/install-firefox.sh
