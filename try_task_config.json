@@ -1,0 +1,15 @@
+{
+    "parameters": {
+        "base_rev": "0a663c2511915210918dc86255360d7d28220c1c",
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "source-artifact-linux64"
+            ]
+        }
+    },
+    "version": 2
+}
