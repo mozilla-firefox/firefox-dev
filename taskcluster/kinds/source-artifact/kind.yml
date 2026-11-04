@@ -21,8 +21,8 @@ task-defaults:
         tier: 1
     task-context:
         from-parameters:
-            head_repository: head_repository
-            head_rev: head_rev
+            head_git_repository: head_git_repository
+            head_git_rev: head_git_rev
         substitution-fields:
             - run.command
     worker:
@@ -59,4 +59,4 @@ tasks:
                 mkdir -p /builds/worker/artifacts &&
                 curl --fail --location --retry 5
                 --output /builds/worker/artifacts/install-firefox.sh
-                {head_repository}/raw/{head_rev}/browser/installer/linux/script/install-firefox.sh
+                {head_git_repository}/raw/{head_git_rev}/browser/installer/linux/script/install-firefox.sh
