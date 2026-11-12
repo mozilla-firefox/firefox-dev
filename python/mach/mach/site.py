@@ -745,7 +745,7 @@ class CommandSiteManager:
 
         self._virtualenv.pip_install_with_constraints([package])
 
-    def install_pip_requirements(self, path, require_hashes=True, quiet=False):
+    def install_pip_requirements(self, path, require_hashes=False, quiet=False):
         """Install a pip requirements.txt file.
 
         The supplied path is a text file containing pip requirement
@@ -1583,7 +1583,6 @@ def _create_venv_with_pthfile(
             target_venv.pip_install([
                 "--requirement",
                 requirements_txt_file.path,
-                "--require-hashes",
             ])
         if requirements.pypi_requirements:
             requirements_list = [
