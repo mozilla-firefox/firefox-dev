@@ -1,0 +1,15 @@
+{
+    "parameters": {
+        "base_rev": "2024e90df3e55391b89122d6a9d317a1026c90f8",
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "disable-pgo": true,
+            "env": {
+                "TRY_SELECTOR": "empty"
+            },
+            "tasks": [],
+            "use-artifact-builds": true
+        }
+    },
+    "version": 2
+}
