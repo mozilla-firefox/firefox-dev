@@ -1,0 +1,41 @@
+{
+    "parameters": {
+        "base_rev": "09b86521110cb23b77f5385a0e02aa4013a41f97",
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "disable-pgo": true,
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "bootstrap-rockylinux9-browser",
+                "bootstrap-rockylinux9-mobile_android",
+                "bootstrap-ubuntu2204-mobile_android",
+                "bootstrap-ubuntu2404-browser",
+                "bootstrap-ubuntu2404-mobile_android",
+                "bootstrap-ubuntu2504-mobile_android",
+                "bootstrap-ubuntu2510-mobile_android",
+                "bootstrap-ubuntu2604-browser",
+                "bootstrap-ubuntu2604-mobile_android",
+                "bootstrap-voidlinux-browser",
+                "bootstrap-voidlinux-mobile_android",
+                "build-android-aarch64-fenix/debug",
+                "build-android-aarch64-lite/opt",
+                "build-android-aarch64-non-unified/opt",
+                "build-android-aarch64-reproduced/opt",
+                "build-android-aarch64/debug",
+                "build-android-aarch64/opt",
+                "build-android-arm-lite/opt",
+                "build-android-arm-reproduced/opt",
+                "build-android-arm/debug",
+                "build-android-x86_64-lite/opt",
+                "build-android-x86_64-non-unified/opt",
+                "build-android-x86_64-reproduced/opt",
+                "build-android-x86_64/debug",
+                "build-android-x86_64/opt"
+            ],
+            "use-artifact-builds": true
+        }
+    },
+    "version": 2
+}
