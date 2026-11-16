@@ -8,7 +8,9 @@ treeherder configuration and attributes for that platform.
 """
 
 import copy
+import json
 import os
+import re
 from typing import Optional, Union
 
 from taskgraph.transforms.base import TransformSequence
@@ -58,6 +60,10 @@ class SourceTestDescriptionSchema(Schema, forbid_unknown_fields=False, kw_only=T
     # run command and the files-changed patterns are built from this list, in
     # vendor_verify_members below.
     members: Optional[list[str]] = None
+    # On git pushes to GitHub, have run-task mint a read-only token for the base
+    # repository using the named GitHub App, so its GitHub requests are
+    # authenticated.
+    github_repo_token: Optional[str] = None
     # A list of artifacts to install from 'fetch' tasks.
     fetches: Optional[  # type: ignore
         dict[
@@ -322,6 +328,23 @@ def handle_code_review(config, jobs):
             env = job["worker"].setdefault("env", {})
             env["CODE_REVIEW"] = "1"
 
+        yield job
+
+
+@transforms.add
+def handle_github_repo_token(config, jobs):
+    for job in jobs:
+        app = job.pop("github-repo-token", None)
+        repo = config.params["base_repository"]
+        match = re.fullmatch(r"https://github\.com/([^/]+/[^/]+?)(?:\.git)?/?", repo)
+        if app and config.params["repository_type"] == "git" and match:
+            job["worker"].setdefault("env", {})["RUN_TASK_SECRETS"] = json.dumps([
+                {"type": "github-repo-token", "app": app, "repo": repo}
+            ])
+            job["worker"]["taskcluster-proxy"] = True
+            job.setdefault("scopes", []).append(
+                f"auth:github-repo-token:{app}/{match.group(1)}:contents:read"
+            )
         yield job
 
 
