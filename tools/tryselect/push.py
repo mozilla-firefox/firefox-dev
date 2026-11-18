@@ -81,6 +81,12 @@ GIT_BACKING_REPO = "https://github.com/mozilla-releng/git-backing"
 GIT_BACKING_SSH = "git@github.com:mozilla-releng/git-backing.git"
 GIT_BACKING_SECRET = "project/releng/releng-github-git-backing-ssh"
 
+TREEHERDER_REVISION_URL = (
+    "https://treeherder.mozilla.org/jobs?repo={repo_name}&revision={revision}"
+)
+FIREFOX_DEV_REMOTE_RE = re.compile(
+    r"github\.com[/:]mozilla-firefox/firefox-dev(?:\.git)?/?$"
+)
 TREEHERDER_LANDO_TRY_RUN_URL = "https://treeherder.mozilla.org/jobs?repo={repo_name}&landoInstance={lando_instance}&landoCommitID={job_id}"
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -229,6 +235,11 @@ def get_tree_name(remote, push_to_vcs):
     if remote_url := vcs.get_remote_url(remote, push=True):
         remote = remote_url
     return re.split(r"[/:]", remote.rstrip("/"))[-1].removesuffix(".git")
+
+
+def _is_firefox_dev(remote):
+    remote = vcs.get_remote_url(remote, push=True) or remote
+    return bool(FIREFOX_DEV_REMOTE_RE.search(remote))
 
 
 def get_tree_status(tree):
@@ -414,12 +425,17 @@ def push_to_try(
     print("Pushing to try...")
     try:
         if push_to_vcs:
-            vcs.push_to_try(
+            rev = vcs.push_to_try(
                 commit_message,
                 changed_files=changed_files,
                 allow_log_capture=allow_log_capture,
                 remote=remote,
             )
+            if rev and _is_firefox_dev(remote):
+                treeherder_url = TREEHERDER_REVISION_URL.format(
+                    repo_name="firefox-dev", revision=rev
+                )
+                print(f"\nView push in Treeherder:\n {treeherder_url}")
         else:
             try_repo = get_try_repo(vcs.path)
             push_data = push_to_lando_try(
