@@ -353,6 +353,7 @@ tasks:
                 webrender-sw+1proc:
                     by-test-platform:
                         android-em.*/debug: built-projects
+                        linux.*-wayland/debug: ['autoland', 'mozilla-central']
                         linux.*64/debug: built-projects
                         default: []
                 1proc: built-projects
@@ -398,6 +399,9 @@ tasks:
                         default: []
                 webrender-sw:
                     by-test-platform:
+                        linux.*-wayland/debug: ['autoland', 'mozilla-central']
+                        linux.*-wayland/opt: ['autoland']
+                        linux.*-wayland-shippable/opt: ['mozilla-central']
                         linux.*64/debug: ['all']
                         linux.*64-artifact/opt: ['mozilla-central']
                         linux.*64-asan/opt: ['all']
@@ -405,7 +409,6 @@ tasks:
                         linux.*64/opt: built-projects
                         linux.*64-devedition/opt: built-projects
                         linux.*64-shippable/opt: ['release']
-                        .*-wayland.*: []  # will change to built-projects when greened up
                         default: []
                 webrender-sw+a11y-checks:
                     by-test-platform:
@@ -585,7 +588,9 @@ tasks:
         run-on-projects:
             by-test-platform:
                 android.*: []
-                .*-wayland.*: []
+                linux.*-wayland/debug: ['autoland', 'mozilla-central']
+                linux.*-wayland/opt: ['autoland']
+                linux.*-wayland-shippable/opt: ['mozilla-central']
                 default: built-projects
         tier: default
         max-run-time:
@@ -732,11 +737,14 @@ tasks:
                 webrender-sw+1proc:
                     by-test-platform:
                         android-em.*/debug: built-projects
+                        linux.*-wayland/debug: ['autoland', 'mozilla-central']
                         linux.*64/debug: built-projects
                         default: []
                 1proc:
                     by-test-platform:
-                        .*-wayland.*: []
+                        linux.*-wayland/debug: ['autoland', 'mozilla-central']
+                        linux.*-wayland/opt: ['autoland']
+                        linux.*-wayland-shippable/opt: ['mozilla-central']
                         # Compositor shutdown assertion in DisconnectApzcTreeManager
                         # on headless macOS aarch64 VM workers (Bug 2039987 family);
                         # same pattern excludes the other suites' debug on this platform.
@@ -818,7 +826,9 @@ tasks:
                 default:
                     by-test-platform:
                         android.*: []
-                        .*-wayland.*: []
+                        linux.*-wayland/debug: ['autoland', 'mozilla-central']
+                        linux.*-wayland/opt: ['autoland']
+                        linux.*-wayland-shippable/opt: ['mozilla-central']
                         linux.*64-ccov/opt: []
                         default: built-projects
         tier: default
@@ -965,6 +975,7 @@ tasks:
                 webrender-sw:
                     by-test-platform:
                         android-em.*/debug: built-projects
+                        linux.*-wayland/debug: ['autoland', 'mozilla-central']
                         linux.*64/debug: built-projects
                         default: []
                 no-fission:
@@ -1021,6 +1032,7 @@ tasks:
                 webrender-sw+1proc:
                     by-test-platform:
                         android-em.*/debug: built-projects
+                        linux.*-wayland/debug: ['autoland', 'mozilla-central']
                         linux.*64/debug: built-projects
                         default: []
                 1proc:
@@ -1108,6 +1120,7 @@ tasks:
                     by-test-platform:
                         android.*: []
                         .*hw-ref.*: []
+                        linux.*-wayland/debug: ['autoland', 'mozilla-central']
                         linux2404-64/debug: ['autoland', 'mozilla-central']
                         default: []
                 no-fission:
@@ -1249,6 +1262,7 @@ tasks:
                         default: []
                 webrender-sw:
                     by-test-platform:
+                        linux.*-wayland/debug: ['autoland', 'mozilla-central']
                         linux.*64/debug: built-projects
                         default: []
                 no-fission:
@@ -1297,6 +1311,7 @@ tasks:
                         default: []
                 webrender-sw:
                     by-test-platform:
+                        linux.*-wayland/debug: ['autoland', 'mozilla-central']
                         linux.*64/debug: built-projects
                         default: []
                 no-fission:
@@ -1348,6 +1363,7 @@ tasks:
                         default: []
                 webrender-sw:
                     by-test-platform:
+                        linux.*-wayland/debug: ['autoland', 'mozilla-central']
                         linux.*64/debug: built-projects
                         default: []
                 no-fission:
@@ -1363,7 +1379,9 @@ tasks:
                         android-hw.*aarch.*(-qr)?/debug: ['mozilla-central']
                         android.*: []
                         .*-tsan.*: []
-                        .*-wayland.*: []
+                        linux.*-wayland/debug: ['autoland', 'mozilla-central']
+                        linux.*-wayland/opt: ['autoland']
+                        linux.*-wayland-shippable/opt: ['mozilla-central']
                         default: built-projects
         # Bug 1296733: llvmpipe with mesa 9.2.1 lacks thread safety
         allow-software-gl-layers: false
@@ -1392,6 +1410,7 @@ tasks:
                         default: []
                 webrender-sw:
                     by-test-platform:
+                        linux.*-wayland/debug: ['autoland', 'mozilla-central']
                         linux.*64/debug: built-projects
                         default: []
                 no-fission:
