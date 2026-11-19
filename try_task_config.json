@@ -1,0 +1,17 @@
+{
+    "parameters": {
+        "base_rev": "ec287ddb045c35fa2c10c1251733ea419fd108af",
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "disable-pgo": true,
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "build-linux64/opt"
+            ],
+            "use-artifact-builds": true
+        }
+    },
+    "version": 2
+}
