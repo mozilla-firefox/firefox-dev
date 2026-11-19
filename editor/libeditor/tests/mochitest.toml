@@ -488,9 +488,6 @@ skip-if = [
 ["test_editing_UI_in_plaintext-only.html"]
 
 ["test_execCommandPaste_noTarget.html"]
-skip-if = [
-  "os == 'linux' && display == 'wayland'", # Bug 2005351
-]
 
 ["test_focus_caret_navigation_between_nested_editors.html"]
 
@@ -551,7 +548,6 @@ skip-if = [
 ["test_middle_click_paste.html"]
 skip-if = [
   "headless",
-  "os == 'linux' && display == 'wayland'", # Bug 2005351
 ]
 
 ["test_native_key_bindings_in_shadow.html"]

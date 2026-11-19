@@ -60,7 +60,6 @@ skip-if = [
 
 ["browser_smartblockembeds_mutation.js"]
 skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug",
 ] # Bug 1858919, 1960066
 
 ["browser_smartblockembeds_trustpanel.js"]

@@ -6,9 +6,6 @@ prefs = [
 ]
 
 ["browser_toolbarButtonKeyPress.js"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 1775712
-]
 
 ["browser_toolbarKeyNav.js"]
 skip-if = [

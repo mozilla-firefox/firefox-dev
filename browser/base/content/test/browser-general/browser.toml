@@ -70,9 +70,6 @@ skip-if = [
 # DO NOT ADD MORE TESTS HERE. USE A TOPICAL DIRECTORY INSTEAD.
 
 ["browser_bug417483.js"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1444703
-]
 # DO NOT ADD MORE TESTS HERE. USE A TOPICAL DIRECTORY INSTEAD.
 
 ["browser_bug424101.js"]
@@ -217,9 +214,6 @@ support-files = [
 # DO NOT ADD MORE TESTS HERE. USE A TOPICAL DIRECTORY INSTEAD.
 
 ["browser_bug817947.js"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 1556066
-]
 # DO NOT ADD MORE TESTS HERE. USE A TOPICAL DIRECTORY INSTEAD.
 
 ["browser_bug832435.js"]
@@ -293,9 +287,6 @@ skip-if = [
 
 ["browser_fullscreen-window-open.js"]
 tags = "fullscreen"
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Linux: Intermittent failures - bug 941575.
-]
 # DO NOT ADD MORE TESTS HERE. USE A TOPICAL DIRECTORY INSTEAD.
 
 ["browser_gestureSupport.js"]
@@ -362,7 +353,6 @@ https_first_disabled = true
 
 ["browser_refreshBlocker.js"]
 skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && opt",
 ] # Bug 1559410 for all instances
 support-files = [
   "refresh_header.sjs",
@@ -392,9 +382,6 @@ support-files = ["test_remoteTroubleshoot.html"]
 # DO NOT ADD MORE TESTS HERE. USE A TOPICAL DIRECTORY INSTEAD.
 
 ["browser_save_video.js"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1212419
-]
 support-files = [
   "web_video.html",
   "web_video1.webm",
@@ -432,9 +419,6 @@ skip-if = [
 # DO NOT ADD MORE TESTS HERE. USE A TOPICAL DIRECTORY INSTEAD.
 
 ["browser_windowactivation.js"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 1678774
-]
 support-files = [
   "file_window_activation.html",
   "file_window_activation2.html",

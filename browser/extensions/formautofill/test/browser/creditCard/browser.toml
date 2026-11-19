@@ -58,9 +58,6 @@ skip-if = [
 ]
 
 ["browser_creditCard_fill_cancel_login.js"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
-]
 
 ["browser_creditCard_secondary_action.js"]
 

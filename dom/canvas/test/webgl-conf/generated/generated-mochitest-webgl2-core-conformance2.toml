@@ -97,7 +97,6 @@ fail-if = [
 ["test_2_conformance2__context__context-attributes-depth-stencil-antialias-obeyed.html"]
 fail-if = [
   "os == 'android' && os_version == '14' && arch == 'aarch64'",
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
 ]
 tags = "os_integration"
 
@@ -211,7 +210,6 @@ fail-if = [
 ["test_2_conformance2__misc__expando-loss-2.html"]
 skip-if = [
   "os == 'android' && os_version == '14' && arch == 'aarch64'",
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
 ]
 
 ["test_2_conformance2__misc__getextension-while-pbo-bound-stability.html"]
@@ -298,9 +296,6 @@ fail-if = [
 ["test_2_conformance2__renderbuffers__invalidate-framebuffer.html"]
 
 ["test_2_conformance2__renderbuffers__multisample-draws-between-blits.html"]
-fail-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
-]
 
 ["test_2_conformance2__renderbuffers__multisample-with-full-sample-counts.html"]
 
@@ -321,14 +316,10 @@ fail-if = [
 
 ["test_2_conformance2__rendering__blitframebuffer-filter-srgb.html"]
 fail-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
   "os == 'mac' && os_version == '10.15' && arch == 'x86_64'",
 ]
 
 ["test_2_conformance2__rendering__blitframebuffer-multisampled-readbuffer.html"]
-fail-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
-]
 
 ["test_2_conformance2__rendering__blitframebuffer-outside-readbuffer.html"]
 
@@ -408,14 +399,8 @@ fail-if = [
 fail-if = [
   "os == 'mac' && os_version == '10.15' && arch == 'x86_64'",
 ]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
-]
 
 ["test_2_conformance2__rendering__framebuffer-to-texture.html"]
-fail-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
-]
 
 ["test_2_conformance2__rendering__framebuffer-unsupported.html"]
 
@@ -428,14 +413,8 @@ fail-if = [
 ["test_2_conformance2__rendering__instanced-rendering-large-divisor.html"]
 
 ["test_2_conformance2__rendering__line-rendering-quality.html"]
-fail-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
-]
 
 ["test_2_conformance2__rendering__multisampling-depth-resolve.html"]
-fail-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
-]
 
 ["test_2_conformance2__rendering__multisampling-fragment-evaluation.html"]
 
@@ -470,9 +449,6 @@ skip-if = [
 ["test_2_conformance2__state__gl-enum-tests.html"]
 
 ["test_2_conformance2__state__gl-get-calls.html"]
-fail-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
-]
 
 ["test_2_conformance2__state__gl-getstring.html"]
 
@@ -500,9 +476,6 @@ fail-if = [
 ["test_2_conformance2__textures__misc__copy-texture-cube-map-AMD-bug.html"]
 
 ["test_2_conformance2__textures__misc__copy-texture-cube-map-bug.html"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
-]
 
 ["test_2_conformance2__textures__misc__copy-texture-image-luma-format.html"]
 
@@ -536,7 +509,6 @@ fail-if = [
 ]
 skip-if = [
   "os == 'android' && os_version == '14' && arch == 'aarch64' && debug",
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug",
 ]
 
 ["test_2_conformance2__textures__misc__integer-cubemap-specification-order-bug.html"]
@@ -652,7 +624,6 @@ skip-if = [
 ["test_2_conformance2__transform_feedback__transform_feedback.html"]
 skip-if = [
   "os == 'android' && os_version == '14' && arch == 'aarch64' && debug",
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
 ]
 
 ["test_2_conformance2__transform_feedback__two-unreferenced-varyings.html"]

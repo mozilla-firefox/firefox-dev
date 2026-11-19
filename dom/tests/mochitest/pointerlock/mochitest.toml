@@ -52,9 +52,6 @@ support-files = [
   "file_pointerlock_xorigin_iframe_no_user_gesture.html",
   "file_pointerlock_xorigin_iframe_not_focused.html",
 ]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1857057
-]
 
 ["test_pointerlock_xorigin_iframe_movementXY.html"]
 skip-if = [

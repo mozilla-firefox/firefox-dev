@@ -55,9 +55,6 @@ support-files = [
 ["browser_clearPopulatedForm.js"]
 
 ["browser_editAddressDialog.js"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1788900
-]
 
 ["browser_fillclear_events.js"]
 

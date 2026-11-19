@@ -58,9 +58,6 @@ support-files = [
 ["browser_identityPopup_HttpsOnlyMode.js"]
 
 ["browser_identityPopup_clearSiteData.js"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1577395
-]
 
 ["browser_identityPopup_clearSiteData_extensions.js"]
 

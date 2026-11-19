@@ -109,14 +109,8 @@ skip-if = [
 
 ["browser_devices_get_user_media_tear_off_tab.js"]
 https_first_disabled = true
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1775945
-]
 
 ["browser_devices_get_user_media_unprompted_access.js"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 1712012
-]
 https_first_disabled = true
 
 ["browser_devices_get_user_media_unprompted_access_in_frame.js"]

@@ -75,9 +75,6 @@ fail-if = [
 ["test_2_conformance__rendering__line-loop-tri-fan.html"]
 
 ["test_2_conformance__rendering__line-rendering-quality.html"]
-fail-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
-]
 
 ["test_2_conformance__rendering__many-draw-calls.html"]
 

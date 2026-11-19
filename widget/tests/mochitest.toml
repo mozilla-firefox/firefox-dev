@@ -29,7 +29,6 @@ skip-if = [
 ["test_clipboard.html"]
 skip-if = [
   "headless", # bug 1852983
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1857075
 ]
 support-files = ["file_test_clipboard.js"]
 

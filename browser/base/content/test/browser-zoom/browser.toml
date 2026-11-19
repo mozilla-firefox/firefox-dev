@@ -41,9 +41,6 @@ support-files = ["../browser-general/video.webm"]
 
 ["browser_tabswitch_zoom_flicker.js"]
 https_first_disabled = true
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 1652383
-]
 
 ["browser_tooltip_zoom.js"]
 

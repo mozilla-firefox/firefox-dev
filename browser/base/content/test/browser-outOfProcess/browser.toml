@@ -10,8 +10,5 @@ support-files = [
 ["browser_basic_outofprocess.js"]
 
 ["browser_controller.js"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1663506
-]
 
 ["browser_promisefocus.js"]

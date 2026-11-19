@@ -5,9 +5,6 @@ support-files = ["head.js"]
 ["browser_picker_blocked_background_tab.js"]
 
 ["browser_selectpopup.js"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1329991
-]
 
 ["browser_selectpopup_checked.js"]
 

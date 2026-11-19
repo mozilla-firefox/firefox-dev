@@ -30,9 +30,6 @@ skip-if = [
 
 ["browser_contextmenu_add_search_engine.js"]
 support-files = ["subtst_contextmenu_add_search_engine.html"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # disabled on Linux due to bug 513558
-]
 
 ["browser_contextmenu_badiframe.js"]
 https_first_disabled = true
@@ -54,9 +51,6 @@ support-files = ["file_blocked_image_protocols.html"]
 support-files = ["test_contextmenu_iframe.html"]
 
 ["browser_contextmenu_input.js"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
-]
 
 ["browser_contextmenu_inspect.js"]
 
@@ -92,9 +86,6 @@ run-if = [
 
 ["browser_contextmenu_spellcheck.js"]
 https_first_disabled = true
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
-]
 
 ["browser_contextmenu_touch.js"]
 skip-if = [

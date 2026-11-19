@@ -71,9 +71,6 @@ support-files = [
 ["browser_test_srcdoc_in_parent_process.js"]
 
 ["browser_test_toplevel_data_navigations.js"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 1403815
-]
 support-files = [
   "file_toplevel_data_navigations.sjs",
   "file_toplevel_data_meta_redirect.html",

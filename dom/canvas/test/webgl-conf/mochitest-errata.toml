@@ -45,7 +45,6 @@ fail-if = [
 ["generated/test_2_conformance2__context__context-attributes-depth-stencil-antialias-obeyed.html"]
 fail-if = [
   "os == 'android' && os_version == '14' && arch == 'aarch64'",
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
 ]
 tags = "os_integration"
 
@@ -192,7 +191,6 @@ fail-if = [
 ["generated/test_2_conformance2__misc__expando-loss-2.html"]
 skip-if = [
   "os == 'android' && os_version == '14' && arch == 'aarch64'",
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
 ]
 
 ["generated/test_2_conformance2__misc__uninitialized-test-2.html"]
@@ -238,12 +236,6 @@ fail-if = [
   "true",
 ]
 
-["generated/test_2_conformance2__renderbuffers__multisample-draws-between-blits.html"]
-# "whole thing" and more
-fail-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
-]
-
 ####################
 # failure on OSX
 
@@ -256,13 +248,7 @@ fail-if = [
 
 ["generated/test_2_conformance2__rendering__blitframebuffer-filter-srgb.html"]
 fail-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
   "os == 'mac' && os_version == '10.15' && arch == 'x86_64'",
-]
-
-["generated/test_2_conformance2__rendering__blitframebuffer-multisampled-readbuffer.html"]
-fail-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
 ]
 
 ["generated/test_2_conformance2__rendering__blitframebuffer-resolve-to-back-buffer.html"]
@@ -313,28 +299,7 @@ fail-if = [
 fail-if = [
   "os == 'mac' && os_version == '10.15' && arch == 'x86_64'",
 ]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
-]
 # Crash in `swrast_dri.so!st_finalize_texture`
-
-["generated/test_2_conformance2__rendering__framebuffer-to-texture.html"]
-# checkFramebufferStatus expected: FRAMEBUFFER_COMPLETE. Was FRAMEBUFFER_INCOMPLETE_ATTACHMENT
-fail-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
-]
-
-["generated/test_2_conformance2__rendering__line-rendering-quality.html"]
-fail-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
-]
-# Found 0 lines, looking in the vertical direction, expected 2
-
-["generated/test_2_conformance2__rendering__multisampling-depth-resolve.html"]
-# multisampling-depth-resolve: outer pixels should be red
-fail-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
-]
 
 ["generated/test_2_conformance2__rendering__texture-switch-performance.html"]
 # Orange on OSX+debug
@@ -401,11 +366,6 @@ skip-if = [
 # [task 2020-01-07T01:44:09.866Z] 01:44:09     INFO -      Found by: call frame info
 
 ####################
-
-["generated/test_2_conformance2__state__gl-get-calls.html"]
-fail-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
-]
 
 ["generated/test_2_conformance2__state__gl-object-get-calls.html"]
 # Really really slow on IPC mode. Update test suite to get faster/quick-mode test.
@@ -852,9 +812,6 @@ fail-if = [
 ]
 
 ["generated/test_2_conformance2__textures__misc__copy-texture-cube-map-bug.html"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
-]
 # [task 2019-12-27T02:30:35.051Z] 02:30:35     INFO - GECKO(1114) | Assertion failure: err == 0x0505, at /builds/worker/workspace/build/src/gfx/gl/SharedSurfaceGL.cpp:31
 # [task 2019-12-27T02:30:56.779Z] 02:30:56     INFO - GECKO(1114) | #01: mozilla::gl::SurfaceFactory_Basic::CreateShared(mozilla::gfx::IntSizeTyped<mozilla::gfx::UnknownUnits> const&) [gfx/gl/SharedSurfaceGL.h:82]
 # [task 2019-12-27T02:30:56.786Z] 02:30:56     INFO - GECKO(1114) | #02: mozilla::gl::SurfaceFactory::NewTexClient(mozilla::gfx::IntSizeTyped<mozilla::gfx::UnknownUnits> const&) [gfx/gl/SharedSurface.cpp:301]
@@ -889,7 +846,6 @@ fail-if = [
 # Assertion failure: [GFX1]: void mozilla::gl::GLContext::fFramebufferTexture2D(GLenum, GLenum, GLenum, GLuint, GLint): Generated unexpected GL_INVALID_VALUE error
 skip-if = [
   "os == 'android' && os_version == '14' && arch == 'aarch64' && debug",
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug",
 ]
 
 ["generated/test_2_conformance2__textures__misc__origin-clean-conformance-offscreencanvas.html"]
@@ -1172,7 +1128,6 @@ skip-if = [
 # Android: void mozilla::gl::GLContext::fDeleteTransformFeedbacks(GLsizei, const GLuint *): Generated unexpected GL_INVALID_OPERATION error.
 skip-if = [
   "os == 'android' && os_version == '14' && arch == 'aarch64' && debug",
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
 ]
 
 ["generated/test_2_conformance2__wasm__bufferdata-16gb-wasm-memory.html"]
@@ -1245,12 +1200,6 @@ fail-if = [
 # successfullyParsed should be true (of type boolean). Was undefined (of type undefined).
 fail-if = [
   "os == 'win' && arch == 'x86'",
-]
-
-["generated/test_2_conformance__context__context-attributes-alpha-depth-stencil-antialias.html"]
-# contextAttribs.antialias should be true. Was false
-fail-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
 ]
 
 ["generated/test_2_conformance__extensions__webgl-compressed-texture-astc.html"]
@@ -1333,12 +1282,6 @@ fail-if = [
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'",
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
 ]
-
-["generated/test_2_conformance__rendering__line-rendering-quality.html"]
-fail-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
-]
-# Found 0 lines, looking in the vertical direction, expected 2
 
 ["generated/test_2_conformance__rendering__rendering-stencil-large-viewport.html"]
 # same as webgl1 test

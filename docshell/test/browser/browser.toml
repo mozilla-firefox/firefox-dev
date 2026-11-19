@@ -83,9 +83,6 @@ support-files = [
 
 ["browser_backforward_userinteraction.js"]
 support-files = ["dummy_iframe_page.html"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 1607713
-]
 
 ["browser_backforward_userinteraction_about.js"]
 
@@ -123,9 +120,6 @@ https_first_disabled = true
 ["browser_browsingContext-getWindowByName.js"]
 
 ["browser_browsingContext-webProgress.js"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 1721261
-]
 https_first_disabled = true
 
 ["browser_browsingContext_iframeWebProgress.js"]

@@ -15,7 +15,6 @@ support-files = [
   "popup_blocker_10_popups.html",
 ]
 skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Frequent bug 1081925 and bug 1125520 failures
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'", # Frequent bug 1081925 and bug 1125520 failures
 ]
 
@@ -94,34 +93,18 @@ skip-if = [
 ]
 
 ["browser_popup_resize.js"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && !headless", # outdated current sizes
-]
 
 ["browser_popup_resize_clamp.js"]
 
 ["browser_popup_resize_instant.js"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && !headless", # outdated current sizes
-]
 
 ["browser_popup_resize_repeat.js"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && !headless", # outdated current sizes
-]
 
 ["browser_popup_resize_repeat_instant.js"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && !headless", # outdated current sizes
-]
 
 ["browser_popup_resize_revert.js"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && !headless", # outdated current sizes
-]
 
 ["browser_popup_resize_revert_instant.js"]
 skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && !headless", # outdated current sizes
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11' && !headless", # outdated current sizes
 ]

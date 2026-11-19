@@ -12,9 +12,6 @@ support-files = [
 ]
 
 ["browser_DOMDocElementInserted.js"]
-skip-if = [
-  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",  # Bug 1646862
-]
 
 ["browser_ImageDocument_svg_zoom.js"]
 
