@@ -19,6 +19,7 @@ LINUX_WORKER_TYPES = {
 LINUX_DOCKER_WORKER_TYPES = set(LINUX_WORKER_TYPES.values()) | {
     "t-linux-wayland",
     "t-linux-xlarge-wayland",
+    "t-linux-2404-wayland",
 }
 
 # windows worker types keyed by test-platform and virtualization
@@ -255,7 +256,9 @@ def set_worker_type(config, tasks):
         elif test_platform.startswith("android-em-"):
             task["worker-type"] = "t-linux-kvm"
         elif test_platform.startswith("linux") or test_platform.startswith("android"):
-            if "wayland" in test_platform:
+            if test_platform.startswith("linux2404-64-wayland"):
+                task["worker-type"] = "t-linux-2404-wayland"
+            elif "wayland" in test_platform:
                 if task["instance-size"].startswith("xlarge"):
                     task["worker-type"] = "t-linux-xlarge-wayland"
                 else:

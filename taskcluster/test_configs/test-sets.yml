@@ -311,6 +311,11 @@ linux2204-wayland-tests:
     - test-verify-wpt
     - xpcshell
 
+linux2404-wayland-tests:
+    - mochitest-browser-chrome
+    - mochitest-plain
+    - xpcshell
+
 # Windows
 windows32-tests:
     - cppunittest

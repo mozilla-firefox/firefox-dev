@@ -824,6 +824,11 @@ workers:
             implementation: generic-worker
             os: linux
             worker-type: 't-linux-xlarge-2204-wayland'
+        t-linux-2404-wayland:
+            provisioner: '{trust-domain}-t'
+            implementation: generic-worker
+            os: linux
+            worker-type: 't-linux-2404-wayland'
         t-linux-2204-wayland-snap:
             provisioner: '{trust-domain}-t'
             implementation: generic-worker

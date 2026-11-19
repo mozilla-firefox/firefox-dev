@@ -814,7 +814,7 @@ def run_wayland_on_backstop(config, tasks):
 @transforms.add
 def disable_try_only_platforms(config, tasks):
     """Turns off platforms that should only run on try."""
-    try_only_platforms = ()
+    try_only_platforms = ("linux2404-64-wayland/.*",)
     for task in tasks:
         if any(re.match(k + "$", task["test-platform"]) for k in try_only_platforms):
             task["run-on-projects"] = []
