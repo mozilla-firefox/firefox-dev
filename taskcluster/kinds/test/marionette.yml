@@ -41,7 +41,7 @@ marionette-unittest:
                     default: []
             webrender-sw:
                 by-test-platform:
-                    .*-wayland.*: []
+                    linux.*-wayland/debug: ['autoland', 'mozilla-central']
                     # Compositor shutdown assertion in DisconnectApzcTreeManager
                     # on headless macOS aarch64 VM workers (Bug 2039987 family).
                     macosx1500-aarch64-vms/debug: []
@@ -49,7 +49,9 @@ marionette-unittest:
                     default: []
             default:
                 by-test-platform:
-                    .*-wayland.*: []
+                    linux.*-wayland/debug: ['autoland', 'mozilla-central']
+                    linux.*-wayland/opt: ['autoland']
+                    linux.*-wayland-shippable/opt: ['mozilla-central']
                     # Compositor shutdown assertion in DisconnectApzcTreeManager
                     # on headless macOS aarch64 VM workers (Bug 2039987 family).
                     macosx1500-aarch64-vms/debug: []
@@ -89,7 +91,7 @@ marionette-integration:
                     default: []
             webrender-sw:
                 by-test-platform:
-                    .*-wayland.*: []
+                    linux.*-wayland/debug: ['autoland', 'mozilla-central']
                     # Compositor shutdown assertion in DisconnectApzcTreeManager
                     # on headless macOS aarch64 VM workers (Bug 2039987 family).
                     macosx1500-aarch64-vms/debug: []
@@ -98,7 +100,9 @@ marionette-integration:
             inc-origin-init: []
             default:
                 by-test-platform:
-                    .*-wayland.*: []
+                    linux.*-wayland/debug: ['autoland', 'mozilla-central']
+                    linux.*-wayland/opt: ['autoland']
+                    linux.*-wayland-shippable/opt: ['mozilla-central']
                     # Compositor shutdown assertion in DisconnectApzcTreeManager
                     # on headless macOS aarch64 VM workers (Bug 2039987 family).
                     macosx1500-aarch64-vms/debug: []
