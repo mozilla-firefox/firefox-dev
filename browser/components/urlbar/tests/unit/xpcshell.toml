@@ -178,6 +178,7 @@ prefs = [
 
 ["test_protocol_swap.js"]
 skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1835698
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'", # Bug 1968543
 ]
 
@@ -185,6 +186,7 @@ skip-if = [
 
 ["test_providerHeuristicFallback.js"]
 skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1835698
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'", # Bug 1968543
 ]
 
@@ -248,6 +250,7 @@ skip-if = [
 
 ["test_search_suggestions.js"]
 skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1835698
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'", # Bug 1968543
 ]
 
