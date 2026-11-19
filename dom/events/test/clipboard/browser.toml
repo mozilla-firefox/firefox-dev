@@ -38,6 +38,9 @@ skip-if = [
 ]
 
 ["browser_document_command_paste_contextmenu_suppression_ext.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_document_command_paste_contextmenu_suppression_key.js"]
 skip-if = [
@@ -71,12 +74,16 @@ support-files = [
 ]
 skip-if = [
   "headless", # bug 1989339
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
 ]
 
 ["browser_navigator_clipboard_contextmenu_suppression_ext.js"]
 support-files = [
   "file_toplevel.html",
   "file_iframe.html",
+]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
 ]
 
 ["browser_navigator_clipboard_contextmenu_window_close.js"]

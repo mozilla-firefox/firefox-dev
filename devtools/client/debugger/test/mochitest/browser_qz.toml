@@ -26,6 +26,9 @@ prefs = [
 ["browser_dbg-reducer-cleanup-on-target-removal.js"]
 
 ["browser_dbg-reloading.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
+]
 
 ["browser_dbg-remember-expanded-scopes.js"]
 

@@ -67,6 +67,9 @@ skip-if = [
 ]
 
 ["browser_print_margins.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_print_page_range.js"]
 
@@ -78,11 +81,17 @@ support-files = [
   "page_size_zero.html",
   "page_size_zero_width.html",
 ]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_print_page_size_output.js"]
 support-files = ["page_size_mixed.html"]
 
 ["browser_print_paper_sizes.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_print_pdf_on_frame_load.js"]
 support-files = [

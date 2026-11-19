@@ -49,6 +49,9 @@ support-files = [
   "!/devtools/client/webconsole/test/browser/shared-head.js",
 ]
 prefs = ["security.allow_unsafe_parent_loads=true"] # This is far from ideal. Bug 1565279 covers removing this pref flip.
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
+]
 
 ["../../../../browser/base/content/test/browser-static/browser_all_files_referenced.js"]
 # We want this test to run for mochitest-dt as well, so we include it here
@@ -285,6 +288,7 @@ disabled = "Bug 962258"
 
 ["browser_toolbox_toggle.js"]
 skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'", # Bug 1767761
 ]
 
@@ -357,6 +361,9 @@ fail-if = [
 ["browser_toolbox_zoom.js"]
 
 ["browser_toolbox_zoom_popup.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 2094332
+]
 
 ["browser_webextension_descriptor.js"]
 

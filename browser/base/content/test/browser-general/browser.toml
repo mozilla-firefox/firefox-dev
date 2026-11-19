@@ -47,6 +47,9 @@ support-files = [
 ["browser_backOrSidebarButtonFitts.js"]
 https_first_disabled = true
 # DO NOT ADD MORE TESTS HERE. USE A TOPICAL DIRECTORY INSTEAD.
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
+]
 
 ["browser_bug321000.js"]
 skip-if = [
@@ -314,6 +317,7 @@ support-files = [
 ["browser_menuButtonFitts.js"]
 # DO NOT ADD MORE TESTS HERE. USE A TOPICAL DIRECTORY INSTEAD.
 skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'", # Bug 1968565
 ]
 
@@ -323,6 +327,9 @@ https_first_disabled = true
 
 ["browser_minimize.js"]
 # DO NOT ADD MORE TESTS HERE. USE A TOPICAL DIRECTORY INSTEAD.
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_modifiedclick_inherit_principal.js"]
 https_first_disabled = true
@@ -335,6 +342,9 @@ https_first_disabled = true
 ["browser_newWindowDrop.js"]
 https_first_disabled = true
 # DO NOT ADD MORE TESTS HERE. USE A TOPICAL DIRECTORY INSTEAD.
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_newwindow_focus.js"]
 https_first_disabled = true

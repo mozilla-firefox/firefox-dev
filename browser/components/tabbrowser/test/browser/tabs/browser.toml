@@ -13,6 +13,9 @@ prefs = [
   "browser.sessionstore.closedTabsFromClosedWindows=true",
   "sidebar.verticalTabs.dragToPinPromo.dismissed=true",
 ]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
+]
 
 ["browser_1936752_lock_tab_sizing.js"]
 
@@ -450,6 +453,9 @@ tags = "vertical-tabs"
 tags = "vertical-tabs"
 
 ["browser_switchtab_when_minimized.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_tabCloseProbes.js"]
 tags = "vertical-tabs"
@@ -601,6 +607,9 @@ skip-if = [
 ["browser_tab_splitview_content_size.js"]
 
 ["browser_tab_splitview_contextmenu.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 2094332
+]
 
 ["browser_tab_splitview_findbar.js"]
 

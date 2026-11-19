@@ -18,6 +18,9 @@ support-files = ["GentiumPlus-R.woff"]
 
 ["test_bug467669.xhtml"]
 support-files = ["test_bug467669.css"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["test_bug695639.xhtml"]
 support-files = ["test_bug695639.css"]

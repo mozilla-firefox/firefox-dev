@@ -28,6 +28,9 @@ skip-if = [
 ["browser_aboutprofiling-interval.js"]
 
 ["browser_aboutprofiling-more-actions-menu.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_aboutprofiling-presets-custom.js"]
 

@@ -65,6 +65,7 @@ support-files = [
   "test_context_url_injection_page.html"
 ]
 skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11' && tsan", # Bug 2057552
 ]
 

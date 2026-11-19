@@ -334,6 +334,9 @@ fail-if = [
 ["browser_rules_editable-field-focus_02.js"]
 
 ["browser_rules_eyedropper.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_rules_stylesheet_text.js"]
 

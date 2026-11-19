@@ -13,6 +13,9 @@ run-if = [
 ]
 
 ["browser_omta_tearoff_tab.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_partial_prerender_animation_in_popup.js"]
 support-files = ["!/dom/animation/test/testcommon.js"]

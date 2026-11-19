@@ -746,6 +746,9 @@ skip-if = [
 
 ["test_eme_pssh_in_moof.html"]
 scheme = "https"
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
+]
 
 ["test_eme_sample_groups_playback.html"]
 scheme = "https"

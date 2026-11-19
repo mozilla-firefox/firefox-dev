@@ -57,6 +57,7 @@ skip-if = [
 
 ["browser_opentabs_recency.js"]
 skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && opt", # Bug 2057846
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11' && opt",
   "os == 'win' && opt",
@@ -72,6 +73,9 @@ fail-if = [
 ["browser_opentabs_tab_indicators.js"]
 
 ["browser_recentlyclosed_firefoxview.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 2094332
+]
 
 ["browser_reload_firefoxview.js"]
 

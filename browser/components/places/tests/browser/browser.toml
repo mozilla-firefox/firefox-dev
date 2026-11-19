@@ -81,6 +81,9 @@ tags = "os_integration"
 ["browser_bookmark_open_all_in_tabs.js"]
 
 ["browser_bookmark_popup.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_bookmark_private_window.js"]
 
@@ -172,10 +175,16 @@ https_first_disabled = true
 ["browser_library_commands.js"]
 
 ["browser_library_container_menu.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_library_delete.js"]
 
 ["browser_library_delete_bookmarks_in_tags.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_library_delete_tags.js"]
 
@@ -204,10 +213,19 @@ https_first_disabled = true
 ["browser_library_sameNodeDetailsPaneOptimization.js"]
 
 ["browser_library_search.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 2094332
+]
 
 ["browser_library_tags_visibility.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 2094332
+]
 
 ["browser_library_telemetry.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_library_tree_leak.js"]
 
@@ -250,6 +268,9 @@ run-if = [
 ["browser_sidebar_on_customization.js"]
 
 ["browser_sidebar_open_bookmarks.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_sidebarpanels_click.js"]
 

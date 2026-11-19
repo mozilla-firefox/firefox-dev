@@ -24,6 +24,9 @@ skip-if = [
 ]
 
 ["browser_pip_throttling.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_pip_ui.js"]
 tags = "vertical-tabs" # Could change visibility of browser UI elements

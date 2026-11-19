@@ -51,6 +51,9 @@ support-files = [
   "!/devtools/client/debugger/test/mochitest/shared-head.js",
   "!/gfx/layers/apz/test/mochitest/apz_test_utils.js",
 ]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
+]
 
 ["browser_autocomplete_popup.js"]
 
@@ -136,6 +139,7 @@ skip-if = [
 ["browser_html_tooltip-02.js"]
 support-files = ["doc_html_tooltip-02-iframe.html"]
 skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11' && opt && a11y_checks", # Bug 1721159
 ]
 
@@ -166,6 +170,9 @@ skip-if = [
 ["browser_html_tooltip_rtl.js"]
 
 ["browser_html_tooltip_screen_edge.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_html_tooltip_variable-height.js"]
 skip-if = [
@@ -175,6 +182,9 @@ skip-if = [
 ["browser_html_tooltip_width-auto.js"]
 
 ["browser_html_tooltip_xul-wrapper.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 2094332
+]
 
 ["browser_html_tooltip_zoom.js"]
 

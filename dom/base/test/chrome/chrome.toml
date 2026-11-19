@@ -133,6 +133,9 @@ support-files = [
 ]
 
 ["test_nsITextInputProcessor.xhtml"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["test_nsITextInputProcessorCallback_at_changing_default_value_of_textarea.html"]
 

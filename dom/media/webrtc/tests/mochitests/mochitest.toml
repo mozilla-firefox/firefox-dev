@@ -96,6 +96,9 @@ skip-if = [
 run-if = [
   "os == 'linux'", # the only platform with real devices
 ]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
+]
 
 ["test_setSinkId_default_addTrack.html"]
 

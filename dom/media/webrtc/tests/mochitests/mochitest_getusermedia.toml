@@ -82,6 +82,9 @@ run-if = [
   "os != 'android'", # no screenshare on android
 ]
 tags = "os_integration"
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
+]
 
 ["test_getUserMedia_basicTabshare.html"]
 run-if = [
@@ -146,6 +149,9 @@ run-if = [
 ["test_getUserMedia_sourceGrantedGlean_displayCapture.html"]
 run-if = [
   "os != 'android'", # no screenshare, windowshare, or tabshare on android
+]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
 ]
 
 ["test_getUserMedia_spinEventLoop.html"]

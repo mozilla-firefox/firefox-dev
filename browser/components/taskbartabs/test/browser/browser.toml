@@ -44,5 +44,8 @@ support-files = [
 support-files = [
   "../../../places/tests/browser/favicon-normal16.png",
 ]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_taskbarTabs_windowTracker.js"]

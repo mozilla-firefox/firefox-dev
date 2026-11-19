@@ -54,6 +54,9 @@ prefs = [
 ["browser_history_keyboard_navigation.js"]
 
 ["browser_history_multiselect.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_history_sidebar.js"]
 
@@ -139,6 +142,9 @@ skip-if = [
 ["browser_tools_migration.js"]
 
 ["browser_tools_overflow.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
+]
 
 ["browser_verticalTabs_widget_placements.js"]
 

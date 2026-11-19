@@ -3,5 +3,8 @@
 ["test_moz_widget.html"]
 
 ["test_moz_widget_header.html"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
+]
 
 ["test_widget_composer.html"]

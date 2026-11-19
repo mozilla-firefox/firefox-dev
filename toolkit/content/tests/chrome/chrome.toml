@@ -178,6 +178,9 @@ support-files = [
 ["test_labelcontrol.xhtml"]
 
 ["test_largemenu.html"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["test_maximized_persist.xhtml"]
 support-files = [
@@ -186,6 +189,7 @@ support-files = [
 ]
 skip-if = [
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'", # Bug 1968560
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
 ]
 
 ["test_maximized_persist_with_no_titlebar.xhtml"]
@@ -195,6 +199,7 @@ support-files = [
 ]
 skip-if = [
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'", # Bug 1968560
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
 ]
 
 ["test_menu.xhtml"]
@@ -271,6 +276,9 @@ support-files = "window_panel_focus.xhtml"
 ["test_popup_anchor.xhtml"]
 
 ["test_popup_anchoratrect.xhtml"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["test_popup_attribute.xhtml"]
 
@@ -323,6 +331,9 @@ support-files = ["window_preferences_onsyncfrompreference.xhtml"]
 ["test_richlistbox.xhtml"]
 
 ["test_screenPersistence.xhtml"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["test_scroll_offsets.html"]
 
@@ -352,6 +363,9 @@ skip-if = [
 support-files = [
   "!/gfx/layers/apz/test/mochitest/apz_test_utils.js",
   "!/gfx/layers/apz/test/mochitest/apz_test_native_event_utils.js",
+]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
 ]
 
 ["test_tree_single.xhtml"]

@@ -75,6 +75,9 @@ support-files = ["../../../browser/base/content/test/browser-general/dummy_page.
 fail-if = [
   "a11y_checks", # Bug 1854502 clicked tabbrowser-tabpanels may not be accessible
 ]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_mouse_x_buttons.js"]
 

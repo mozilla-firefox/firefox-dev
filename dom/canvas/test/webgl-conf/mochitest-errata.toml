@@ -212,6 +212,9 @@ skip-if = [
 skip-if = [
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'",
 ]
+fail-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
+]
 
 ["generated/test_2_conformance2__query__occlusion-query.html"]
 # Test timed out
@@ -1328,6 +1331,7 @@ skip-if = [
 ["generated/test_2_conformance__rendering__gl-scissor-test.html"]
 fail-if = [
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'",
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
 ]
 
 ["generated/test_2_conformance__rendering__line-rendering-quality.html"]

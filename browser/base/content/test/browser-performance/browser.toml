@@ -26,6 +26,9 @@ support-files = ["head.js"]
 ["browser_hiddenwindow_existence.js"]
 
 ["browser_opaque_region.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_panel_vsync.js"]
 support-files = ["!/browser/components/downloads/test/browser/head.js"]
@@ -58,6 +61,9 @@ run-if = [
   "debug",
   "nightly_build", # Requires StartupRecorder.sys.mjs, which isn't shipped everywhere by default
 ]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_tabclose.js"]
 
@@ -86,3 +92,6 @@ run-if = [
 ["browser_windowclose.js"]
 
 ["browser_windowopen.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]

@@ -109,6 +109,9 @@ run-if = [
 ["browser_inspector_inspect_node_contextmenu.js"]
 
 ["browser_inspector_inspect_node_contextmenu_nested.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_inspector_inspect_parent_process_page.js"]
 

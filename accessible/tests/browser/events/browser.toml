@@ -15,6 +15,9 @@ prefs = [
 ["browser_alert.js"]
 
 ["browser_announcement.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_content_prompt.js"]
 

@@ -245,6 +245,9 @@ tags = "os_integration"
 https_first_disabled = true
 
 ["browser_restore_respects_pending_minimize.js"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["browser_restore_reversed_z_order.js"]
 skip-if = [

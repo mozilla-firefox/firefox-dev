@@ -209,6 +209,9 @@ skip-if = [
 ]
 
 ["test_peerConnection_certificates.html"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
+]
 
 ["test_peerConnection_checkPacketDumpHook.html"]
 
@@ -252,6 +255,7 @@ scheme = "http"
 scheme = "http"
 skip-if = [
   "os == 'android'", # websockets don't work on android (bug 1266217)
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
   "os == 'mac' && os_version == '10.15' && arch == 'x86_64'", # no ipv6 support on OS X testers (bug 1710706)
   "os == 'mac' && os_version == '15.30' && arch == 'aarch64'", # no ipv6 support on OS X testers (bug 1710706)
   "os == 'win'", # no ipv6 support on windows testers (bug 1710706)
@@ -305,10 +309,16 @@ scheme = "http"
 scheme = "http"
 
 ["test_peerConnection_noTrickleAnswer.html"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
+]
 
 ["test_peerConnection_noTrickleOffer.html"]
 
 ["test_peerConnection_noTrickleOfferAnswer.html"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
+]
 
 ["test_peerConnection_nonDefaultRate.html"]
 
@@ -461,10 +471,16 @@ skip-if = [
 ]
 
 ["test_peerConnection_stats.html"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
+]
 
 ["test_peerConnection_stats_jitter.html"]
 
 ["test_peerConnection_stats_oneway.html"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
+]
 
 ["test_peerConnection_stats_relayProtocol.html"]
 skip-if = [
@@ -507,8 +523,14 @@ scheme = "http"
 ["test_peerConnection_twoAudioVideoStreams.html"]
 
 ["test_peerConnection_twoAudioVideoStreamsCombined.html"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
+]
 
 ["test_peerConnection_twoAudioVideoStreamsCombinedNoBundle.html"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
+]
 
 ["test_peerConnection_twoVideoStreams.html"]
 

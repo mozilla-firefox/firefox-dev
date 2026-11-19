@@ -68,6 +68,9 @@ support-files = [
   "window_bug593307_offscreen.xhtml",
   "window_bug593307_centerscreen.xhtml",
 ]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["test_bug596600.xhtml"]
 support-files = "file_bug596600.html"
@@ -88,6 +91,9 @@ run-if = [
 support-files = "file_test_clipboard_asyncSetData.js"
 
 ["test_clipboard_cache_chrome.html"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["test_clipboard_chrome.html"]
 support-files = "file_test_clipboard.js"
@@ -104,6 +110,7 @@ support-files = "file_test_clipboard_getDataSnapshot.js"
 support-files = ["window_composition_text_querycontent.xhtml"]
 skip-if = [
   "os == 'linux' && display == 'x11' && opt && standalone", # Bug 2026600
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
 ]
 
 ["test_ime_focus_with_multiple_contenteditable.html"]
@@ -223,6 +230,9 @@ run-if = [
 ]
 
 ["test_panel_mouse_coords.xhtml"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["test_platform_colors.xhtml"]
 skip-if = [
@@ -241,6 +251,9 @@ run-if = [
 support-files = ["file_secure_input.html"]
 
 ["test_sizemode_events.xhtml"]
+skip-if = [
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+]
 
 ["test_standalone_native_menu.xhtml"]
 run-if = [
@@ -267,6 +280,7 @@ run-if = [
 ["test_taskbar_progress.xhtml"]
 skip-if = [
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'",
+  "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
 ]
 
 ["test_transferable_overflow.xhtml"]
