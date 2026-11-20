@@ -135,6 +135,9 @@ https_first_disabled = true
 ["browser_global_mute_toggles.js"]
 
 ["browser_indicator_popuphiding.js"]
+skip-if = [
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2095672
+]
 
 ["browser_macos_indicator_hiding.js"]
 run-if = [
@@ -142,11 +145,23 @@ run-if = [
 ]
 
 ["browser_notification_silencing.js"]
+skip-if = [
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2095672
+]
 
 ["browser_stop_sharing_button.js"]
+skip-if = [
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2095672
+]
 
 ["browser_stop_streams_on_indicator_close.js"]
+skip-if = [
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2095672
+]
 
 ["browser_tab_switch_warning.js"]
+skip-if = [
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2095672
+]
 
 ["browser_webrtc_hooks.js"]
