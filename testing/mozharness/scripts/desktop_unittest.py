@@ -434,6 +434,7 @@ class DesktopUnittest(TestingMixin, MercurialScript, MozbaseMixin, CodeCoverageM
                 "start-pulseaudio",
                 "unlock-keyring",
                 "register-http-handler",
+                "import-session-env",
                 "install",
                 "stage-files",
                 "run-tests",
@@ -1076,6 +1077,64 @@ class DesktopUnittest(TestingMixin, MercurialScript, MozbaseMixin, CodeCoverageM
             "x-scheme-handler/https;\n",
         )
         self.run_command(["update-desktop-database", apps_dir], halt_on_failure=True)
+
+    # Desktop session variables that generic-worker doesn't pass to tasks.
+    SESSION_ENV_VARS = (
+        "DBUS_SESSION_BUS_ADDRESS",
+        "DISPLAY",
+        "WAYLAND_DISPLAY",
+        "XAUTHORITY",
+        "XDG_CONFIG_DIRS",
+        "XDG_CURRENT_DESKTOP",
+        "XDG_DATA_DIRS",
+        "XDG_SESSION_DESKTOP",
+        "XDG_SESSION_TYPE",
+    )
+
+    def import_session_env(self):
+        # Tasks on Linux Wayland workers don't run inside the desktop session,
+        # so take the session's environment from the systemd user manager,
+        # where GNOME publishes it. Without e.g. XAUTHORITY, X11 clients can't
+        # connect to Mutter's Xwayland.
+        if not os.environ.get("WAYLAND_DISPLAY"):
+            return
+        import subprocess
+
+        try:
+            output = subprocess.run(
+                ["systemctl", "--user", "show-environment"],
+                capture_output=True,
+                text=True,
+                check=True,
+            ).stdout
+        except (OSError, subprocess.CalledProcessError) as e:
+            self.fatal(f"Couldn't read the desktop session environment: {e}")
+        session_env = {}
+        for line in output.splitlines():
+            name, sep, value = line.partition("=")
+            if not sep or name not in self.SESSION_ENV_VARS:
+                continue
+            # Values that need quoting are printed as $'...'.
+            if value.startswith("$'") and value.endswith("'"):
+                value = (
+                    value[2:-1]
+                    .encode("latin-1", "backslashreplace")
+                    .decode("unicode_escape")
+                )
+            session_env[name] = value
+        if "XAUTHORITY" not in session_env:
+            self.fatal(
+                f"XAUTHORITY isn't set in the desktop session environment:\n{output}"
+            )
+        for name, value in sorted(session_env.items()):
+            if os.environ.get(name) not in (None, value):
+                self.info(f"Overriding {name}={os.environ[name]} with {value}")
+            else:
+                self.info(f"Setting {name}={value}")
+            os.environ[name] = value
+            # query_env() caches its result, so update it too if it already ran.
+            if self.env is not None:
+                self.env[name] = value
 
     def start_pulseaudio(self):
         command = []
