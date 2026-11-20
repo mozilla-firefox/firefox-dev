@@ -585,6 +585,64 @@ class DesktopUnittest(TestingMixin, MercurialScript, MozbaseMixin, CodeCoverageM
             self.abs_res_dir = abs_app_dir
         return self.abs_res_dir
 
+    @PreScriptAction("run-tests")
+    def _gnome_focus_diagnostics(self, action):
+        if not os.environ.get("WAYLAND_DISPLAY"):
+            return
+        import subprocess
+
+        upload_dir = self.query_abs_dirs()["abs_blob_upload_dir"]
+        os.makedirs(upload_dir, exist_ok=True)
+        log_path = os.path.join(upload_dir, "gnome-windows.log")
+        script = r"""
+journal() {
+  journalctl --user -b --no-pager -o short-precise > "$UPLOAD_DIR_PROBE/user-journal.txt" 2>&1
+}
+echo "start $(date -u +%T) user=$(id -un)"
+gsettings get org.gnome.desktop.wm.preferences focus-new-windows
+gsettings get org.gnome.desktop.wm.preferences auto-raise
+echo "--- systemd user environment"
+systemctl --user show-environment 2>&1
+echo "--- gnome-shell environment"
+gs=$(pgrep -u "$(id -u)" -x gnome-shell | head -1)
+[ -n "$gs" ] && tr '\0' '\n' < "/proc/$gs/environ" | sort
+echo "--- session processes"
+ps -u "$(id -u)" -o pid,ppid,etimes,args --sort=start_time | cut -c1-200
+echo "--- closing desktop dialogs"
+pkill -u "$(id -u)" -f '^/usr/bin/python3 /usr/lib/ubuntu-release-upgrader/check-new-release-gtk' && echo "killed check-new-release-gtk"
+pkill -u "$(id -u)" -f '(^|/)deja-dup-monitor( |$)' && echo "killed deja-dup-monitor"
+for p in update-notifier update-manager deja-dup; do
+  pkill -u "$(id -u)" -x "$p" && echo "killed $p"
+done
+echo "--- remote desktop API probe"
+rd=$(gdbus call --session --dest org.gnome.Mutter.RemoteDesktop --object-path /org/gnome/Mutter/RemoteDesktop \
+  --method org.gnome.Mutter.RemoteDesktop.CreateSession 2>&1)
+echo "CreateSession: $rd"
+session=$(echo "$rd" | sed -n "s/.*objectpath '\([^']*\)'.*/\1/p")
+if [ -n "$session" ]; then
+  gdbus call --session --dest org.gnome.Mutter.RemoteDesktop --object-path "$session" \
+    --method org.gnome.Mutter.RemoteDesktop.Session.Start 2>&1 | sed 's/^/Start: /'
+  gdbus call --session --dest org.gnome.Mutter.RemoteDesktop --object-path "$session" \
+    --method org.gnome.Mutter.RemoteDesktop.Session.Stop 2>&1 | sed 's/^/Stop: /'
+fi
+journal
+while sleep 30; do journal; done
+"""
+        script_path = os.path.join(upload_dir, "gnome-windows.sh")
+        env = dict(os.environ, UPLOAD_DIR_PROBE=upload_dir)
+        with open(script_path, "w") as f:
+            f.write(script)
+        self.info(f"starting GNOME focus diagnostics, logging to {log_path}")
+        with open(log_path, "w") as log:
+            subprocess.Popen(
+                ["bash", script_path],
+                stdout=log,
+                stderr=subprocess.STDOUT,
+                stdin=subprocess.DEVNULL,
+                start_new_session=True,
+                env=env,
+            )
+
     @PreScriptAction("create-virtualenv")
     def _pre_create_virtualenv(self, action):
         dirs = self.query_abs_dirs()
