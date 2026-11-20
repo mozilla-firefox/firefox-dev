@@ -4,7 +4,7 @@
 ["aaa.js"]
 skip-if = [
   "os == 'android' && os_version == '16' && arch == 'x86_64'", # 4
-  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'", # 5
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # 5
   "os == 'mac' && os_version == '10.15' && verify", # 1
   "os == 'mac' && os_version == '15.30' && arch == 'aarch64'", # 2
 ]

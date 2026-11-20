@@ -145,13 +145,6 @@ class State:
                     self.warning(
                         "linux os_version == '22.04' is only supported on display == 'wayland'"
                     )
-            elif (
-                self.condition.find("os_version == '24.04'") >= 0
-                and self.condition.find("display == 'wayland'") >= 0
-            ):
-                self.warning(
-                    "linux os_version == '24.04' is only supported on display == 'x11'"
-                )
         if self.condition.find("os == 'mac'") >= 0:
             if self.condition.find("os_version == '11.20'") >= 0:
                 self.warning("mac os_version == '11.20' is no longer used")

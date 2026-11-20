@@ -400,11 +400,6 @@ def idiomatic_condition(cond: str, condition: str) -> TupleOptStrListStr:
                     op = f"display == '{display}'"
                     i += 1
                     ops.insert(i, op)
-            elif os_version == "24.04" and display == "wayland":
-                i = ops.index(f"display == '{display}'")
-                display = "x11"
-                op = f"display == '{display}'"
-                ops[i] = op
         elif os == "mac":
             if os_version is None:  # do NOT guess os_version on mac
                 if cond == "skip-if":

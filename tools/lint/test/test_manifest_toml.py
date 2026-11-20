@@ -177,7 +177,7 @@ def test_non_idiomatic_fix(lint, paths, create_temp_file):
     expected = Path(fix).read_text()
     path = create_temp_file(original, f"{basename}.toml")
     results = lint([path], fix=True)
-    assert len(results) == 13
+    assert len(results) == 12
     i: int = 0
     assert (
         results[i].message
@@ -211,12 +211,6 @@ def test_non_idiomatic_fix(lint, paths, create_temp_file):
     assert (
         results[i].message
         == "using 'android_version' is not idiomatic, use 'os_version' instead (see testing/mozbase/mozinfo/mozinfo/platforminfo.py)"
-    )
-    assert results[i].level == WARNING
-    i += 1
-    assert (
-        results[i].message
-        == "linux os_version == '24.04' is only supported on display == 'x11'"
     )
     assert results[i].level == WARNING
     i += 1
