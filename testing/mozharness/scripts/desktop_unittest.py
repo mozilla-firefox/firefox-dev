@@ -433,6 +433,7 @@ class DesktopUnittest(TestingMixin, MercurialScript, MozbaseMixin, CodeCoverageM
                 "create-virtualenv",
                 "start-pulseaudio",
                 "unlock-keyring",
+                "register-http-handler",
                 "install",
                 "stage-files",
                 "run-tests",
@@ -1050,6 +1051,31 @@ class DesktopUnittest(TestingMixin, MercurialScript, MozbaseMixin, CodeCoverageM
                 check=True,
                 input=b"\n",
             )
+
+    def register_http_handler(self):
+        # Some tests, e.g. test_handlerService.js, expect the system to have an
+        # http handler. The Exec target doesn't need to exist.
+        if os.environ.get("NEED_HTTP_HANDLER") != "true":
+            return
+        apps_dir = os.path.join(
+            os.path.expanduser("~"), ".local", "share", "applications"
+        )
+        self.mkdir_p(apps_dir)
+        self.write_to_file(
+            os.path.join(apps_dir, "firefox.desktop"),
+            "[Desktop Entry]\n"
+            "Name=Firefox\n"
+            "Exec=/usr/bin/firefox %u\n"
+            "Terminal=false\n"
+            "X-MultipleArgs=false\n"
+            "Type=Application\n"
+            "Categories=Network;WebBrowser;\n"
+            "MimeType=text/html;text/xml;application/xhtml+xml;application/xml;"
+            "application/vnd.mozilla.xul+xml;application/rss+xml;application/rdf+xml;"
+            "image/gif;image/jpeg;image/png;x-scheme-handler/http;"
+            "x-scheme-handler/https;\n",
+        )
+        self.run_command(["update-desktop-database", apps_dir], halt_on_failure=True)
 
     def start_pulseaudio(self):
         command = []

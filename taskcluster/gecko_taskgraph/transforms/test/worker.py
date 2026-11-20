@@ -289,6 +289,7 @@ def set_wayland_env(config, tasks):
         env["MOZ_ENABLE_WAYLAND"] = "1"
         env["WAYLAND_DISPLAY"] = "wayland-0"
         env["NEED_GNOME_KEYRING"] = "true"
+        env["NEED_HTTP_HANDLER"] = "true"
         yield task
 
 
