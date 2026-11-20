@@ -13,14 +13,17 @@ support-files = ["xul_tooltiptext.xhtml"]
 ["browser_input_file_tooltips.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
 ]
 
 ["browser_nac_tooltip.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
 ]
 
 ["browser_shadow_dom_tooltip.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
 ]

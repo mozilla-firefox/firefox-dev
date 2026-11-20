@@ -60,6 +60,7 @@ skip-if = [
 ["browser_backgroundTab.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
 ]
 
 ["browser_cannotTriggerFromContent.js"]
@@ -67,6 +68,7 @@ skip-if = [
 ["browser_changePiPSrcInFullscreen.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
 ]
 
 ["browser_closePipPause.js"]
@@ -86,6 +88,7 @@ skip-if = [
 ["browser_conflictingPips.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
 ]
 
 ["browser_contextMenu.js"]
@@ -149,6 +152,7 @@ support-files = ["test-page-with-nan-video-duration.html"]
 ["browser_occludedSelectedTab.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
 ]
 
 ["browser_occluded_window.js"]
@@ -184,6 +188,7 @@ skip-if = [
 ["browser_saveLastPiPLoc.js"]
 skip-if = [
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'", # Bug 1594223
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1594223
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
 ]
 

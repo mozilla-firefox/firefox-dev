@@ -71,6 +71,7 @@ prefs = [
 ["browser_1446343-windowsize.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1600180
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1600180
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'", # Bug 1600180
 ]
 
@@ -147,6 +148,7 @@ skip-if = [
 ["browser_477657.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64'", # Bug 2057857
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2057857
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'", # Bug 1610668
 ]
 
@@ -176,6 +178,7 @@ skip-if = [
 ["browser_524745.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64'", # Bug 2057858
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2057858
 ]
 
 ["browser_528776.js"]

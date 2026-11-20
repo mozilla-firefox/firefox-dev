@@ -110,6 +110,7 @@ skip-if = [
 skip-if = [
   "os == 'android'", # Bug 1845607
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", #  Bug 1857067
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", #  Bug 1857067
 ]
 
 ["test_ext_background_canvas.html"]
@@ -207,7 +208,9 @@ fail-if = [
 skip-if = [
   "os == 'android' && debug", # bug 1348241
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11' && debug && http2", # Bug 1927732
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland' && debug && http2", # Bug 1927732
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11' && debug && http3", # Bug 1927732
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland' && debug && http3", # Bug 1927732
 ]
 
 ["test_ext_contentscript_canvas.html"]

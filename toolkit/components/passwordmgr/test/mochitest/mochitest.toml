@@ -133,6 +133,7 @@ run-if = [
 ]
 skip-if = [
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11' && debug", # Bug 1554959
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 1554959
   "xorigin", # Bug 1716412 - New fission platform triage
 ]
 
@@ -452,6 +453,7 @@ run-if = [
 ]
 skip-if = [
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'",
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'",
   "xorigin", # Bug 1716412 - New fission platform triage
 ]
 
@@ -466,6 +468,7 @@ run-if = [
 ]
 skip-if = [
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'",
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'",
 ]
 
 ["test_prompt_promptAuth_proxy.html"]
@@ -474,6 +477,7 @@ run-if = [
 ]
 skip-if = [
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'",
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'",
 ]
 
 ["test_recipe_login_fields.html"]

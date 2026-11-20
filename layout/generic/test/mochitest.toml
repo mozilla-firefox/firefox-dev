@@ -262,6 +262,7 @@ support-files = ["!/gfx/layers/apz/test/mochitest/apz_test_native_event_utils.js
 skip-if = [
   "os == 'android'",
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1857078
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1857078
 ]
 
 ["test_scroll_position_iframe.html"]
@@ -362,6 +363,7 @@ run-if = [
 ["test_selection_expanding.html"]
 skip-if = [
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'", # Bug 1968678
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1968678
 ]
 
 ["test_selection_multiclick_drag.html"]

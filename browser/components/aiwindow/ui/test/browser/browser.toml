@@ -214,6 +214,7 @@ skip-if = [
 ["browser_aiwindow_smartbar_context_paste.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 2057548
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 2057548
 ]
 
 ["browser_aiwindow_smartbar_focus.js"]

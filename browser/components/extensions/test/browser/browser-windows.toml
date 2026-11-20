@@ -24,6 +24,7 @@ https_first_disabled = true
 tags = "fullscreen"
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2057845 (perma-fails on linux 22.04 wayland jobs while testing minimized window creation)
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2057845 (perma-fails on linux 22.04 wayland jobs while testing minimized window creation)
 ]
 
 ["browser_ext_windows_create_cookieStoreId.js"]
@@ -33,6 +34,7 @@ skip-if = [
 ["browser_ext_windows_create_params.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
 ]
 
 ["browser_ext_windows_create_tabId.js"]

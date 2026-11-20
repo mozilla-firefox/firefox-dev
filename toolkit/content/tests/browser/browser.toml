@@ -76,6 +76,7 @@ support-files = ["file_document_open_audio.html"]
 ["browser_bug1693577.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 2094332
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 2094332
 ]
 
 ["browser_cancel_starting_autoscrolling_requested_by_background_tab.js"]

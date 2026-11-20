@@ -50,6 +50,7 @@ skip-if = [
   "os == 'android' && os_version == '14' && arch == 'x86_64' && opt", # Bug 1982951
   "os == 'android' && os_version == '14' && arch == 'x86_64' && ccov", # Bug 1982951
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1879835
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1879835
 ]
 
 ["test_clipboard_getDataSnapshotSync.html"]
@@ -59,6 +60,7 @@ skip-if = [
   "os == 'android' && os_version == '14' && arch == 'x86_64' && opt", # Bug 1982951
   "os == 'android' && os_version == '14' && arch == 'x86_64' && ccov", # Bug 1982951
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1879835
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1879835
 ]
 
 ["test_clipboard_pngPreservesTransparency.html"]

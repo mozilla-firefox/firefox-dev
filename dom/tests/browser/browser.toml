@@ -43,6 +43,7 @@ support-files = ["file_beforeunload_select.html"]
 ["browser_bug1236512.js"]
 skip-if = [
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'",
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'",
 ]
 
 ["browser_bug1316330.js"]

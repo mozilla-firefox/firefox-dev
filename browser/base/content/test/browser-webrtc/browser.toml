@@ -25,6 +25,7 @@ skip-if = [
 ["browser_device_controls_menus.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2063469
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2063469
 ]
 
 ["browser_devices_get_user_media.js"]
@@ -55,7 +56,9 @@ https_first_disabled = true
 https_first_disabled = true
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && opt", # Bug 2057534
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 2057534
 ]
 
 ["browser_devices_get_user_media_in_xorigin_frame_chain.js"]
@@ -65,6 +68,7 @@ https_first_disabled = true
 https_first_disabled = true
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
 ]
 
 ["browser_devices_get_user_media_muted_on_init.js"]
@@ -73,7 +77,9 @@ skip-if = [
 https_first_disabled = true
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 1440900
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 1440900
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11' && opt", # Bug 1440900
   "os == 'mac' && os_version == '15.30' && arch == 'aarch64'", # Bug 1707735
   "os == 'win' && opt", # Bug 1440900
@@ -83,6 +89,7 @@ skip-if = [
 https_first_disabled = true
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1775945
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1775945
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'", # Bug 1775945
   "os == 'mac' && os_version == '15.30' && arch == 'aarch64'", # Bug 1974591
   "os == 'win'", # Bug 1775945, Bug 1974591
@@ -105,6 +112,7 @@ skip-if = [
 ["browser_devices_get_user_media_screen_tab_close.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
 ]
 
 ["browser_devices_get_user_media_tear_off_tab.js"]

@@ -455,6 +455,7 @@ tags = "vertical-tabs"
 ["browser_switchtab_when_minimized.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
 ]
 
 ["browser_tabCloseProbes.js"]
@@ -609,6 +610,7 @@ skip-if = [
 ["browser_tab_splitview_contextmenu.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 2094332
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 2094332
 ]
 
 ["browser_tab_splitview_findbar.js"]

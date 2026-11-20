@@ -241,6 +241,7 @@ support-files = ["bug1226904.html"]
 support-files = ["bug1448730.html"]
 skip-if = [
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'", # Bug 1781401
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1781401
 ]
 
 ["test_bug1515822.html"]

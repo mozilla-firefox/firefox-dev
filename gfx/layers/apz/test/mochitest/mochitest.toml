@@ -21,6 +21,7 @@ run-if = [
 ]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1857059
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1857059
 ]
 
 ["test_bug1277814.html"]
@@ -29,6 +30,7 @@ run-if = [
 ]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1857059
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1857059
 ]
 
 ["test_bug1304689-2.html"]
@@ -102,6 +104,7 @@ skip-if = [
   "http2",
   "http3",
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'",
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'",
 ]
 
 ["test_group_hittest-overscroll.html"]

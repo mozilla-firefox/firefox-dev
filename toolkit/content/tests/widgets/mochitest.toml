@@ -75,6 +75,7 @@ tags = "fullscreen os_integration"
 skip-if = [
   "os == 'android'", # TIMED_OUT #Bug 1484210
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # TIMED_OUT #Bug 1511256 # Bug 1929419 (secondary)
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # TIMED_OUT #Bug 1511256 # Bug 1929419 (secondary)
 ]
 
 ["test_videocontrols_audio.html"]

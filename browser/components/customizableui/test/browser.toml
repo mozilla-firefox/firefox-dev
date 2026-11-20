@@ -84,6 +84,7 @@ tags = "fullscreen"
 tags = "overflowable-toolbar"
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'",
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'",
 ]
 
@@ -176,6 +177,7 @@ tags = "overflowable-toolbar"
 ["browser_970511_undo_restore_default.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
 ]
 
 ["browser_972267_customizationchange_events.js"]
@@ -223,6 +225,7 @@ skip-if = [
 ["browser_995164_registerArea_during_customize_mode.js"]
 skip-if = [
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11' && opt", # Bug 1779584
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 1779584
   "os == 'mac' && os_version == '15.30' && arch == 'aarch64' && opt", # Bug 1779584
 ]
 
@@ -418,6 +421,7 @@ fail-if = [
 ["browser_touchbar_customization.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'",
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'",
   "os == 'win'",
 ]

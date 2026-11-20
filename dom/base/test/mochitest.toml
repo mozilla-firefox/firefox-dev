@@ -545,6 +545,7 @@ run-if = [
 skip-if = [
   "headless",
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'",
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'",
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'",
   "os == 'mac' && os_version == '15.30' && arch == 'aarch64'", # Bug 2019401
 ]

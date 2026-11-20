@@ -51,6 +51,7 @@ skip-if = [
 ["browser_exportP12_passwordUI.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 2094332
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 2094332
 ]
 
 ["browser_loadPKCS11Module_ui.js"]

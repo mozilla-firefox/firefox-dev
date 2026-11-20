@@ -66,6 +66,7 @@ support-files = ["head_unified_extensions.js"]
 ["browser_ext_browserAction_popup_resize_bottom.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2057843 (perma-fails on linux 22.04 wayland jobs)
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2057843 (perma-fails on linux 22.04 wayland jobs)
 ]
 
 ["browser_ext_browserAction_simple.js"]

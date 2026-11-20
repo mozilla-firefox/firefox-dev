@@ -13,6 +13,7 @@ run-if = [
 ["browser_test_AZERTY_digit_shortcut.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Linux build has not implemented sendNativeKeyEvent yet
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Linux build has not implemented sendNativeKeyEvent yet
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'", # Linux build has not implemented sendNativeKeyEvent yet
 ]
 
@@ -140,8 +141,11 @@ support-files = [
 ]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland' && debug", # Bug 2094332
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 2059565
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland' && opt", # Bug 2059565
   "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'x11'", # Bug 1784772
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1784772
 ]
 
 ["browser_test_touchscreen_swipe_gesture.js"]

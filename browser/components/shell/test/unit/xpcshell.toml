@@ -31,6 +31,7 @@ support-files = [
 tags = ["portal"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1835698
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 1835698
 ]
 
 ["test_isOneClickSetDefaultEnabled.js"]

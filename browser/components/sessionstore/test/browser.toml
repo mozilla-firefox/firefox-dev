@@ -247,6 +247,7 @@ https_first_disabled = true
 ["browser_restore_respects_pending_minimize.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2094332
 ]
 
 ["browser_restore_reversed_z_order.js"]
@@ -299,6 +300,7 @@ skip-if = [
 ["browser_sizemodeBeforeMinimized.js"]
 skip-if = [
   "os == 'linux' && os_version == '22.04' && arch == 'x86_64'", # Bug 2057856
+  "os == 'linux' && os_version == '24.04' && arch == 'x86_64' && display == 'wayland'", # Bug 2057856
 ]
 
 ["browser_speculative_connect.js"]
