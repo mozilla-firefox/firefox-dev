@@ -1436,6 +1436,15 @@ async function shareDevices(
     }
 
     let menuitem = null;
+    info(
+      `webRTC-selectWindow-menulist has ${menulist.itemCount} items, looking for mediaSource=${displayMediaSource}`
+    );
+    for (let i = 0; i < menulist.itemCount; ++i) {
+      let item = menulist.getItemAtIndex(i);
+      info(
+        `  item ${i}: label=${JSON.stringify(item.label)} mediaSource=${item.mediaSource} value=${item.value} scary=${item.scary} disabled=${item.disabled}`
+      );
+    }
     for (let i = 0; i < menulist.itemCount; ++i) {
       let current = menulist.getItemAtIndex(i);
       if (current.mediaSource == displayMediaSource) {
