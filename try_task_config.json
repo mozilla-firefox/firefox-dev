@@ -1,0 +1,17 @@
+{
+    "parameters": {
+        "base_rev": "05ea3f8e9fd32050f86babe19eddc88e77a1ca64",
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "disable-pgo": true,
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "release-notify-started-firefox"
+            ],
+            "use-artifact-builds": true
+        }
+    },
+    "version": 2
+}
