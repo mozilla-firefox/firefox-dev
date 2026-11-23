@@ -32,7 +32,6 @@ def add_command(config, tasks):
                 )
         task["run"] = {
             "using": "run-task",
-            "clone-with": "hg",
             "cwd": "{checkout}",
             "command": {
                 "artifact-reference": "tools/update-verify/release/final-verification.sh "
