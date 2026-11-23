@@ -8,6 +8,7 @@ import http.client
 import json
 import logging
 import math
+import os
 import pprint
 import re
 import socket
@@ -297,6 +298,13 @@ class UpdateVerifyConfigCreator:
 
     def _setup_hgclient(self):
         if not self.config.get("local_repo"):
+            return
+        if not os.path.isdir(os.path.join(self.config["local_repo"], ".hg")):
+            log.info(
+                f"{self.config['local_repo']} is not a Mercurial repository, "
+                "fetching files from the remote instead."
+            )
+            self.config["local_repo"] = None
             return
         # Setup hgclient
         self.hgclient = hglib.open(self.config["local_repo"])
