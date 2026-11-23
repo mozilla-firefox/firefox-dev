@@ -59,7 +59,6 @@ def add_command(config, tasks):
 
             chunked["run"] = {
                 "using": "run-task",
-                "clone-with": "hg",
                 "checkout": False,
                 "command": " ".join(command),
             }
