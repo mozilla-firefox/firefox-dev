@@ -55,7 +55,6 @@ def make_symbol_upload_description(config, jobs):
             },
             "run": {
                 "using": "mach",
-                "clone-with": "hg",
                 "mach": {
                     "artifact-reference": f"python toolkit/crashreporter/tools/upload_symbols.py <openh264/{artifact_path}>",
                 },
