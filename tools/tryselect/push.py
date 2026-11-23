@@ -10,7 +10,7 @@ import subprocess
 import sys
 import tempfile
 from functools import cache
-from typing import Optional
+from typing import Dict, Optional
 
 from mach.util import get_state_dir
 from mozbuild.base import MozbuildObject
@@ -243,7 +243,11 @@ def _is_git_try(remote):
     return not _is_hg_try(remote)
 
 
-def push_to_git_backing(prefix: str) -> str:
+def push_to_git_backing(
+    prefix: str,
+    commit_message: str = "",
+    files_to_change: Optional[Dict[str, str]] = None,
+) -> str:
     """Push the current head to the git-backing repo and return the git SHA."""
     print("Pushing to git-backing...")
     client = get_client("secrets", [f"secrets:get:{GIT_BACKING_SECRET}"])
@@ -275,15 +279,23 @@ def push_to_git_backing(prefix: str) -> str:
             "-o StrictHostKeyChecking=accept-new"
         )
 
-        sha = vcs.head_rev
-        vcs.push(
-            GIT_BACKING_SSH,
-            ref=sha,
-            dest_branch=f"{prefix}/{sha}",
-            force=True,
-            env={"GIT_SSH_COMMAND": ssh_command},
-        )
-        return sha
+        def push(sha):
+            vcs.push(
+                GIT_BACKING_SSH,
+                ref=sha,
+                dest_branch=f"{prefix}/{sha}",
+                force=True,
+                env={"GIT_SSH_COMMAND": ssh_command},
+            )
+            return sha
+
+        if not files_to_change:
+            return push(vcs.head_rev)
+
+        # Tasks clone the tree from git-backing, so it needs the same changes
+        # as the commit pushed to try.
+        with vcs.try_commit(commit_message, files_to_change) as head:
+            return push(vcs.head_rev if vcs.name == "jj" else head)
     finally:
         os.remove(keyfile_name)
 
@@ -351,7 +363,11 @@ def push_to_try(
         # then inject the resulting git rev into the try_task_config parameters.
         prefix = "try"
         metrics.mach_try.git_backing_push_duration.start()
-        backing_sha = push_to_git_backing(prefix=prefix)
+        backing_sha = push_to_git_backing(
+            prefix=prefix,
+            commit_message=commit_message,
+            files_to_change=files_to_change,
+        )
         metrics.mach_try.git_backing_push_duration.stop()
 
         try_task_config = try_task_config or {}
