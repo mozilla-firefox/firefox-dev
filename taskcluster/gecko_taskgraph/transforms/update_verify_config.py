@@ -73,6 +73,12 @@ def add_command(config, tasks):
         task["description"] = "generate update verify config for {}".format(
             task["attributes"]["build_platform"]
         )
+        resolve_keyed_by(
+            task,
+            "secrets",
+            item_name=task["name"],
+            repository_type=config.params["repository_type"],
+        )
 
         llbv_arg = ()
         if last_linux_bz2_version := task["extra"].get("last-linux-bz2-version", None):

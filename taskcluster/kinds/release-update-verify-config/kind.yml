@@ -26,6 +26,13 @@ task-defaults:
               type: file
     run:
         sparse-profile: mach
+    # Authenticates requests to raw.githubusercontent.com to avoid rate limits.
+    secrets:
+        by-repository_type:
+            git:
+                - type: github-repo-token
+                  app: read
+            default: []
     extra:
         app-name: browser
         branch-prefix: mozilla

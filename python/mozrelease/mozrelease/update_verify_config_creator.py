@@ -16,7 +16,7 @@ import sys
 from collections import namedtuple
 from urllib.error import HTTPError, URLError
 from urllib.parse import urljoin
-from urllib.request import urlopen
+from urllib.request import Request, urlopen
 
 import aiohttp
 import hglib
@@ -92,12 +92,12 @@ def is_triangular(x):
     return n == int(n)
 
 
-def retry_download(url, sleeptime=60, max_sleeptime=5 * 60, attempts=5):
+def retry_download(url, sleeptime=60, max_sleeptime=5 * 60, attempts=5, headers=None):
     """Fetch url with retries, returning the response or None on failure."""
     try:
         return retry(
             urlopen,
-            args=(url,),
+            args=(Request(url, headers=headers or {}),),
             attempts=attempts,
             sleeptime=sleeptime,
             max_sleeptime=max_sleeptime,
@@ -560,7 +560,10 @@ class UpdateVerifyConfigCreator:
                 # - we get a non tag rev
                 # - we get rate limited
                 git_url = f"https://raw.githubusercontent.com/mozilla-firefox/firefox/refs/tags/{rev}/{path}"
-                ret = retry_download(git_url)
+                headers = {}
+                if token := os.environ.get("GITHUB_TOKEN"):
+                    headers["Authorization"] = f"Bearer {token}"
+                ret = retry_download(git_url, headers=headers)
 
             files.append(ret.read().strip().decode("utf-8"))
         return files
