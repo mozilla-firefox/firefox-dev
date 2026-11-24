@@ -1,0 +1,19 @@
+{
+    "parameters": {
+        "base_rev": "755782163bca76b2d4925bc184d3e8bbcbaad2cd",
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "env": {
+                "MOZHARNESS_TEST_PATHS": "{\"xpcshell\": [\"toolkit/modules/tests/xpcshell\"]}",
+                "PERNOSCO": "1",
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "pernosco": true,
+            "rebuild": 3,
+            "tasks": [
+                "test-linux2404-64/opt-xpcshell-*"
+            ]
+        }
+    },
+    "version": 2
+}
