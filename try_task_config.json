@@ -1,0 +1,36 @@
+{
+    "parameters": {
+        "base_rev": "05ea3f8e9fd32050f86babe19eddc88e77a1ca64",
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "artifact-build-linux64-artifact/debug",
+                "artifact-build-linux64-artifact/opt",
+                "artifact-build-macosx64-artifact/debug",
+                "artifact-build-macosx64-artifact/opt",
+                "artifact-build-win64-artifact/debug",
+                "artifact-build-win64-artifact/opt",
+                "diff-artifact-linux64-validation",
+                "diff-artifact-macosx64-validation",
+                "diff-artifact-win64-validation",
+                "diff-reproducible-android-aarch64",
+                "diff-reproducible-android-aarch64-generated-files",
+                "diff-reproducible-android-arm",
+                "diff-reproducible-android-arm-generated-files",
+                "diff-reproducible-android-x86_64",
+                "diff-reproducible-android-x86_64-generated-files",
+                "diff-reproducible-linux64",
+                "diff-reproducible-linux64-generated-files",
+                "diff-reproducible-macosx64",
+                "diff-reproducible-macosx64-aarch64",
+                "diff-reproducible-macosx64-aarch64-generated-files",
+                "diff-reproducible-macosx64-generated-files",
+                "repackage-macosx64-devedition/opt"
+            ]
+        }
+    },
+    "version": 2
+}
