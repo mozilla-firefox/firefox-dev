@@ -1,0 +1,15 @@
+{
+    "parameters": {
+        "base_rev": "2edaa9b6633031ade3ee4bed787affa82c93424b",
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "test-linux2404-64/opt-mochitest-plain-*"
+            ]
+        }
+    },
+    "version": 2
+}
