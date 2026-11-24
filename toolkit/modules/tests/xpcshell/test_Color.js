@@ -5,6 +5,7 @@ const { Color } = ChromeUtils.importESModule(
 );
 
 function run_test() {
+  Assert.ok(false, "deliberate failure for pernosco test");
   testRelativeLuminance();
   testUseBrightText();
   testContrastRatio();
