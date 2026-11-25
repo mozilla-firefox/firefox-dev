@@ -286,8 +286,7 @@ class MOZ_STACK_CLASS CallSetup {
   // Private delegating constructor for common initialization
   CallSetup(ErrorResult& aRv,
             CallbackObjectBase::ExceptionHandling aExceptionHandling,
-            JS::Realm* aRealm, bool aIsMainThread,
-            CycleCollectedJSContext* aCCJS);
+            JS::Realm* aRealm, CycleCollectedJSContext* aCCJS);
 
   bool ShouldRethrowException(JS::Handle<JS::Value> aException);
 

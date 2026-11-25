@@ -300,13 +300,12 @@ void CallSetup::SetupForExecution(nsIGlobalObject* aGlobalObject,
 // Private delegating constructor for common initialization
 CallSetup::CallSetup(ErrorResult& aRv,
                      CallbackObjectBase::ExceptionHandling aExceptionHandling,
-                     JS::Realm* aRealm, bool aIsMainThread,
-                     CycleCollectedJSContext* aCCJS)
+                     JS::Realm* aRealm, CycleCollectedJSContext* aCCJS)
     : mCx(nullptr),
       mRealm(aRealm),
       mErrorResult(aRv),
       mExceptionHandling(aExceptionHandling),
-      mIsMainThread(aIsMainThread) {
+      mIsMainThread(aCCJS->IsMainThreadContext()) {
   MOZ_ASSERT(aCCJS);
   aCCJS->EnterMicroTask();
 }
@@ -323,7 +322,7 @@ CallSetup::CallSetup(CallbackObjectBase* aCallback, ErrorResult& aRv,
                      CallbackObjectBase::ExceptionHandling aExceptionHandling,
                      JS::Realm* aRealm, bool aIsJSImplementedWebIDL,
                      CycleCollectedJSContext* aCCJS)
-    : CallSetup(aRv, aExceptionHandling, aRealm, NS_IsMainThread(), aCCJS) {
+    : CallSetup(aRv, aExceptionHandling, aRealm, aCCJS) {
   MOZ_ASSERT_IF(
       aExceptionHandling == CallbackObjectBase::eReportExceptions ||
           aExceptionHandling == CallbackObjectBase::eRethrowExceptions,
@@ -388,7 +387,7 @@ CallSetup::CallSetup(JS::Handle<JSObject*> aCallbackGlobal,
                      const char* aExecutionReason,
                      CallbackObjectBase::ExceptionHandling aExceptionHandling,
                      JS::Realm* aRealm)
-    : CallSetup(aRv, aExceptionHandling, aRealm, NS_IsMainThread(),
+    : CallSetup(aRv, aExceptionHandling, aRealm,
                 CycleCollectedJSContext::Get()) {
   MOZ_ASSERT_IF(aExceptionHandling == CallbackFunction::eReportExceptions ||
                     aExceptionHandling == CallbackFunction::eRethrowExceptions,
