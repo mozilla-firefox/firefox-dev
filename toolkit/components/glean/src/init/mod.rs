@@ -125,7 +125,7 @@ fn fog_init_internal(
     // Register all custom pings before we initialize.
     pings::register_pings(Some(&conf.application_id));
 
-    glean::initialize(conf, client_info);
+    glean::initialize(conf, client_info, None);
 
     metrics::fog::initializations.stop_and_accumulate(timer_id);
 
