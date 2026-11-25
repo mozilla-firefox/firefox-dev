@@ -364,6 +364,10 @@ class CycleCollectedJSContext : dom::PerThreadAtomCache, public JS::JobQueue {
   virtual dom::WorkerJSContext* GetAsWorkerJSContext() { return nullptr; }
   virtual dom::WorkletJSContext* GetAsWorkletJSContext() { return nullptr; }
 
+  // Whether this context is bound to the main thread. A context is only ever
+  // used on the thread that created it.
+  bool IsMainThreadContext() const { return mIsMainThreadContext; }
+
   CycleCollectedJSRuntime* Runtime() const {
     MOZ_ASSERT(mRuntime);
     return mRuntime;
@@ -566,6 +570,7 @@ class CycleCollectedJSContext : dom::PerThreadAtomCache, public JS::JobQueue {
 
   nsCOMPtr<dom::Exception> mPendingException;
   nsThread* mOwningThread;  // Manual refcounting to avoid include hell.
+  const bool mIsMainThreadContext;
 
   struct PendingIDBTransactionData {
     nsCOMPtr<nsIRunnable> mTransaction;

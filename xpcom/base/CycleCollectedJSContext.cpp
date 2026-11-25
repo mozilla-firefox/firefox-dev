@@ -57,6 +57,7 @@ namespace mozilla {
 CycleCollectedJSContext::CycleCollectedJSContext()
     : mRuntime(nullptr),
       mJSContext(nullptr),
+      mIsMainThreadContext(NS_IsMainThread()),
       mDoingStableStates(false),
       mTargetedMicroTaskRecursionDepth(0),
       mMicroTaskLevel(0),
@@ -982,7 +983,7 @@ void RunJSMicroTask(JSContext* aCx, CycleCollectedJSContext* aCCJS,
                                      optionalHostDefinedData, incumbentGlobal,
                                      schedulingState);
 
-  const bool isMainThread = NS_IsMainThread();
+  const bool isMainThread = aCCJS->IsMainThreadContext();
 
   // We need to do EnterMicroTask and LeaveMicroTask (on all exit paths), so use
   // RAII class.
@@ -1028,7 +1029,7 @@ void RunJSMicroTask(JSContext* aCx, CycleCollectedJSContext* aCCJS,
       mozilla::Maybe<AutoHandlingUserInputStatePusher> userInputStateSwitcher;
       // A new scope is used to make sure the UserInputState is reset before
       // potentially draining more microtasks.
-      if (NS_IsMainThread()) {
+      if (isMainThread) {
         bool propagate = ShouldPropagateUserInputEventHandlingState(aMicroTask);
         userInputStateSwitcher.emplace(propagate);
       }
@@ -1136,7 +1137,7 @@ void RunJSMicroTask(JSContext* aCx, CycleCollectedJSContext* aCCJS,
       }
 
       mozilla::Maybe<AutoHandlingUserInputStatePusher> userInputStateSwitcher;
-      if (NS_IsMainThread()) {
+      if (isMainThread) {
         bool propagate = ShouldPropagateUserInputEventHandlingState(aMicroTask);
         userInputStateSwitcher.emplace(propagate);
       }
@@ -1242,7 +1243,7 @@ bool CycleCollectedJSContext::PerformMicroTaskCheckPoint(bool aForce) {
     return false;
   }
 
-  if (NS_IsMainThread() && !nsContentUtils::IsSafeToRunScript()) {
+  if (IsMainThreadContext() && !nsContentUtils::IsSafeToRunScript()) {
     // Special case for main thread where DOM mutations may happen when
     // it is not safe to run scripts.
     nsContentUtils::AddScriptRunner(MakeAndAddRef<AsyncMutationHandler>());
