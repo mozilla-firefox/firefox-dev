@@ -4,6 +4,7 @@
 
 package mozilla.components.feature.prompts.emailmask
 
+import android.view.View
 import android.view.ViewTreeObserver
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
@@ -196,14 +197,33 @@ private fun rememberImeIsVisible(): Boolean {
         mutableStateOf(insets?.isVisible(WindowInsetsCompat.Type.ime()) ?: false)
     }
 
-    DisposableEffect(isImeVisible) {
-        val listener = ViewTreeObserver.OnGlobalLayoutListener {
+    DisposableEffect(view) {
+        val layoutListener = ViewTreeObserver.OnGlobalLayoutListener {
             val insets = ViewCompat.getRootWindowInsets(view)
             isImeVisible = insets?.isVisible(WindowInsetsCompat.Type.ime()) ?: false
         }
-        view.viewTreeObserver.addOnGlobalLayoutListener(listener)
+        // A view reaches the ViewTreeObserver of its window only while it is attached, and it can leave the window
+        // before this effect is disposed, so the listener follows the view in and out of its window.
+        val attachListener =
+            object : View.OnAttachStateChangeListener {
+                override fun onViewAttachedToWindow(v: View) {
+                    v.viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
+                }
+
+                override fun onViewDetachedFromWindow(v: View) {
+                    v.viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
+                }
+            }
+        if (view.isAttachedToWindow) {
+            view.viewTreeObserver.addOnGlobalLayoutListener(layoutListener)
+        }
+        view.addOnAttachStateChangeListener(attachListener)
+
         onDispose {
-            view.viewTreeObserver.removeOnGlobalLayoutListener(listener)
+            view.removeOnAttachStateChangeListener(attachListener)
+            if (view.isAttachedToWindow) {
+                view.viewTreeObserver.removeOnGlobalLayoutListener(layoutListener)
+            }
         }
     }
 
