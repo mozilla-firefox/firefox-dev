@@ -6,6 +6,7 @@ const { BinarySearch } = ChromeUtils.importESModule(
 );
 
 function run_test() {
+  info("dummy change to exercise test-verify");
   // empty array
   check([], 1, false, 0);
 
