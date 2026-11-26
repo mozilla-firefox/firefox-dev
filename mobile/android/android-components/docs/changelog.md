@@ -35,6 +35,7 @@ permalink: /changelog/
   * 🆕 Added `CustomizableMenuItemsAction.ItemsChanged`, which `EditMenuItemsContent` dispatches when the user drags an item to another place in its section or inside an expandable item, including from one to the other, and when the user hides an item or shows it again. [Bug 2090976](https://bugzilla.mozilla.org/show_bug.cgi?id=2090976) [Bug 2090977](https://bugzilla.mozilla.org/show_bug.cgi?id=2090977) [Bug 2090978](https://bugzilla.mozilla.org/show_bug.cgi?id=2090978)
   * 🆕 Added `CustomizableMenuItem.isTopLevelOnly`, which keeps an item directly in its section in `EditMenuItemsContent`, never inside another item. [Bug 2090979](https://bugzilla.mozilla.org/show_bug.cgi?id=2090979)
   * 🆕 Added `CustomizableMenuItemsAction.AttemptedMoveAsSubItem`, which `EditMenuItemsContent` dispatches when the user lets go of an item inside another one it cannot be inside of, and `CustomizableMenuItemsAction.AttemptedEmptySection`, which it dispatches when the user drags the last item shown in the section to the hidden ones. [Bug 2090979](https://bugzilla.mozilla.org/show_bug.cgi?id=2090979)
+  * ⚠️ **Breaking change**: `BannerMenuItem` takes `actionButtonText`, the text of the call to action button it now shows. `MenuBanner` is no longer public and the `mozac_menu_banner_bottom_padding` dimension was removed. [Bug 2098085](https://bugzilla.mozilla.org/show_bug.cgi?id=2098085)
 
 # 162.0
 * **concept-engine**
