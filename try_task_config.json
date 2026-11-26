@@ -1,0 +1,15 @@
+{
+    "parameters": {
+        "base_rev": "4f6c8bb9a859667fd209b81d795a962dbf656807",
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "build-linux64-rusttests/debug"
+            ]
+        }
+    },
+    "version": 2
+}
