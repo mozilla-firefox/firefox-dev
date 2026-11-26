@@ -1,0 +1,25 @@
+{
+    "parameters": {
+        "base_rev": "9f5927296df3d987dbbc64de0488b9bba3392eea",
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "disable-pgo": true,
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "test-linux2404-64-tsan/opt-test-verify",
+                "test-linux2404-64-tsan/opt-test-verify-gpu",
+                "test-linux2404-64-tsan/opt-test-verify-path",
+                "test-linux2404-64/debug-test-verify",
+                "test-linux2404-64/debug-test-verify-gpu",
+                "test-linux2404-64/debug-test-verify-path",
+                "test-linux2404-64/opt-test-verify",
+                "test-linux2404-64/opt-test-verify-gpu",
+                "test-linux2404-64/opt-test-verify-path"
+            ],
+            "use-artifact-builds": true
+        }
+    },
+    "version": 2
+}
