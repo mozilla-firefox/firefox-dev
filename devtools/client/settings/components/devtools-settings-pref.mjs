@@ -31,11 +31,46 @@ export class DevToolsSettingsPref extends MozLitElement {
     this._errorMessage = "";
   }
 
+  /** @type {string | null} */
+  #observedPref = null;
+
+  connectedCallback() {
+    super.connectedCallback();
+    this.#observePref();
+  }
+
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.#unobservePref();
+  }
+
   /** @param {PropertyValues<this>} changedProperties */
   willUpdate(changedProperties) {
-    if (!changedProperties.has("pref")) {
+    if (
+      changedProperties.has("pref") &&
+      this.isConnected &&
+      this.pref !== this.#observedPref
+    ) {
+      this.#unobservePref();
+      this.#observePref();
+    }
+  }
+
+  #observePref() {
+    this.#observedPref = this.pref;
+    Services.prefs.addObserver(this.pref, this.#readPref);
+    this.#readPref();
+  }
+
+  #unobservePref() {
+    if (this.#observedPref === null) {
       return;
     }
+    Services.prefs.removeObserver(this.#observedPref, this.#readPref);
+    this.#observedPref = null;
+  }
+
+  #readPref = () => {
     try {
       const control = this.#getControl();
       if (control instanceof MozCheckbox) {
@@ -57,7 +92,7 @@ export class DevToolsSettingsPref extends MozLitElement {
       this._errorMessage = `Unable to render setting for "${this.pref}".`;
       console.error(this._errorMessage, error);
     }
-  }
+  };
 
   #getControl() {
     return this.querySelector(
@@ -96,7 +131,10 @@ export class DevToolsSettingsPref extends MozLitElement {
     if (this._errorMessage) {
       return html`<p role="alert">${this._errorMessage}</p>`;
     }
-    return html`<slot @change=${this.#controlChange}></slot>`;
+    return html`<slot
+      @change=${this.#controlChange}
+      @slotchange=${this.#readPref}
+    ></slot>`;
   }
 }
 

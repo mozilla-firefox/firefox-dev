@@ -78,7 +78,7 @@ async function test_preference_binding_without_callback() {
   const checkbox = doc.createElement("moz-checkbox");
   checkbox.setAttribute("label", "Test setting");
   binding.append(checkbox);
-  doc.body.append(binding);
+  root.shadowRoot.append(binding);
   let changes = 0;
   binding.addEventListener("devtools-setting-changed", () => changes++);
 
