@@ -1,0 +1,32 @@
+{
+    "parameters": {
+        "base_rev": "bba041828073afc5991dbc89b2e15938e4e291ae",
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "disable-pgo": true,
+            "env": {
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "test-linux2204-64-wayland/opt-firefox-ui-functional",
+                "test-linux2204-64-wayland/opt-mochitest-a11y-1proc",
+                "test-linux2404-64-tsan/opt-marionette-integration-*",
+                "test-linux2404-64-tsan/opt-marionette-unittest",
+                "test-linux2404-64/opt-firefox-ui-functional",
+                "test-linux2404-64/opt-marionette-integration",
+                "test-linux2404-64/opt-marionette-unittest",
+                "test-linux2404-64/opt-mochitest-a11y-1proc",
+                "test-linux2404-64/opt-mochitest-browser-a11y",
+                "test-linux2404-64/opt-mochitest-browser-chrome-swr-*",
+                "test-linux2404-64/opt-mochitest-browser-chrome-swr-uipc-*",
+                "test-linux2404-64/opt-mochitest-browser-chrome-trainhop-beta",
+                "test-linux2404-64/opt-mochitest-browser-chrome-trainhop-rel",
+                "test-linux2404-64/opt-mochitest-browser-chrome-vt-*",
+                "test-linux2404-64/opt-mochitest-chrome-1proc-*",
+                "test-linux2404-64/opt-xpcshell-*"
+            ],
+            "use-artifact-builds": true
+        }
+    },
+    "version": 2
+}
