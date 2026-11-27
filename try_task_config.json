@@ -1,0 +1,36 @@
+{
+    "parameters": {
+        "base_rev": "36bede531421aa3711de1e7112a8efcc9608c94f",
+        "optimize_target_tasks": false,
+        "try_task_config": {
+            "disable-pgo": true,
+            "env": {
+                "MOZHARNESS_TEST_PATHS": "{\"mochitest-devtools-chrome\": [\"devtools/client/settings\", \"devtools/client/framework\"], \"xpcshell\": [\"devtools/client/framework\"]}",
+                "TRY_SELECTOR": "fuzzy"
+            },
+            "tasks": [
+                "test-linux2404-64-asan/opt-mochitest-devtools-chrome-*",
+                "test-linux2404-64-tsan/opt-mochitest-devtools-chrome-*",
+                "test-linux2404-64/debug-mochitest-devtools-chrome-*",
+                "test-linux2404-64/debug-mochitest-devtools-chrome-http3-*",
+                "test-linux2404-64/debug-mochitest-devtools-chrome-repeat-*",
+                "test-linux2404-64/debug-mochitest-devtools-chrome-standalone-*",
+                "test-linux2404-64/opt-mochitest-devtools-chrome-*",
+                "test-linux2404-64/opt-mochitest-devtools-chrome-a11y-checks-*",
+                "test-linux2404-64/opt-mochitest-devtools-chrome-repeat-*",
+                "test-linux2404-64/opt-mochitest-devtools-chrome-standalone-*",
+                "test-macosx1500-aarch64/debug-mochitest-devtools-chrome-*",
+                "test-macosx1500-aarch64/opt-mochitest-devtools-chrome-*",
+                "test-windows11-64-25h2-asan/opt-mochitest-devtools-chrome-*",
+                "test-windows11-64-25h2/debug-mochitest-devtools-chrome-*",
+                "test-windows11-64-25h2/debug-mochitest-devtools-chrome-repeat-*",
+                "test-windows11-64-25h2/debug-mochitest-devtools-chrome-standalone-*",
+                "test-windows11-64-25h2/opt-mochitest-devtools-chrome-*",
+                "test-windows11-64-25h2/opt-mochitest-devtools-chrome-repeat-*",
+                "test-windows11-64-25h2/opt-mochitest-devtools-chrome-standalone-*"
+            ],
+            "use-artifact-builds": true
+        }
+    },
+    "version": 2
+}
